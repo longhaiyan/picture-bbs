@@ -1,0 +1,19 @@
+{
+  "data": {
+    "userId": 1,
+    "avatarId": 0,
+    "userName": "bbs",
+    "cellphone": null,
+    "sex": 0,
+    "userStatus": 1,
+    "userRole": 0,
+    "email": "bbs@bbs.com",
+    "createTime": null,
+    "modifyTime": null,
+    "roleSet": null,
+    "login": true,
+    "locking": false,
+    "close": false,
+    "admin": false
+  }
+}
