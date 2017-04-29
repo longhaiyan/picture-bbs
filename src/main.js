@@ -8,6 +8,7 @@ import ElementUI from 'element-ui'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'element-ui/lib/theme-default/index.css'
 import './styles/main.less'
+import $ from 'jquery'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

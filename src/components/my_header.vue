@@ -125,6 +125,7 @@
                 if (this.userName) {
                     console.log("xiugai ")
                     this.localUserName = this.userName
+
                 }
             }
         },

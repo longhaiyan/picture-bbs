@@ -18,7 +18,7 @@ export function req (url = '', data = {}, success = null, error = null) {
 		url,
 		data,
 		success: function(rsp) {
-		  console.log('rsp',rsp)
+		  // console.log('rsp',rsp)
 			if (rsp.success) {
 				// rsp.result._rspQuery = rsp._query;
         success && success(rsp.vars)

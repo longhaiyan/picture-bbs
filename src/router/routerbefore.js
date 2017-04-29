@@ -13,7 +13,7 @@ export default (options, store) => {
 
 	let tpath = `${pname}/as/start_main`;
 	const t_types = store.hasOwnProperty(tpath);
-	console.debug( "触发页面初始 ACTIONS", tpath, t_types, store._actions[tpath] );
+	console.log( "触发页面初始 ACTIONS", tpath, t_types, store._actions[tpath] );
 
 	// 判断是否有页面初始的 action
 	if( store._actions[tpath] && store._actions[tpath].length ){
