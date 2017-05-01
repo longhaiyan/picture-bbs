@@ -5,11 +5,12 @@ import { env } from '@/utils/config'
 
 const api = {
     dev: {
-        'waterfall': '/data?name=index_water_fall'
+        'waterfall': '/data?name=index_water_fall',
+        'waterfall_add': '/data?name=index_water_fall_add'
 
     },
     pro: {
-        'waterfall': '/picture/index/data'
+        'waterfall': '/index/picture/data'
     }
 }
 export default api[env]

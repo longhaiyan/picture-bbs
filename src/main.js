@@ -31,7 +31,7 @@ Vue.filter('data', function(value) {
     return y + '-' + add(m) + '-' + add(d) + '  ' + add(hh) + ':'+add(mm)
 })
 
-new Vue({
+var vm =  new Vue({
   el: '#app',
   router: routerInit(store),
   store,

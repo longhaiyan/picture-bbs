@@ -273,6 +273,7 @@
             </swiper>
             <div class="swiper-pagination" slot="pagination"></div>
         </div>
+        <!--<div slot="content" :model="getIndexWaterFall"  ref="localData" label-width="100px"></div>-->
         <section class="index-intro">
             <!--<section class="show-banners">
                 <el-row type="flex" justify="space-between">
@@ -294,27 +295,26 @@
                 </el-row>
             </section>-->
             <!--图片瀑布流-->
-            <div class="index-waterfall-nav">
+            <!--<div class="index-waterfall-nav">
                 <el-button type="text" size="large">分类一</el-button>
                 <el-button type="text" size="large">分类二</el-button>
                 <el-button type="text" size="large">分类三</el-button>
-            </div>
+            </div>-->
             <div class="index-waterfall">
             </div>
             <waterfall
                     :align="align"
-                    :line-gap="500"
-                    :min-line-gap="200"
-                    :max-line-gap="320"
-                    :single-max-width="500"
-                    :watch="getIndexWaterFall"
+                    :line-gap="200"
+                    :min-line-gap="100"
+                    :max-line-gap="220"
+                    :single-max-width="300"
+                    :watch="indexWaterFall"
                     @reflowed="reflowed"
                     ref="waterfall"
             >
                 <!-- each component is wrapped by a waterfall slot -->
-                <template v-for="(item, index) in getIndexWaterFall">
                     <waterfall-slot
-
+                            v-for="(item, index) in indexWaterFall"
                             :width="item.width"
                             :height="item.height"
                             :order="index"
@@ -361,7 +361,6 @@
                             </div>
                         </div>
                     </waterfall-slot>
-                </template>
             </waterfall>
         </section>
     </div>
@@ -369,7 +368,8 @@
 
 <script>
     import { swiper, swiperSlide } from 'vue-awesome-swiper'
-    import {mapState} from 'vuex'
+    import {mapState,mapActions} from 'vuex'
+    import store from '@/store'
     import Waterfall from 'vue-waterfall/lib/waterfall'
     import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
     import * as myIndex from '@/store/my_index/types'
@@ -402,159 +402,86 @@
                         height: 100,
                         width: 100,
                         imgID: 1
-                    },
-                    {
-                        height: 0,
-                        width: 0,
-                        imgID: 2
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 2
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 0,
-                        width: 0,
-                        imgID: 20
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 0,
-                        width: 0,
-                        imgID: 20
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 0,
-                        width: 0,
-                        imgID: 20
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 20
                     }
+                    /*{
+                        height: 100,
+                        width: 100,
+                        imgID: 2
+                    },
+                    {
+                        height: 109,
+                        width: 142,
+                        imgID: 2
+                    },
+                    {
+                        height: 100,
+                        width: 100,
+                        imgID: 20
+                    },
+                    {
+                        height: 100,
+                        width: 100,
+                        imgID: 20
+                    },
+                    {
+                        height: 109,
+                        width: 142,
+                        imgID: 20
+                    },
+                    {
+                        height: 100,
+                        width: 100,
+                        imgID: 20
+                    },
+                    {
+                        height: 100,
+                        width: 100,
+                        imgID: 20
+                    },
+                    {
+                        height: 109,
+                        width: 142,
+                        imgID: 20
+                    },
+                    {
+                        height: 100,
+                        width: 100,
+                        imgID: 20
+                    },
+                    {
+                        height: 100,
+                        width: 100,
+                        imgID: 20
+                    },
+                    {
+                        height: 109,
+                        width: 142,
+                        imgID: 20
+                    }*/
                 ],
-                isBusy: false,
-                waterFallItem:[]
+                isBusy: false
             }
         },
         computed: {
             ...mapState({
                 indexWaterFall: state => state.myIndex.indexWaterFall,
-            }),
-            getIndexWaterFall:function () {
-                console.log("复制数据1",this.waterFallItem)
-                console.log("复制数据1",this.waterFallItem.length)
-                console.log("复制数据",this.indexWaterFall)
-                console.log("复制数据",this.indexWaterFall.length)
 
-                return Object.assign(this.waterFallItem, this.indexWaterFall, this.items)
-            }
+            }),
+
+
         },
         watch:{
-            /*waterFallItem: function () {
-                console.log('waterFallItem 被indexWaterFall替换')
-                this.getIndexWaterFall()
-            },*/
             indexWaterFall: function () {
-                console.log('indexWaterFall 被修改')
+                console.log('注意注意注意 indexWaterFall 被修改lalalalallal')
             }
         },
         methods: {
-            addItems: function () {
-                if (!this.isBusy && this.items.length < 50) {
-                    let item = [
-                        {
-                            height: 100,
-                            width: 100,
-                            imgID: 20
-                        },
-                        {
-                            height: 0,
-                            width: 0,
-                            imgID: 20
-                        },
-                        {
-                            height: 109,
-                            width: 142,
-                            imgID: 20
-                        },
-                        {
-                            height: 100,
-                            width: 100,
-                            imgID: 20
-                        },
-                        {
-                            height: 0,
-                            width: 0,
-                            imgID: 20
-                        },
-                        {
-                            height: 109,
-                            width: 142,
-                            imgID: 20
-                        },
-                        {
-                            height: 100,
-                            width: 100,
-                            imgID: 20
-                        },
-                        {
-                            height: 0,
-                            width: 0,
-                            imgID: 20
-                        },
-                        {
-                            height: 109,
-                            width: 142,
-                            imgID: 20
-                        },
-                        {
-                            height: 100,
-                            width: 100,
-                            imgID: 20
-                        },
-                        {
-                            height: 0,
-                            width: 0,
-                            imgID: 20
-                        },
-                        {
-                            height: 109,
-                            width: 142,
-                            imgID: 20
-                        }
-                    ]
-                    this.isBusy = true
-                    this.items.push.apply(this.items, item)
-                }
-                console.log('isBusy', this.isBusy)
-            },
+            ...mapActions({
+                waterTest: myIndex.A_WATERFSLL_TEST,
+                waterFallAdd: myIndex.A_WATERFSLL_ADD,
+
+
+            }),
             shuffle: function () {
                 this.items.sort(function () {
                     return Math.random() - 0.5
@@ -563,37 +490,59 @@
             reflowed: function () {
                 this.isBusy = false
             },
-            bodyClick: function () {
-                let self = this
-                document.body.addEventListener('click', function () {
-                    self.shuffle()
-                    // app.$refs.waterfall.$emit('reflow') // manually trigger reflow action
-                }, false)
-            },
             bodyScroll: function () {
                 let self = this
                 window.addEventListener('scroll', function () {
-                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-                    if (scrollTop + window.innerHeight >= document.body.clientHeight) {
-                        console.log("请求图片数据，当前数据为",self.waterFallItem)
-//                        self.addItems()
-                    } else {
-                        console.log("不符合拉取新图片规则")
+                    if($('.vue-waterfall').length){
+                        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+                        if (scrollTop + window.innerHeight >= document.body.clientHeight) {
+                            self.waterFallAdd()
+                        } else {
+                            console.log("不符合拉取新图片规则")
+                        }
                     }
                 })
             },
+
             addLike: function (event) {
-                console.log('当前元素',$(event.target).closest('.j-like'))
                 let curLike = $(event.target).closest('.j-like')
                 if(curLike.hasClass('hearted')){
                     $(event.target).closest('.j-like').removeClass('hearted')
                 }else{
                     $(event.target).closest('.j-like').addClass('hearted')
                 }
-            }
+            },
+        },
+        beforeCreate(){
+            console.log("beforeCreate")
+        },
+        created(){
+            console.log("created")
+        },
+        beforeMount(){
+            console.log("beforeMount")
         },
         mounted() {
-//            this.bodyScroll()
+            this.bodyScroll()
+            console.log("mounted")
+        },
+        beforeUpdate(){
+            console.log("beforeUpdate")
+        },
+        updated(){
+            console.log("updated")
+        },
+        activated(){
+            console.log("activated")
+        },
+        deactivated(){
+            console.log("deactivated")
+        },
+        beforeDestroy(){
+            console.log("beforeDestroy")
+        },
+        destroyed(){
+            console.log("destroyed")
         },
         components: {
             swiper,

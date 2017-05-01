@@ -15,7 +15,6 @@ const actions = {
         return apiTools.post(api.login, payload, rsp => {
             console.log('用户登录成功', payload)
             commit(Type.M_LOGIN_ONLOAD, rsp)
-
         }, msg => {
             commit(Type.M_LOGIN_ERROR, msg)
             console.log('用户登录失败')
@@ -54,7 +53,12 @@ const actions = {
         }, msg => {
             console.log('获取验证码失败')
         })
-    }
+    },
+    // 上传背景图成功时，修改用户信息
+    [Type.A_USER_INFO_UPDATE]: ({commit, state, dispatch}, payload) => {
+        console.log('userInfoUpload',payload)
+        commit(Type.M_USER_INFO_UPDATE, payload)
+    },
 }
 
 export default actions

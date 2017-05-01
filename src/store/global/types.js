@@ -11,6 +11,8 @@ export const A_USER_REGISTER = 'global/as/user_register'
 export const A_REGISTER_SHOW = 'global/as/register_show'
 export const A_REGISTER_HIDE = 'global/as/register_hide'
 
+export const A_USER_INFO_UPDATE = 'global/as/user_info_update'
+
 export const M_LOGIN_LOADING = 'global/mu/login_loading'
 export const M_LOGIN_ONLOAD = 'global/mu/login_onload'
 export const M_LOGIN_SUBMITTING = 'global/mu/login_submitting'
@@ -29,3 +31,5 @@ export const M_REGISTER_HIDE = 'global/mu/register_hide'
 
 export const M_GET_CHECK_CODE = 'global/mu/get_check_code'
 export const M_GET_CHECK_CODE_ERROR = 'global/mu/get_check_code_error'
+
+export const M_USER_INFO_UPDATE = 'global/mu/user_info_update'

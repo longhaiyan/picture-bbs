@@ -30,7 +30,7 @@
 </template>
 <style>
     .name {
-        background: #42b983;
+        /*background: #42b983;*/
     }
 </style>
 

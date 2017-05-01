@@ -10,7 +10,37 @@
     </template>
     <el-button type="primary" @click="onBack">进入demo</el-button>
     <el-button type="primary">主要按钮</el-button>
-
+    <div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </div>
   </div>
 </template>
 

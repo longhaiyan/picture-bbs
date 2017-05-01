@@ -13,71 +13,56 @@
                 <el-menu-item index="2-3">选项3</el-menu-item>
             </el-submenu>
             <el-menu-item v-if="!localUserName" index="3">
-                <el-button type="text" @click="onLogin">登录</el-button><span>/</span>
+                <el-button type="text" @click="onLogin">登录</el-button>
+                <span>/</span>
                 <el-button type="text" @click="onRegister">注册</el-button>
             </el-menu-item>
-            <el-submenu index="4" class="userInfoBox" v-else>
-                    <template slot="title" style="" >
-                        <img src="http://bbs.chenxubiao.cn/img/userImg.jpeg" alt="" style="width: 40px;height: 40px;border-radius: 100%;">
+            <template v-else>
+                <el-submenu index="4" class="userInfoBox">
+                    <template slot="title" style="">
+                        <img src="http://bbs.chenxubiao.cn/img/userImg.jpeg" alt=""
+                             style="width: 40px;height: 40px;border-radius: 100%;">
                         <span>{{localUserName}}</span>
                     </template>
-                <el-menu-item index="4-1">选项1</el-menu-item>
-                <el-menu-item index="4-2">选项2</el-menu-item>
-                <el-menu-item index="4-3">选项3</el-menu-item>
-            </el-submenu>
+                    <el-menu-item index="4-1">
+                        <router-link to="/home/my_zoom">个人主页</router-link>
+                    </el-menu-item>
+                    <el-menu-item index="4-2">
+                        <router-link to="/">个人设置</router-link>
+                    </el-menu-item>
+                    <el-menu-item index="4-3">
+                        <router-link to="/">退出登录</router-link>
+                    </el-menu-item>
+                </el-submenu>
+                <el-menu-item index="5">
+                    <el-button type="">Upload</el-button>
+                </el-menu-item>
+            </template>
+
         </el-menu>
     </div>
 </template>
 <script>
-    import {mapActions, mapState} from 'vuex'
-    import store from '@/store'
-    import MyModal from  './my_modal.vue'
+    import { mapActions, mapState } from 'vuex'
     import * as GlobalType from '@/store/global/types'
+    import MyModal from  './my_modal.vue'
     export default {
         name: "header",
         data() {
             return {
                 activeIndex: '1',
                 localUserName: ''
-                /*loginForm: {
-                 userName: "",
-                 pwd: ""
-                 },
-                 loginData: {
-                 visible: false,
-                 size: 'tiny',
-                 confirmButtonText: '确认登录',
-                 title:'登录'
-                 },
-                 loginRules:{
-                 userName:{
-                 /!*required: true,
-                 message: '请输入用户名',
-                 trigger: 'blur'*!/
-                 required: true,
-                 validator: this.checkUserName,
-                 trigger: 'blur'
-                 },
-                 pwd:{
-                 required: true,
-                 message: '请输入密码',
-                 trigger: 'blur'
-                 /!*require: true,
-                 validator: this.checkPwd,
-                 trigger: 'blur'*!/
-                 }
-                 }*/
             };
         },
         computed: {
             ...mapState({
                 loginErrorMsg: state => state.myGlobal.loginErrorMsg,
-                userName: state => state.myGlobal.username,
+                userInfo: state => state.myGlobal.userInfo,
             })
         },
         watch: {
-            userName: function() {
-                console.log("出发 islogin",this.userName)
+            userInfo: function () {
+                console.log('suerInfo 被修改',this.userInfo)
                 this.isLogin()
             }
         },
@@ -121,13 +106,13 @@
                 this.$message.error(this.loginErrorMsg)
             },
             isLogin(){
-                console.log("chufa islogin",this.userName)
-                if (this.userName) {
-                    console.log("xiugai ")
-                    this.localUserName = this.userName
-
+                if (this.userInfo.userName) {
+                    this.localUserName = this.userInfo.userName
                 }
             }
+        },
+        mounted(){
+            console.log('userInfo',this.userInfo)
         },
         components: {
             MyModal

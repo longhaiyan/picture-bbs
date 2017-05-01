@@ -20,7 +20,7 @@ export default {
         console.log('payload', payload)
         Object.assign(state, {
             loginDialogStep: 'onload',
-            username: payload.data.userName
+            userInfo: payload.data
         })
         console.log('M_LOGIN_ONLOAD 要回显用户信息', state)
     },
@@ -60,7 +60,7 @@ export default {
         console.log('payload', payload)
         Object.assign(state, {
             registerDialogStep: 'onload',
-            username: payload.data.userName
+            userInfo: payload.data
         })
         console.log('M_REGISTER_ONLOAD 要回显用户信息', state)
     },
@@ -92,6 +92,11 @@ export default {
             code: payload.code
         })
         console.log('M_GET_CHECK_CODE checkCode', state.code)
+    },
+    [Type.M_USER_INFO_UPDATE]: (state, payload) => {
+        console.log('M_USER_INFO_UPDATE收到的信息', payload)
+        Object.assign(state, {userInfo:payload})
+        console.log('M_USER_INFO_UPDATE', state)
     }
 
 }
