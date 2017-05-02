@@ -459,20 +459,24 @@
                         imgID: 20
                     }*/
                 ],
-                isBusy: false
+                isBusy: false,
+                data:store.state
             }
         },
         computed: {
             ...mapState({
                 indexWaterFall: state => state.myIndex.indexWaterFall,
-
             }),
-
-
         },
         watch:{
-            indexWaterFall: function () {
-                console.log('注意注意注意 indexWaterFall 被修改lalalalallal')
+            'indexWaterFall':{
+                handler:(val,oldVal)=>{
+                    console.log('indexWaterFall 被修改')
+                    console.log('val',val)
+                    console.log('oldVal',oldVal)
+                },
+                // 深度观察
+                deep:true
             }
         },
         methods: {

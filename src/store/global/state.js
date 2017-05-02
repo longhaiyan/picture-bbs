@@ -5,10 +5,13 @@ export default {
     // 登录弹窗状态
     loginDialogStep: '', // onload, submitting, error
     registerDialogStep: '', // onload, submitting, error
+    uploadDialogStep: '', // onload, submitting, error
     // 登录错误信息
     loginErrorMsg: '',
+    uploadErrorMsg: '',
     loginDialogVisible: false,
     registerDialogVisible: false,
+    uploadDialogVisible: false,
     userInfo:{
         userId: '',
         avatarId: '',

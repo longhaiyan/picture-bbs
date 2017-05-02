@@ -8,6 +8,7 @@ const api = {
 
     },
     pro: {
+        'userInfoPlus':'/user/profile/add'
 
     }
 }

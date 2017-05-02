@@ -6,7 +6,8 @@ export default {
     [Type.M_LIST_RECEIVED]: (state,payload)=>{
         console.log("M_LIST_RECEIVEDlllll",payload)
         let arr = state.indexWaterFall.concat(payload.data)
-        Object.assign(state, {indexWaterFall:arr})
+        // Object.assign(state, {indexWaterFall:arr})
+        Object.assign(state.indexWaterFall,arr)
 
     }
 }

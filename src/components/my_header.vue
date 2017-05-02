@@ -2,7 +2,7 @@
     <div>
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">
-                <router-link to="/Hello/demo">demo页</router-link>
+                <el-button type="primary" @click="onUpload">Upload</el-button>
             </el-menu-item>
             <el-submenu index="2">
                 <template slot="title">
@@ -25,17 +25,17 @@
                         <span>{{localUserName}}</span>
                     </template>
                     <el-menu-item index="4-1">
-                        <router-link to="/home/my_zoom">个人主页</router-link>
+                        <router-link to="/home/my_zone">个人主页</router-link>
                     </el-menu-item>
                     <el-menu-item index="4-2">
-                        <router-link to="/">个人设置</router-link>
+                        <router-link to="/setting/user_setting">个人设置</router-link>
                     </el-menu-item>
                     <el-menu-item index="4-3">
                         <router-link to="/">退出登录</router-link>
                     </el-menu-item>
                 </el-submenu>
                 <el-menu-item index="5">
-                    <el-button type="">Upload</el-button>
+                    <el-button type="primary" @click="onUpload">Upload</el-button>
                 </el-menu-item>
             </template>
 
@@ -69,7 +69,8 @@
         methods: {
             ...mapActions({
                 loginShow: GlobalType.A_LOGIN_SHOW,
-                registerShow: GlobalType.A_REGISTER_SHOW
+                registerShow: GlobalType.A_REGISTER_SHOW,
+                uploadShow: GlobalType.A_UPLOAD_SHOW
             }),
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
@@ -80,6 +81,10 @@
             onRegister(){
                 console.log('header onRegister')
                 this.registerShow()
+            },
+            onUpload(){
+                console.log('header onRegister')
+                this.uploadShow()
             },
             // 打开modal，传入一些回调函数
             openModal(obj, ops) {

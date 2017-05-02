@@ -71,6 +71,26 @@ export default {
             loginErrorMsg: payload.message
         })
     },
+    // 图片上传弹窗状态
+    [Type.M_UPLOAD_SUBMITTING]: (state, payload) => {
+        Object.assign(state, {
+            uploadDialogStep: 'submitting'
+        })
+    },
+    [Type.M_UPLOAD_ONLOAD]: (state, payload) => {
+        console.log('payload', payload)
+        Object.assign(state, {
+            uploadDialogStep: 'onload',
+            // userInfo: payload.data
+        })
+    },
+    [Type.M_UPLOAD_ERROR]: (state, payload) => {
+        Object.assign(state, {
+            uploadDialogStep: 'error',
+            uploadErrorMsg: payload.message
+        })
+    },
+
     [Type.M_REGISTER_SHOW]: (state, payload) => {
         console.log('M_REGISTER_SHOW', payload)
         Object.assign(state, {
@@ -86,12 +106,33 @@ export default {
         })
         console.log('M_REGISTER_HIDE registerDialogVisible', state.loginDialogVisible)
     },
+    [Type.M_UPLOAD_SHOW]: (state, payload) => {
+        console.log('M_UPLOAD_SHOW', payload)
+        Object.assign(state, {
+            uploadDialogVisible: true
+        })
+        console.log('M_UPLOAD_SHOW registerDialogVisible', state.loginDialogVisible)
+    },
+    [Type.M_UPLOAD_HIDE]: (state, payload) => {
+        console.log('M_UPLOAD_HIDE', payload)
+        Object.assign(state, {
+            uploadDialogVisible: false,
+            uploadDialogStep: 'onload',
+        })
+        console.log('M_UPLOAD_HIDE registerDialogVisible', state.loginDialogVisible)
+    },
     [Type.M_GET_CHECK_CODE]: (state, payload) => {
         console.log('M_GET_CHECK_CODE')
         Object.assign(state, {
             code: payload.code
         })
         console.log('M_GET_CHECK_CODE checkCode', state.code)
+    },
+    [Type.M_USER_ZONEBG_UPDATE]: (state, payload) => {
+        console.log('M_USER_ZONEBG_UPDATE', payload)
+        // Object.assign(state, {userInfo:payload})
+        state.userInfo.backgroundId = payload.backgroundId
+        console.log('M_USER_INFO_UPDATE', state)
     },
     [Type.M_USER_INFO_UPDATE]: (state, payload) => {
         console.log('M_USER_INFO_UPDATE收到的信息', payload)

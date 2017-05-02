@@ -1,7 +1,8 @@
+
 <template>
     <div id="app">
 
-        <MyModal class="my-login-box" :data="loginData" :step="loginDialogStep" style="text-align: left">
+        <MyModal class="my-login-box" :data="loginData" :step="uploadDialogStep" style="text-align: left">
             <el-form :model="loginFormData" ref="loginForm" :rules="loginRules" label-width="100px">
                 <el-form-item label="用户名：" prop="userName">
                     <el-input
@@ -25,6 +26,51 @@
                     <el-button type="text" @click="toRegister">还没有账号，赶紧戳我去注册吧</el-button>
                 </el-form-item>
             </el-form>
+        </MyModal>
+        <MyModal class="my-upload-box" :data="uploadData" :step="loginDialogStep" style="text-align: left">
+            <el-row type="flex" justify="space-between">
+                <el-col :sm="6" >
+                    <el-upload
+                            class="avatar-uploader"
+                            action="http://bbs.chenxubiao.cn/picture/upload/project"
+                            name="uploadFile"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                    >
+                        <img v-if="uploadFormData.imageUrl" :src="uploadFormData.imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-col>
+                <el-col :sm="10" >
+                    <el-form :model="uploadFormData" ref="uploadForm" :rules="uploadRules" label-position="top">
+                        <el-form-item label="标题：" prop="picName">
+                            <el-input
+                                      placeholder="请输入图片名称"
+                                      v-model="uploadFormData.picName">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="分类：" prop="categoryId">
+                            <el-select v-model="uploadFormData.categoryId" >
+                                <el-option v-for="(value, key) in categoryMap" :label="value" key :value="key"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="标签：" prop="tagIds">
+                            <el-input
+                                      placeholder="请添加图片标签"
+                                      v-model="uploadFormData.tagIds">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="介绍：" prop="password">
+                            <el-input type="textarea"
+                                      placeholder="请输入介绍"
+                                      v-model="uploadFormData.description">
+                            </el-input>
+                        </el-form-item>
+
+                    </el-form>
+                </el-col>
+
+            </el-row>
         </MyModal>
         <MyModal class="my-login-box" :data="registerData" :step="registerDialogStep" style="text-align: left">
             <el-form :model="registerFormData" ref="registerForm" :rules="registerRules" label-width="100px">
@@ -110,7 +156,6 @@
 
                 },
                 loginData: {
-                    //                    visible: false,
                     size: 'tiny',
                     confirmButtonText: '确认登录',
                     title: '登录'
@@ -120,12 +165,21 @@
                     confirmButtonText: '确认注册',
                     title: '注册'
                 },
+                uploadData:{
+                    confirmButtonText: '发布图片',
+                    title: '上传图片',
+                    picId:'1',
+                    picName:'',
+                    categoryId:'3',
+                    tagIds:'',
+                    description:'',
+                    imageUrl:''
+
+
+
+                },
                 loginRules: {
                     userName: {
-                        /*required: true,
-                         message: '请输入用户名',
-                         trigger: 'blur'*/
-                        required: true,
                         validator: this.checkUserName,
                         trigger: 'blur'
                     },
@@ -133,9 +187,6 @@
                         required: true,
                         message: '请输入密码',
                         trigger: 'blur'
-                        /*require: true,
-                         validator: this.checkPwd,
-                         trigger: 'blur'*/
                     },
                     code: {
                         required: true,
@@ -168,6 +219,14 @@
                         message: '请输入验证码',
                         trigger: 'blur'
                     }
+                },
+                uploadRules: {
+                },
+                categoryMap: {
+                    '0': '动物',
+                    '1': '风景',
+                    '2': '人像',
+                    '3':'无'
                 }
 
             }
@@ -176,9 +235,11 @@
             ...mapState({
                 loginDialogStep: state => state.myGlobal.loginDialogStep,
                 registerDialogStep: state => state.myGlobal.registerDialogStep,
+                uploadDialogStep: state => state.myGlobal.uploadDialogStep,
                 loginErrorMsg: state => state.myGlobal.loginErrorMsg,
                 loginDialogVisible: state => state.myGlobal.loginDialogVisible,
                 registerDialogVisible: state => state.myGlobal.registerDialogVisible,
+                uploadDialogVisible: state => state.myGlobal.uploadDialogVisible,
                 code: state => state.myGlobal.code
             }),
             loginFormData(){
@@ -186,6 +247,9 @@
             },
             registerFormData(){
                 return Object.assign(this.registerData, {visible: this.registerDialogVisible})
+            },
+            uploadFormData(){
+                return Object.assign(this.uploadData, {visible: this.uploadDialogVisible})
             }
         },
         watch: {
@@ -200,13 +264,22 @@
                 if (this.registerDialogVisible) {
                     this.onRegister()
                 }
-            }
+            },
+            uploadDialogVisible: function() {
+                console.log('uploadDialogVisible 的值改变了', this.uploadDialogVisible)
+                if (this.uploadDialogVisible) {
+                    this.onUpload()
+                }
+            },
+
         },
         methods: {
             ...mapActions({
                 userLogin: GlobalType.A_USER_LOGIN,
                 userRegister: GlobalType.A_USER_REGISTER,
+                upload: GlobalType.A_UPLOAD_IMG,
                 loginHide: GlobalType.A_LOGIN_HIDE,
+                uploadHide: GlobalType.A_UPLOAD_HIDE,
                 registerHide: GlobalType.A_REGISTER_HIDE,
                 getCheckCode: GlobalType.A_GET_CHECK_CODE,
                 registerShow: GlobalType.A_REGISTER_SHOW
@@ -281,6 +354,49 @@
                 })
 
             },
+            onUpload(){
+                let self = this
+                //                this.getCheckCode()
+                this.openModal(this.uploadFormData, {
+                    beforeConfirm(next){
+                        console.log("beforeConfirm")
+                        self.$refs.uploadForm.validate(value => {
+                            /*if (value) {
+
+                            }*/
+                            if(self.uploadFormData.picId){
+                                self.upload({
+                                    picId:self.uploadFormData.picId,
+                                    title:self.uploadFormData.picName,
+                                    categoryId:self.uploadFormData.categoryId,
+                                    tagIds:self.uploadFormData.tagIds,
+                                    description:self.uploadFormData.description
+                                }).then(() => {
+                                    if (self.uploadDialogStep === 'error') {
+                                        self.showMessage()
+                                        return
+                                    } else {
+                                        self.$message({
+                                            type: 'success',
+                                            message: '发布分成'
+                                        })
+                                        return next()
+                                    }
+                                })
+                            }else{
+                                console.log("没有找到图片id")
+                            }
+
+                        })
+                    },
+                    beforeCancel(next) {
+                        self.uploadHide().then(() => {
+                            return next()
+                        })
+                    }
+                })
+
+            },
             // 打开modal，传入一些回调函数
             openModal(obj, ops) {
                 //                obj.visible = true
@@ -327,7 +443,18 @@
             },
             getkaptchaImg(event){
                 event.target.src = "http://bbs.chenxubiao.cn/kaptcha-image?v="+ new Date()
-            }
+            },
+            handleAvatarSuccess(res, file, fileList) {
+                console.log('res',res)
+                console.log('file',file)
+                console.log('fileList',fileList)
+                this.uploadFormData.imageUrl = 'http://bbs.chenxubiao.cn/picture/show?id='+res.vars.data.id
+                if(res.success){
+                    this.uploadFormData.picId = res.vars.data.id
+                }else{
+                    this.$message.error("上传失败")
+                }
+            },
         },
         mounted() {
             this.getScroll()

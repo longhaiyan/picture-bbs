@@ -8,10 +8,16 @@ export const A_LOGIN_HIDE = 'global/as/login_hide'
 export const A_GET_CHECK_CODE = 'global/as/get_check_code'
 
 export const A_USER_REGISTER = 'global/as/user_register'
+export const A_UPLOAD_IMG = 'global/as/upload_img'
+
 export const A_REGISTER_SHOW = 'global/as/register_show'
 export const A_REGISTER_HIDE = 'global/as/register_hide'
 
+export const A_UPLOAD_SHOW = 'global/as/upload_show'
+export const A_UPLOAD_HIDE = 'global/as/upload_hide'
+
 export const A_USER_INFO_UPDATE = 'global/as/user_info_update'
+export const A_USER_ZONEBG_UPDATE = 'global/as/user_zo_bg_update'
 
 export const M_LOGIN_LOADING = 'global/mu/login_loading'
 export const M_LOGIN_ONLOAD = 'global/mu/login_onload'
@@ -23,13 +29,21 @@ export const M_REGISTER_ONLOAD = 'global/mu/register_onload'
 export const M_REGISTER_SUBMITTING = 'global/mu/register_submitting'
 export const M_REGISTER_ERROR = 'global/mu/register_error'
 
+export const M_UPLOAD_ONLOAD = 'global/mu/upload_onload'
+export const M_UPLOAD_SUBMITTING = 'global/mu/upload_submitting'
+export const M_UPLOAD_ERROR = 'global/mu/upload_error'
+
 export const M_LOGIN_SHOW = 'global/mu/login_show'
 export const M_LOGIN_HIDE = 'global/mu/login_hide'
 
 export const M_REGISTER_SHOW = 'global/mu/register_show'
 export const M_REGISTER_HIDE = 'global/mu/register_hide'
 
+export const M_UPLOAD_SHOW = 'global/mu/upload_show'
+export const M_UPLOAD_HIDE = 'global/mu/upload_hide'
+
 export const M_GET_CHECK_CODE = 'global/mu/get_check_code'
 export const M_GET_CHECK_CODE_ERROR = 'global/mu/get_check_code_error'
 
 export const M_USER_INFO_UPDATE = 'global/mu/user_info_update'
+export const M_USER_ZONEBG_UPDATE = 'global/mu/user_zone_bg_update'

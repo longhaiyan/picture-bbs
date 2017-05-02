@@ -2,18 +2,12 @@
   "data": {
     "userId": 1,
     "avatarId": 0,
+    "backgroundId": 11,
     "userName": "bbs",
-    "cellphone": null,
+    "email": "bbs@bbs.cn",
+    "cellphone": "",
     "sex": 0,
-    "userStatus": 1,
-    "userRole": 0,
-    "email": "bbs@bbs.com",
-    "createTime": null,
-    "modifyTime": null,
-    "roleSet": null,
-    "login": true,
-    "locking": false,
-    "close": false,
-    "admin": false
+    "birthday": null,
+    "description": ""
   }
 }

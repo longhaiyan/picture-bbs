@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import test from './test'
 import myGlobal from './global'
 import myIndex from './my_index'
-import myZoom from './my_zoom'
+import myZone from './my_zone'
 import setting from './setting'
 
 Vue.use(Vuex)
@@ -16,7 +16,7 @@ const store = new Vuex.Store({
         test,
         myGlobal,
         myIndex,
-        myZoom,
+        myZone,
         setting
     }
 })

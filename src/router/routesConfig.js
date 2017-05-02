@@ -4,9 +4,11 @@
 import Hello from '@/components/Hello'
 import Index from '@/views/index/index'
 import MyHome from '@/views/home/my_home'
-import MyZoom from '@/views/home/my_zoom'
+import MyZoom from '@/views/home/my_zone'
 import MySettings from '@/views/setting/my_settings'
 import UserSetting from '@/views/setting/user_setting'
+import MyDiscover from '@/views/discover/my_discover'
+// import Popular from '@/views/discover/popular'
 import demo from '@/components/demoView/demo'
 import index from '@/views/index/index'
 import store from '@/store'
@@ -37,7 +39,7 @@ let routes = [
         component: MyHome,
         children: [
             {
-                path: 'my_zoom',
+                path: 'my_zone',
                 component: MyZoom,
             }
         ],
@@ -52,6 +54,17 @@ let routes = [
                 component: UserSetting,
             }
         ],
+    },
+    {
+        path: '/discover',
+        name: 'myDiscover',
+        component: MyDiscover,
+        /*children: [
+            {
+                path: 'popular',
+                component: Popular,
+            }
+        ],*/
     },
 ]
 
