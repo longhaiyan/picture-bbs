@@ -6,11 +6,11 @@
             </el-menu-item>
             <el-submenu index="2">
                 <template slot="title">
-                    <router-link to="/">index页</router-link>
+                    <router-link to="/discover/popular">Discover</router-link>
                 </template>
-                <el-menu-item index="2-1">选项1</el-menu-item>
-                <el-menu-item index="2-2">选项2</el-menu-item>
-                <el-menu-item index="2-3">选项3</el-menu-item>
+                <el-menu-item index="2-1"><router-link to="/discover/popular">分类一</router-link></el-menu-item>
+                <el-menu-item index="2-2">分类二</el-menu-item>
+                <el-menu-item index="2-3">分类三</el-menu-item>
             </el-submenu>
             <el-menu-item v-if="!localUserName" index="3">
                 <el-button type="text" @click="onLogin">登录</el-button>
@@ -30,7 +30,7 @@
                     <el-menu-item index="4-2">
                         <router-link to="/setting/user_setting">个人设置</router-link>
                     </el-menu-item>
-                    <el-menu-item index="4-3">
+                    <el-menu-item index="4-3" @click="onLoginOut">
                         <router-link to="/">退出登录</router-link>
                     </el-menu-item>
                 </el-submenu>
@@ -70,7 +70,9 @@
             ...mapActions({
                 loginShow: GlobalType.A_LOGIN_SHOW,
                 registerShow: GlobalType.A_REGISTER_SHOW,
-                uploadShow: GlobalType.A_UPLOAD_SHOW
+                uploadShow: GlobalType.A_UPLOAD_SHOW,
+                loginOut: GlobalType.A_USER_LOGIN_OUT,
+                autoLogin: GlobalType.A_USER_AUTO_LOGIN,
             }),
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
@@ -114,10 +116,28 @@
                 if (this.userInfo.userName) {
                     this.localUserName = this.userInfo.userName
                 }
+            },
+            onLoginOut(){
+                let self = this
+                this.loginOut().then(()=>{
+                    this.localUserName = ''
+                    self.$message({
+                        type: 'success',
+                        message: '注销成功'
+                    })
+                },()=>{
+                    self.$message({
+                        type: 'error',
+                        message: '注销失败'
+                    })
+                })
             }
         },
         mounted(){
             console.log('userInfo',this.userInfo)
+            if(window.initState.isLogin){
+                this.autoLogin()
+            }
         },
         components: {
             MyModal

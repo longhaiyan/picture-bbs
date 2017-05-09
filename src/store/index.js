@@ -8,6 +8,8 @@ import myGlobal from './global'
 import myIndex from './my_index'
 import myZone from './my_zone'
 import setting from './setting'
+import discover from './discover'
+import myWaterfallSlot from './my_waterfall_solt'
 
 Vue.use(Vuex)
 
@@ -17,7 +19,9 @@ const store = new Vuex.Store({
         myGlobal,
         myIndex,
         myZone,
-        setting
+        setting,
+        discover,
+        myWaterfallSlot
     }
 })
 

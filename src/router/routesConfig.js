@@ -8,7 +8,8 @@ import MyZoom from '@/views/home/my_zone'
 import MySettings from '@/views/setting/my_settings'
 import UserSetting from '@/views/setting/user_setting'
 import MyDiscover from '@/views/discover/my_discover'
-// import Popular from '@/views/discover/popular'
+import Popular from '@/views/discover/popular'
+import Intro from '@/views/intro/intro'
 import demo from '@/components/demoView/demo'
 import index from '@/views/index/index'
 import store from '@/store'
@@ -59,12 +60,17 @@ let routes = [
         path: '/discover',
         name: 'myDiscover',
         component: MyDiscover,
-        /*children: [
+        children: [
             {
                 path: 'popular',
                 component: Popular,
             }
-        ],*/
+        ],
+    },
+    {
+        path: '/intro',
+        name: 'intro',
+        component: Intro,
     },
 ]
 

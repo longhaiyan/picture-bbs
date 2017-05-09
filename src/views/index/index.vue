@@ -403,61 +403,6 @@
                         width: 100,
                         imgID: 1
                     }
-                    /*{
-                        height: 100,
-                        width: 100,
-                        imgID: 2
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 2
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 100,
-                        width: 100,
-                        imgID: 20
-                    },
-                    {
-                        height: 109,
-                        width: 142,
-                        imgID: 20
-                    }*/
                 ],
                 isBusy: false,
                 data:store.state
@@ -481,16 +426,11 @@
         },
         methods: {
             ...mapActions({
-                waterTest: myIndex.A_WATERFSLL_TEST,
+//                waterTest: myIndex.A_WATERFSLL_TEST,
                 waterFallAdd: myIndex.A_WATERFSLL_ADD,
 
 
             }),
-            shuffle: function () {
-                this.items.sort(function () {
-                    return Math.random() - 0.5
-                })
-            },
             reflowed: function () {
                 this.isBusy = false
             },

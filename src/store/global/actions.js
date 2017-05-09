@@ -80,6 +80,22 @@ const actions = {
         console.log('userInfoUpload',payload)
         commit(Type.M_USER_INFO_UPDATE, payload)
     },
+    [Type.A_USER_LOGIN_OUT]: ({commit, state, dispatch}, payload) => {
+        return apiTools.req(api.loginOut, payload, rsp => {
+            console.log("注销成功")
+        }, msg => {
+            console.log('注销失败',msg)
+        })
+    },
+    [Type.A_USER_AUTO_LOGIN]: ({commit, state, dispatch}, payload) => {
+        return apiTools.post(api.login, payload, rsp => {
+            console.log("自动登录成功")
+            commit(Type.M_LOGIN_ONLOAD, rsp)
+        }, msg => {
+            console.log('自动登录失败',msg)
+        })
+    },
+
 }
 
 export default actions

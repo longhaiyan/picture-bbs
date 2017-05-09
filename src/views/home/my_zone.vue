@@ -43,10 +43,8 @@
             <div class="user_info">
                 <h3 class="name">{{userInfo.userName}}</h3>
                 <p class="info">
-                    <span>0 Affection</span>
-                    <span>13 Photo Views</span>
-                    <span>0 Followers</span>
-                    <span>1 Following</span>
+                    <span v-if="userInfo.followers > -1">{{userInfo.followers}} Followers</span>
+                    <span v-if="userInfo.following > -1">{{userInfo.following}} Followers</span>
                 </p>
             </div>
         </div>

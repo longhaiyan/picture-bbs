@@ -1,7 +1,9 @@
 <template>
     <div class="my-discover">
-        <div>
-            <!--这是个人中心的公共部分-->
+        <div class="my-discover_header">
+            <router-link to="/discover/popular">分类一</router-link>
+            <router-link to="/">分类二</router-link>
+            <router-link to="/">分类三</router-link>
         </div>
         <router-view></router-view>
     </div>

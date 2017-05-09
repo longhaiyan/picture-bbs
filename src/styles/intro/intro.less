@@ -1,0 +1,266 @@
+.my-intro {
+  margin-top: 60px;
+  background-color: #fff;
+  .photo-box {
+    //height: 500px;
+    position: relative;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #eeeff2;
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in;
+
+    img {
+      display: inline;
+      margin-top: 0;
+      width: auto;
+      height: auto;
+      position: relative;
+      max-height: 100%;
+      max-width: 100%;
+    }
+    .prv-box, .next-box {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      left: 0;
+      top: 0;
+      width: 200px;
+      cursor: pointer;
+      //background-color: palegoldenrod;
+      i {
+        font-size: 40px;
+        opacity: 0;
+      }
+      &:hover {
+        i {
+          opacity: 1;
+        }
+      }
+    }
+    .next-box {
+      left: auto;
+      right: 0;
+    }
+  }
+  .user-info {
+    //height: 900px;
+    .attribution_region {
+      text-align: left;
+      padding: 20px;
+      border-bottom: solid 1px #eeeff2;
+      display: flex;
+      align-items: center;
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        margin-right: 13px;
+      }
+      .name {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.4em;
+        display: inline-block;
+        color: #525558;
+        -webkit-transition: color 0.2s;
+        -moz-transition: color 0.2s;
+        transition: color 0.2s;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .fellow {
+        display: inline-block;
+        padding: 0px 11px;
+        font-size: 13px;
+        text-align: center;
+        border: 1px solid #0099e5;
+        color: #0099e5;
+        border-radius: 4px;
+        height: 25px;
+        line-height: 25px;
+        cursor: pointer;
+      }
+      .like-button {
+        vertical-align: top;
+        display: inline-block;
+        line-height: 0px;
+        .new_fav {
+          width: 100%;
+          text-align: left;
+          position: relative;
+          min-width: 40px;
+          background-color: #ff4c4c;
+          border-color: #ff3333;
+          text-shadow: none;
+          cursor: pointer;
+          display: inline-block;
+          padding: 0 10px;
+          height: 27px;
+          line-height: 27px;
+          border-radius: 4px;
+          color: #fff;
+          text-decoration: none;
+          .icon {
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 10px;
+            margin: auto;
+            overflow: hidden;
+            .shape {
+              fill: transparent;
+              stroke: #fff;
+              stroke-width: 3px;
+              stroke-dasharray: 150;
+              stroke-linejoin: round;
+              -webkit-transition: all 0.2s ease-out;
+              -moz-transition: all 0.2s ease-out;
+              transition: all 0.2s ease-out;
+            }
+          }
+        }
+      }
+    }
+    .description_region {
+      border-bottom: 1px solid #eeeff2;
+      padding: 20px;
+    }
+
+  }
+  .show-photo {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 900px;
+    background-color: #000000;
+    z-index: 100;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .el-icon-close {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 25px;
+      z-index: 1;
+      color: #fff;
+    }
+    img {
+      display: inline;
+      margin-top: 0;
+      width: auto;
+      height: auto;
+      position: relative;
+      max-height: 100%;
+      max-width: 100%;
+      margin-right: 10px;
+    }
+    .prv-box, .next-box {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      left: 0;
+      top: 0;
+      width: 200px;
+      cursor: pointer;
+      //background-color: palegoldenrod;
+      i {
+        font-size: 40px;
+        opacity: 0.4;
+        color: #ffffff;
+      }
+      &:hover {
+        i {
+          opacity: 1;
+        }
+      }
+    }
+    .next-box {
+      left: auto;
+      right: 0;
+    }
+    .user-info {
+      position: absolute;
+      bottom: 0;
+      left: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 60px;
+      }
+      p {
+        font-size: 18px;
+        color: #fff;
+      }
+      .like-button {
+        display: inline-block;
+        vertical-align: middle;
+        .button {
+          width: 40px;
+          height: 40px;
+          background-color: transparent !important;
+          border: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          min-width: 0;
+          padding: 0;
+          vertical-align: middle;
+          line-height: 0;
+          position: relative;
+          text-align: center;
+          border-color: #ff3333;
+          text-shadow: none;
+          cursor: pointer;
+          display: inline-block;
+          -webkit-border-radius: 3px;
+          border-radius: 3px;
+          font-weight: bold;
+          color: #fff;
+          text-decoration: none;
+          -webkit-transition: background-color 0.1s ease-in-out;
+          -moz-transition: background-color 0.1s ease-in-out;
+          transition: background-color 0.1s ease-in-out;
+        }
+        .icon {
+          width: 24px;
+          height: 24px;
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          margin: auto;
+          .shape{
+            fill: transparent;
+            stroke: #fff;
+            stroke-width: 3px;
+            stroke-dasharray: 150;
+            stroke-linejoin: round;
+            -webkit-transition: all 0.2s ease-out;
+            -moz-transition: all 0.2s ease-out;
+            transition: all 0.2s ease-out;
+          }
+        }
+        .hearted path{
+          fill: #ffffff !important;
+        }
+      }
+    }
+  }
+
+}

@@ -29,7 +29,7 @@ const actions = {
     [Type.A_WATERFSLL_GET]: ({commit, state, dispatch}, payload) =>{
 
     },
-    [Type.A_WATERFSLL_TEST]: ({commit, state, dispatch}, payload) =>{
+    /*[Type.A_WATERFSLL_TEST]: ({commit, state, dispatch}, payload) =>{
         let items = [{
             height: 200,
             width: 200
@@ -38,12 +38,12 @@ const actions = {
             commit(Type.M_LIST_RECEIVED,rsp)
             console.log("rsp",rsp)
         })
-    },
+    },*/
     [Type.A_WATERFSLL_ADD]: ({commit,state,dispatch}, payload) => {
         console.log("拉取新的新图片A_WATERFSLL_ADD")
         return apiTools.req(api.waterfall_add,payload,rsp =>{
             console.log("拉取新的新图片",rsp)
-            commit(Type.M_LIST_RECEIVED,rsp)
+            commit(Type.M_LIST_ADD_RECEIVED,rsp)
         })
         /*return apiTools.req(api.waterfall,payload,rsp =>{
             commit(Type.M_LIST_RECEIVED,rsp)

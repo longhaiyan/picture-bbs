@@ -476,6 +476,7 @@
         color: #2c3e50;
         /*background: #abcabc;*/
         /*height: 100%;*/
+        position: relative;
     }
 
     .my-login-box .el-dialog {

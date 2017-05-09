@@ -2,12 +2,22 @@
   "data": {
     "userId": 1,
     "avatarId": 0,
-    "backgroundId": 11,
-    "userName": "bbs",
-    "email": "bbs@bbs.cn",
-    "cellphone": "",
+    "backgroundId": 14,
+    "userName": "long",
+    "email": "long@bbs.cn",
+    "cellphone": null,
     "sex": 0,
     "birthday": null,
-    "description": ""
+    "description": null,
+    "followers": 0,
+    "following": 0,
+    "project": [
+      {
+        "projectId": 1,
+        "userId": 1,
+        "like": 0,
+        "picId": 3
+      }
+    ]
   }
 }
