@@ -41,8 +41,9 @@ const actions = {
     // 上传图片弹窗
     [Type.A_UPLOAD_IMG]: ({commit, state, dispatch}, payload) => {
         commit(Type.M_UPLOAD_SUBMITTING)
+
+        console.log('图片发布 payload',payload)
         return apiTools.post(api.imgUpload, payload, rsp => {
-            console.log('A_UPLOAD_IMG payload',payload)
             console.log('A_UPLOAD_IMG',rsp)
             commit(Type.M_UPLOAD_ONLOAD, rsp)
         }, msg => {
@@ -88,7 +89,7 @@ const actions = {
         })
     },
     [Type.A_USER_AUTO_LOGIN]: ({commit, state, dispatch}, payload) => {
-        return apiTools.post(api.login, payload, rsp => {
+        return apiTools.req(api.autoLogin, payload, rsp => {
             console.log("自动登录成功")
             commit(Type.M_LOGIN_ONLOAD, rsp)
         }, msg => {

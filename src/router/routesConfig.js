@@ -40,7 +40,7 @@ let routes = [
         component: MyHome,
         children: [
             {
-                path: 'my_zone',
+                path: 'zone',
                 component: MyZoom,
             }
         ],

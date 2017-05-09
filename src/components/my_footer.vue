@@ -1,6 +1,6 @@
 <template>
     <div class="my-footer">
-        Copyright © 2017 图片社区 <br/>All Rights Reserved By chengxubiao
+        Copyright © 2017 图片社区 <br/>All Rights Reserved By chenxubiao
     </div>
 </template>
 <script>

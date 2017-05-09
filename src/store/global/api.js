@@ -8,19 +8,21 @@ const api = {
         'login': '/data?name=userInfo',
         'register': '/data?name=userInfo',
         'error': '/data?name=error',
-        'getCode': 'data?name=get_check_code',
-        'imgUpload':'data?name=null',
-        'loginOut':'data?name=mirror',
-        'autoLogin':'data?name=userInfo',
+        'getCode': '/data?name=get_check_code',
+        'imgUpload':'/data?name=null',
+        'loginOut':'/data?name=mirror',
+        'autoLogin':'/data?name=userInfo',
 
 
 
     },
     pro: {
-        'login': '/user/home/data',
+        'login': '/user/login/data',
         'register': '/user/register/data',
         'imgUpload':'/project/publish/data',
-        'loginOut': '/user/logout/data'
+        'loginOut': '/user/logout/data',
+        'autoLogin': '/user/home/data',
+
     }
 }
 export default api[env]

@@ -1,7 +1,6 @@
 
 <template>
     <div id="app">
-
         <MyModal class="my-login-box" :data="loginData" :step="uploadDialogStep" style="text-align: left">
             <el-form :model="loginFormData" ref="loginForm" :rules="loginRules" label-width="100px">
                 <el-form-item label="用户名：" prop="userName">
@@ -55,10 +54,21 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="标签：" prop="tagIds">
-                            <el-input
-                                      placeholder="请添加图片标签"
-                                      v-model="uploadFormData.tagIds">
-                            </el-input>
+                            <el-select
+                                    v-model="uploadFormData.tagIds"
+                                    multiple
+                                    filterable
+                                    allow-create
+                                    placeholder="请选择图片标签"
+                                    @change="onSelectChange"
+                            >
+                                <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="介绍：" prop="password">
                             <el-input type="textarea"
@@ -171,7 +181,7 @@
                     picId:'1',
                     picName:'',
                     categoryId:'3',
-                    tagIds:'',
+                    tagIds:[],
                     description:'',
                     imageUrl:''
 
@@ -227,7 +237,17 @@
                     '1': '风景',
                     '2': '人像',
                     '3':'无'
-                }
+                },
+                options: [{
+                    value: '1',
+                    label: 'HTML'
+                }, {
+                    value: '2',
+                    label: 'CSS'
+                }, {
+                    value: '3',
+                    label: 'JavaScript'
+                }],
 
             }
         },
@@ -254,19 +274,16 @@
         },
         watch: {
             loginDialogVisible: function() {
-                console.log('loginDialogVisible 的值改变了', this.loginDialogVisible)
                 if (this.loginDialogVisible) {
                     this.onLogin()
                 }
             },
             registerDialogVisible: function() {
-                console.log('registerDialogVisible 的值改变了', this.registerDialogVisible)
                 if (this.registerDialogVisible) {
                     this.onRegister()
                 }
             },
             uploadDialogVisible: function() {
-                console.log('uploadDialogVisible 的值改变了', this.uploadDialogVisible)
                 if (this.uploadDialogVisible) {
                     this.onUpload()
                 }
@@ -357,6 +374,7 @@
             onUpload(){
                 let self = this
                 //                this.getCheckCode()
+
                 this.openModal(this.uploadFormData, {
                     beforeConfirm(next){
                         console.log("beforeConfirm")
@@ -365,11 +383,20 @@
 
                             }*/
                             if(self.uploadFormData.picId){
+                                console.log('self.uploadFormData',self.uploadFormData);
+                                let rlt = {}
+                                for (let key in self.uploadFormData) {
+                                    let tval
+                                    if (/tagIds/.test(key)) {
+                                        tval = self.uploadFormData[key].join(',')
+                                    }
+                                    rlt[key] = tval
+                                }
                                 self.upload({
                                     picId:self.uploadFormData.picId,
                                     title:self.uploadFormData.picName,
-                                    categoryId:self.uploadFormData.categoryId,
-                                    tagIds:self.uploadFormData.tagIds,
+                                    categoryId:parseInt(self.uploadFormData.categoryId),
+                                    tagIds:rlt.tagIds,
                                     description:self.uploadFormData.description
                                 }).then(() => {
                                     if (self.uploadDialogStep === 'error') {
@@ -455,6 +482,9 @@
                     this.$message.error("上传失败")
                 }
             },
+            onSelectChange:function () {
+                console.log('测试')
+            }
         },
         mounted() {
             this.getScroll()

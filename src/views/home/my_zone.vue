@@ -26,7 +26,7 @@
 <template>
     <div class="my-zone">
         <div class="zone-header">
-            <div class="cover_photo" v-if="userInfo.backgroundId" v-bind:style="{backgroundImage: 'url(http://bbs.chenxubiao.cn/picture/show?id=' + userInfo.backgroundId + ')'}"></div>
+            <div class="cover_photo" v-if="homeInfo.backgroundId" v-bind:style="{backgroundImage: 'url(http://bbs.chenxubiao.cn/picture/show?id=' + homeInfo.backgroundId + ')'}"></div>
             <div v-else class="cover_photo"></div>
             <div class="user_avatar">
                 <div class="wrapper">
@@ -41,12 +41,74 @@
                 <el-button type="primary" @click="onUploadBg">上传背景图</el-button>
             </div>
             <div class="user_info">
-                <h3 class="name">{{userInfo.userName}}</h3>
+                <h3 class="name">{{homeInfo.userName}}</h3>
                 <p class="info">
-                    <span v-if="userInfo.followers > -1">{{userInfo.followers}} Followers</span>
-                    <span v-if="userInfo.following > -1">{{userInfo.following}} Followers</span>
+                    <span v-if="homeInfo.views > -1">{{homeInfo.views}} 热度</span>
+                    <span v-if="homeInfo.likes > -1">{{homeInfo.likes}} 喜欢</span>
+                    <span v-if="homeInfo.followers > -1">{{homeInfo.followers}} 粉丝</span>
+                    <span v-if="homeInfo.following > -1">{{homeInfo.following}} 关注</span>
                 </p>
             </div>
+        </div>
+        <div class="zone-show">
+            <waterfall
+                    :align="align"
+                    :line-gap="200"
+                    :min-line-gap="100"
+                    :max-line-gap="220"
+                    :single-max-width="300"
+                    :watch="homeInfo.project"
+                    ref="waterfall"
+            >
+                <!-- each component is wrapped by a waterfall slot -->
+                <waterfall-slot
+                        v-for="(item, index) in homeInfo.project"
+                        :width="item.width"
+                        :height="item.height"
+                        :order="index"
+                        :key="index"
+                        move-class="item-move"
+
+                >
+                    <!--<myWaterFallSlot :index="index" :item="item"></myWaterFallSlot>-->
+                    <div class="item photo_thumbnail"
+                             :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id=' + item.picId"
+                             :index="index">
+                        <!--<div class="item photo_thumbnail"
+                             :style="'background-image:url(http://bbs.chenxubiao.cn/img/test1.jpg?id=' + item.picId"
+                             :index="index">-->
+                            <div class="info ">
+                                <div class="credits ">
+                                    <div class="photo_info_wrap">
+                                        <a class="photographer">{{item.title}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="right">
+                                    <div class="like-button" @click="addLike">
+                                        <div>
+                                            <!--<a class="button new_fav only_icon hearted">--><!--激活状态-->
+                                            <a class="button new_fav only_icon j-like">
+                                                <span class="value"></span>
+                                                <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px"
+                                                     y="0px">
+                                                    <path class="shape" d="M20.7-7.2c-5.8,0-7.6,4.3-7.6,4.3l0,0c0,0-1.8-4.3-7.6-4.3s-8.4,3.7-8.4,8.1c0,2.2,1.8,5.2,3.6,7.3
+        C2.5,10.3,13.1,20.6,13.1,21l0,0c0-0.4,10.6-10.7,12.4-12.7c1.8-2,3.6-5,3.6-7.3C29.1-3.4,26.4-7.2,20.7-7.2z"
+                                                          fill="#FFFFFF"></path>
+                                                </svg>
+
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="add_to_gallery_button button only_icon"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                </waterfall-slot>
+            </waterfall>
         </div>
         <MyModal class="" :data="bgUploadData" >
             <el-form :model="bgUploadFormData" ref="bgUploadForm">
@@ -70,9 +132,9 @@
     import {mapActions, mapState} from 'vuex'
     import * as ZoneTypes from '@/store/my_zone/types'
     import * as GlobalType from '@/store/global/types'
-
-
-
+    import Waterfall from 'vue-waterfall/lib/waterfall'
+    import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
+    import myWaterFallSlot from '@/components/my_waterfall_slot'
     export default{
         name: 'MyZone',
         data(){
@@ -94,7 +156,10 @@
 
                 },
                 imageUrl: '',
-                uploadErrorMsg:'上传失败'
+                uploadErrorMsg:'上传失败',
+                align: 'center',
+                userId: this.$route.query.userId || '',
+                isMyHome:true
 
             }
         },
@@ -102,18 +167,21 @@
             ...mapState({
                 bgUploadStep:state => state.myZone.bgUploadStep,
 //                bgId:state => state.myZone.bgId,
+                homeInfo: state => state.myZone.homeInfo,
                 userInfo: state => state.myGlobal.userInfo,
             })
         },
         watch:{
-            userInfo: function () {
-                console.log("userInfo 变为",this.userInfo)
+            homeInfo: function () {
+                console.log("homeInfo 变为",this.homeInfo)
             }
         },
         methods:{
             ...mapActions({
                 bgUpload:ZoneTypes.A_BG_UPLOAD,
-                userInfoUpload:GlobalType.A_USER_INFO_UPDATE
+                dataRequest:ZoneTypes.A_DATA_REQUEST,
+                userInfoUpload:GlobalType.A_USER_INFO_UPDATE,
+
             }),
             onUploadBg: function () {
                 let self = this
@@ -177,10 +245,39 @@
             showMessage() {
                 this.$message.error(this.uploadErrorMsg)
             },
+            addLike: function (event) {
+                let self = this
+                let curLike = $(event.target).closest('.j-like')
+                this.updateLike({picId: self.picId}).then(()=>{
+                    if (curLike.hasClass('hearted')) {
+                        $(event.target).closest('.j-like').removeClass('hearted')
+                    } else {
+                        $(event.target).closest('.j-like').addClass('hearted')
+                    }
+                })
+
+            },
 
         },
+        mounted(){
+            if(this.userId){
+                this.isMyHome = this.userId == this.userInfo.userId
+            }
+            console.log("lalal",this.userId == this.userInfo.userId)
+            console.log("lalal",this.userId)
+            console.log("lalal",this.userInfo.userId)
+            console.log('this.isMyHome',this.isMyHome)
+            if(this.isMyHome){
+                this.dataRequest()
+            }else{
+                this.dataRequest({userId:this.userId})
+            }
+        },
         components: {
-            MyModal
+            MyModal,
+            Waterfall,
+            WaterfallSlot,
+            myWaterFallSlot
         }
     }
 </script>

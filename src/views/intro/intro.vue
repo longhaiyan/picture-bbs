@@ -7,10 +7,10 @@
                 <!--<img src="http://bbs.chenxubiao.cn/img/test.png"
                      alt="">-->
                 <div class="prv-box" :style="{height:clientHeight-60+'px'}">
-                    <i class="el-icon-d-arrow-left"></i>
+                    <i class="el-icon-arrow-left"></i>
                 </div>
                 <div class="next-box" :style="{height:clientHeight-60+'px'}">
-                    <i class="el-icon-d-arrow-right"></i>
+                    <i class="el-icon-arrow-right"></i>
                 </div>
 
             </el-col>
@@ -20,7 +20,7 @@
                     <div>
                         <p class="name">chenxb</p>
                         <div>
-                            <div class="fellow">Fellow</div>
+                            <div class="fellow">Follow</div>
                             <div class="like-button">
                                 <a class="new_fav">
                                     <span class="value">16</span>
@@ -51,21 +51,21 @@
                 </div>
             </el-col>
         </el-row>
-        <div class="show-photo j-show-photo hide" :style="{height:clientHeight+'px'}">
-            <i class="el-icon-close"></i>
+        <div class="show-photo j-show-photo " :style="{height:clientHeight+'px'}">
+            <i class="el-icon-close j-icon-close" @click="closeShow"></i>
             <img :src="'http://bbs.chenxubiao.cn/picture/show?id=' + picId" alt="">
             <div class="prv-box" :style="{height:clientHeight+'px'}">
-                <i class="el-icon-d-arrow-left"></i>
+                <i class="el-icon-arrow-left"></i>
             </div>
             <div class="next-box" :style="{height:clientHeight+'px'}">
-                <i class="el-icon-d-arrow-right"></i>
+                <i class="el-icon-arrow-right"></i>
             </div>
             <div class="user-info">
                 <img :src="'http://bbs.chenxubiao.cn/picture/show?id=' + picId" alt="">
                 <p>chenxb</p>
-                <div class="like-button">
+                <div class="like-button" @click="addLike">
                     <div>
-                        <a class="button hearted">
+                        <a class="button hearted j-like">
                             <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px" y="0px">
                                 <path class="shape" d="M20.7-7.2c-5.8,0-7.6,4.3-7.6,4.3l0,0c0,0-1.8-4.3-7.6-4.3s-8.4,3.7-8.4,8.1c0,2.2,1.8,5.2,3.6,7.3
 	C2.5,10.3,13.1,20.6,13.1,21l0,0c0-0.4,10.6-10.7,12.4-12.7c1.8-2,3.6-5,3.6-7.3C29.1-3.4,26.4-7.2,20.7-7.2z"
@@ -82,6 +82,8 @@
     </div>
 </template>
 <script>
+    import {mapActions, mapState} from 'vuex'
+    import * as myWaterfallSlotType from '@/store/my_waterfall_solt/types'
     export default{
         name: 'intro',
         data(){
@@ -91,10 +93,27 @@
             }
         },
         methods:{
+            ...mapActions({
+                updateLike: myWaterfallSlotType.A_UPDATE_LIKE,
+            }),
             bigPhoto: function  () {
-                console.log("lifsjf")
-                $('.j-show-photo').show()
-            }
+                $('.j-show-photo').addClass('show-photo-active')
+            },
+            closeShow: function () {
+                $('.j-show-photo').removeClass('show-photo-active')
+            },
+            addLike: function (event) {
+                let self = this
+                let curLike = $(event.target).closest('.j-like')
+                this.updateLike({picId: self.picId}).then(()=>{
+                    if (curLike.hasClass('hearted')) {
+                        $(event.target).closest('.j-like').removeClass('hearted')
+                    } else {
+                        $(event.target).closest('.j-like').addClass('hearted')
+                    }
+                })
+
+            },
         },
         mounted(){
             this.clientHeight = window.innerHeight

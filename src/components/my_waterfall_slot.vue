@@ -3,10 +3,10 @@
          :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id=' + item.picId"
          :index="index">
         <div class="info ">
-            <div class="credits ">
-                <a class="avatar" href="/jonathan-giovannini"
+            <div class="credits " @click="goZone">
+                <span class="avatar"
                    :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id=' + item.userId"
-                ></a>
+                ></span>
                 <div class="photo_info_wrap">
                     <a class="photographer">{{item.userName}}</a>
                 </div>
@@ -63,6 +63,7 @@
                 updateLike: myWaterfallSlotType.A_UPDATE_LIKE,
             }),
             addLike: function (event) {
+                event.stopPropagation()
                 let self = this
                 let curLike = $(event.target).closest('.j-like')
                 this.updateLike({picId: self.item.picId}).then(()=>{
@@ -73,6 +74,17 @@
                     }
                 })
 
+            },
+            goZone:function () {
+                console.log("goZone")
+                event.stopPropagation()
+                let self = this
+                this.GM_routerPush({
+                    path: '/home/zone',
+                    query: {
+                        userId: self.item.userId
+                    }
+                })
             },
             onIntro: function () {
                 console.log("click")
@@ -86,7 +98,7 @@
             },
         },
         mounted(){
-            console.log("lalalal", this.item)
+            console.log("my_waterfall_slot mounted")
         },
         components: {
             WaterfallSlot

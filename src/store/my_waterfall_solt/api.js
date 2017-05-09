@@ -7,7 +7,7 @@ const api = {
 
     },
     pro: {
-        'like': '/project/like/update/data',
+        'like': '/project/like/update',
     }
 }
 export default api[env]

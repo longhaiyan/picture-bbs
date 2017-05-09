@@ -21,5 +21,19 @@ export default {
             isRedirect: true
         })
         console.log('M_LIST_ERROR', payload)
-    }
+    },
+    [Type.M_INFO_RECEIVE]: (state, payload) => {
+
+        console.log("M_INFO_RECEIVE payload",payload)
+        Object.assign(state, {
+            homeInfo:payload.data
+        })
+        console.log("M_INFO_RECEIVE state",state)
+    },
+    [Type.M_INFO_ERROR]: (state, payload) => {
+        Object.assign(state, {
+
+        })
+    },
+
 }

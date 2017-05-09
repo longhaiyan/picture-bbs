@@ -12,6 +12,11 @@
                 <el-menu-item index="2-2">分类二</el-menu-item>
                 <el-menu-item index="2-3">分类三</el-menu-item>
             </el-submenu>
+            <el-menu-item index="6">
+                <el-button type="text" @click="onLogin">登录</el-button>
+                <span>/</span>
+                <el-button type="text" @click="onRegister">注册</el-button>
+            </el-menu-item>
             <el-menu-item v-if="!localUserName" index="3">
                 <el-button type="text" @click="onLogin">登录</el-button>
                 <span>/</span>
@@ -25,7 +30,7 @@
                         <span>{{localUserName}}</span>
                     </template>
                     <el-menu-item index="4-1">
-                        <router-link to="/home/my_zone">个人主页</router-link>
+                        <router-link to="/home/zone">个人主页</router-link>
                     </el-menu-item>
                     <el-menu-item index="4-2">
                         <router-link to="/setting/user_setting">个人设置</router-link>

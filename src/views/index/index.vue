@@ -322,44 +322,7 @@
                             move-class="item-move"
 
                     >
-                        <!--<div class="item photo_thumbnail"
-                             :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id=' + item.picId"
-                             :index="index"> -->
-                        <div class="item photo_thumbnail"
-                             :style="'background-image:url(http://bbs.chenxubiao.cn/img/test1.jpg?id=' + item.picId"
-                             :index="index">
-                            <div class="info ">
-                                <div class="credits ">
-                                    <a class="avatar" href="/jonathan-giovannini"
-                                       style="background-image:url(http://bbs.chenxubiao.cn/img/user.jpeg)"></a>
-                                    <div class="photo_info_wrap">
-                                        <a class="photographer">chenxubiao</a>
-                                    </div>
-                                </div>
-
-                                <div class="right">
-                                    <div class="like-button" @click="addLike">
-                                        <div>
-                                            <!--<a class="button new_fav only_icon hearted">--><!--激活状态-->
-                                            <a class="button new_fav only_icon j-like">
-                                                <span class="value"></span>
-                                                <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px"
-                                                     y="0px">
-                                                    <path class="shape" d="M20.7-7.2c-5.8,0-7.6,4.3-7.6,4.3l0,0c0,0-1.8-4.3-7.6-4.3s-8.4,3.7-8.4,8.1c0,2.2,1.8,5.2,3.6,7.3
-        C2.5,10.3,13.1,20.6,13.1,21l0,0c0-0.4,10.6-10.7,12.4-12.7c1.8-2,3.6-5,3.6-7.3C29.1-3.4,26.4-7.2,20.7-7.2z"
-                                                          fill="#FFFFFF"></path>
-                                                </svg>
-
-                                            </a>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="add_to_gallery_button button only_icon"></div>
-
-                                </div>
-                            </div>
-                        </div>
+                        <myWaterFallSlot :index="index" :item="item"></myWaterFallSlot>
                     </waterfall-slot>
             </waterfall>
         </section>
@@ -372,6 +335,8 @@
     import store from '@/store'
     import Waterfall from 'vue-waterfall/lib/waterfall'
     import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
+    import myWaterFallSlot from '@/components/my_waterfall_slot'
+    import * as myWaterfallSlotType from '@/store/my_waterfall_solt/types'
     import * as myIndex from '@/store/my_index/types'
     export default {
         name: 'index',
@@ -447,15 +412,6 @@
                     }
                 })
             },
-
-            addLike: function (event) {
-                let curLike = $(event.target).closest('.j-like')
-                if(curLike.hasClass('hearted')){
-                    $(event.target).closest('.j-like').removeClass('hearted')
-                }else{
-                    $(event.target).closest('.j-like').addClass('hearted')
-                }
-            },
         },
         beforeCreate(){
             console.log("beforeCreate")
@@ -492,7 +448,8 @@
             swiper,
             swiperSlide,
             Waterfall,
-            WaterfallSlot
+            WaterfallSlot,
+            myWaterFallSlot
         }
     }
 </script>
