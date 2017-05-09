@@ -7,7 +7,7 @@ const actions = {
         // dispatch(Type.A_DATA_REQUEST,payload)
     },
     [Type.A_DATA_REQUEST]: ({commit, state, dispatch}, payload) => {
-        return apiTools.post(api.userInfo, payload, rsp => {
+        return apiTools.req(api.userInfo, payload, rsp => {
             console.log("获取用户数据成功")
             commit(Type.M_INFO_RECEIVE,rsp)
         }, msg => {
