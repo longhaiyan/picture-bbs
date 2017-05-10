@@ -238,7 +238,7 @@
         height: 20px;
         width: 20px;
         position: absolute;
-        top: 4px;
+        top: 6px;
         left: 1px;
         bottom: 0;
         right: 0;
@@ -304,10 +304,10 @@
             </div>
             <waterfall
                     :align="align"
-                    :line-gap="200"
+                    :line-gap="400"
                     :min-line-gap="100"
                     :max-line-gap="220"
-                    :single-max-width="300"
+                    :single-max-width="600"
                     :watch="indexWaterFall"
                     @reflowed="reflowed"
                     ref="waterfall"

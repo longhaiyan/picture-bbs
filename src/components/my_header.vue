@@ -136,7 +136,18 @@
                         message: '注销失败'
                     })
                 })
-            }
+            },
+            /*toZone(){
+                console.log("toZone")
+                let self = this
+                this.GM_routerPush({
+                    path: '/home/zone',
+                    query: {
+                        isHome:true,
+                        userId: self.userInfo.userId
+                    }
+                })
+            }*/
         },
         mounted(){
             console.log('userInfo',this.userInfo)

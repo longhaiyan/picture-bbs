@@ -75,7 +75,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .fellow {
+      .fellow,.following {
         display: inline-block;
         padding: 0px 11px;
         font-size: 13px;
@@ -86,6 +86,12 @@
         height: 25px;
         line-height: 25px;
         cursor: pointer;
+      }
+      .following{
+        border-color: #34bf49;
+        background-color: #34bf49;
+        color: #fff;
+
       }
       .like-button {
         vertical-align: top;
@@ -126,6 +132,12 @@
               -moz-transition: all 0.2s ease-out;
               transition: all 0.2s ease-out;
             }
+          }
+        }
+        .hearted{
+          background-color: pink;
+          .icon .shape{
+            fill: #fff;
           }
         }
       }

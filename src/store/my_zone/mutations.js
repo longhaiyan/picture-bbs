@@ -35,5 +35,27 @@ export default {
 
         })
     },
+    [Type.M_FOLLOW_RECEIVE]: (state, payload) => {
+        if(payload.type == 1){
+            Object.assign(state, {
+                following:payload.data
+            })
+        }else{
+            Object.assign(state, {
+                follows:payload.data
+            })
+        }
+        console.log("M_FOLLOW_RECEIVE state",state)
+    },
+    [Type.M_FOLLOWING_DONE]: (state, payload) => {
+        Object.assign(state, {
+            updateFollowingStep: 'success'
+        })
+    },
+    [Type.M_FOLLOWING_ERROR]: (state, payload) => {
+        Object.assign(state, {
+            updateFollowingStep: 'error'
+        })
+    },
 
 }

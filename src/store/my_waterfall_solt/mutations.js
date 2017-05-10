@@ -9,7 +9,7 @@ export default {
   },
   [Type.M_LIST_RECEIVED]: (state, payload) => {
     console.log('M_LIST_RECEIVED',payload)
-    Object.assign(state, payload, {
+    Object.assign(state, {
       itemsStep: 'onload'
     })
     console.log('M_LIST_RECEIVED',state)

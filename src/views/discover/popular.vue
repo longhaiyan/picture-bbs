@@ -2,10 +2,10 @@
     <div class="my-popular">
         <waterfall
                 :align="align"
-                :line-gap="200"
+                :line-gap="400"
                 :min-line-gap="100"
                 :max-line-gap="220"
-                :single-max-width="300"
+                :single-max-width="600"
                 :watch="popularWaterFall"
                 @reflowed="reflowed"
                 ref="waterfall"

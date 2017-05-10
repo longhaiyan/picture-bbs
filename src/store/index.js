@@ -10,6 +10,8 @@ import myZone from './my_zone'
 import setting from './setting'
 import discover from './discover'
 import myWaterfallSlot from './my_waterfall_solt'
+import optionMap from './option_map'
+import intro from './intro'
 
 Vue.use(Vuex)
 
@@ -21,7 +23,9 @@ const store = new Vuex.Store({
         myZone,
         setting,
         discover,
-        myWaterfallSlot
+        myWaterfallSlot,
+        optionMap,
+        intro
     }
 })
 

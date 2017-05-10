@@ -53,10 +53,10 @@
         <div class="zone-show">
             <waterfall
                     :align="align"
-                    :line-gap="200"
+                    :line-gap="400"
                     :min-line-gap="100"
                     :max-line-gap="220"
-                    :single-max-width="300"
+                    :single-max-width="600"
                     :watch="homeInfo.project"
                     ref="waterfall"
             >
@@ -71,7 +71,7 @@
 
                 >
                     <!--<myWaterFallSlot :index="index" :item="item"></myWaterFallSlot>-->
-                    <div class="item photo_thumbnail"
+                    <div @click="onIntro(item.picId)" class="item photo_thumbnail"
                              :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id=' + item.picId"
                              :index="index">
                         <!--<div class="item photo_thumbnail"
@@ -135,6 +135,7 @@
     import Waterfall from 'vue-waterfall/lib/waterfall'
     import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
     import myWaterFallSlot from '@/components/my_waterfall_slot'
+    import * as myWaterfallSlotType from '@/store/my_waterfall_solt/types'
     export default{
         name: 'MyZone',
         data(){
@@ -159,7 +160,7 @@
                 uploadErrorMsg:'上传失败',
                 align: 'center',
                 userId: this.$route.query.userId || '',
-                isMyHome:true
+//                isMyHome:true
 
             }
         },
@@ -173,7 +174,10 @@
         },
         watch:{
             homeInfo: function () {
-                console.log("homeInfo 变为",this.homeInfo)
+//                console.log("homeInfo 变为",this.homeInfo)
+            },
+            userInfo: function () {
+//                console.log("userInfo 改变",this.userInfo)
             }
         },
         methods:{
@@ -181,6 +185,7 @@
                 bgUpload:ZoneTypes.A_BG_UPLOAD,
                 dataRequest:ZoneTypes.A_DATA_REQUEST,
                 userInfoUpload:GlobalType.A_USER_INFO_UPDATE,
+                updateLike: myWaterfallSlotType.A_UPDATE_LIKE,
 
             }),
             onUploadBg: function () {
@@ -257,22 +262,56 @@
                 })
 
             },
+            onIntro: function (picId) {
+                console.log("click")
+                this.GM_routerPush({
+                    path: '/intro',
+                    query: {
+                        picId: picId
+                    }
+                })
+            },
 
         },
-        mounted(){
-            if(this.userId){
-                this.isMyHome = this.userId == this.userInfo.userId
-            }
-            console.log("lalal",this.userId == this.userInfo.userId)
-            console.log("lalal",this.userId)
-            console.log("lalal",this.userInfo.userId)
-            console.log('this.isMyHome',this.isMyHome)
-            if(this.isMyHome){
-                this.dataRequest()
-            }else{
-                this.dataRequest({userId:this.userId})
-            }
+        /*beforeCreate(){
+            console.log("beforeCreate")
+            console.log('router id',this.$route.query.userId)
         },
+        created(){
+            console.log("created")
+            console.log('router id',this.$route.query.userId)
+        },
+        beforeMount(){
+            console.log("beforeMount")
+            console.log('router id',this.$route.query.userId)
+        },*/
+        mounted() {
+            this.dataRequest({userId:this.userId})
+        },
+        /*beforeUpdate(){
+            console.log("beforeUpdate")
+            console.log('router id',this.$route.query.userId)
+        },
+        updated(){
+            console.log("updated")
+            console.log('router id',this.$route.query.userId)
+        },
+        activated(){
+            console.log("activated")
+            console.log('router id',this.$route.query.userId)
+        },
+        deactivated(){
+            console.log("deactivated")
+            console.log('router id',this.$route.query.userId)
+        },
+        beforeDestroy(){
+            console.log("beforeDestroy")
+            console.log('router id',this.$route.query.userId)
+        },
+        destroyed(){
+            console.log("destroyed")
+            console.log('router id',this.$route.query.userId)
+        },*/
         components: {
             MyModal,
             Waterfall,

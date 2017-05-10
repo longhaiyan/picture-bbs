@@ -2,5 +2,8 @@ export default {
     // bgId:'6',
     bgUploadStep:'', //   sending、success、error
     errorMessage: '',
-    homeInfo:{}
+    homeInfo:{},
+    follows:{},
+    following:{},
+    updateFollowingStep: ''
 }

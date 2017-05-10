@@ -19,7 +19,7 @@
                     <el-input style="width: 120px;"
                               v-model="loginFormData.code">
                     </el-input>
-                    <img src="http://bbs.chenxubiao.cn/kaptcha-image" style="width: 120px;height: 40px;vertical-align: middle;" alt="">
+                    <img @click="getkaptchaImg" src="http://bbs.chenxubiao.cn/kaptcha-image" style="width: 120px;height: 40px;vertical-align: middle;" alt="">
                 </el-form-item>
                 <el-form-item>
                     <el-button type="text" @click="toRegister">还没有账号，赶紧戳我去注册吧</el-button>
@@ -50,7 +50,7 @@
                         </el-form-item>
                         <el-form-item label="分类：" prop="categoryId">
                             <el-select v-model="uploadFormData.categoryId" >
-                                <el-option v-for="(value, key) in categoryMap" :label="value" key :value="key"></el-option>
+                                <el-option v-for="item in categories" :label="item.name" key :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="标签：" prop="tagIds">
@@ -63,10 +63,10 @@
                                     @change="onSelectChange"
                             >
                                 <el-option
-                                        v-for="item in options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
+                                        v-for="item in tags"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -178,9 +178,9 @@
                 uploadData:{
                     confirmButtonText: '发布图片',
                     title: '上传图片',
-                    picId:'1',
+                    picId:1,
                     picName:'',
-                    categoryId:'3',
+                    categoryId:1,
                     tagIds:[],
                     description:'',
                     imageUrl:''
@@ -260,7 +260,9 @@
                 loginDialogVisible: state => state.myGlobal.loginDialogVisible,
                 registerDialogVisible: state => state.myGlobal.registerDialogVisible,
                 uploadDialogVisible: state => state.myGlobal.uploadDialogVisible,
-                code: state => state.myGlobal.code
+                code: state => state.myGlobal.code,
+                categories: state => state.optionMap.categories,
+                tags: state => state.optionMap.tags,
             }),
             loginFormData(){
                 return Object.assign(this.loginData, {visible: this.loginDialogVisible})
@@ -288,6 +290,12 @@
                     this.onUpload()
                 }
             },
+            categories: function () {
+                console.log('categories',this.categories)
+            },
+            tags:function () {
+                console.log('tags',this.tags)
+            }
 
         },
         methods: {
@@ -488,6 +496,8 @@
         },
         mounted() {
             this.getScroll()
+            console.log('categories',this.categories)
+            console.log('tags',this.tags)
         },
         components: {
             MyHeader,

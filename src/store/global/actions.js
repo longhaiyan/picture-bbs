@@ -6,6 +6,7 @@
 import * as Type from './types'
 import api from './api'
 import * as apiTools from '../../utils/api'
+import * as optionMapType from '@/store/option_map/types'
 
 const actions = {
     // 登录弹窗
@@ -59,7 +60,12 @@ const actions = {
         commit(Type.M_REGISTER_HIDE)
     },
     [Type.A_UPLOAD_SHOW]: ({commit, state, dispatch}, payload) => {
-        commit(Type.M_UPLOAD_SHOW)
+        dispatch(optionMapType.A_CATEGORY_MAP).then(()=>{
+            dispatch(optionMapType.A_TAG_MAP).then(()=>{
+                commit(Type.M_UPLOAD_SHOW)
+            })
+        })
+
     },
     [Type.A_UPLOAD_HIDE]: ({commit, state, dispatch}, payload) => {
         commit(Type.M_UPLOAD_HIDE)
