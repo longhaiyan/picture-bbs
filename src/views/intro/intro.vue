@@ -17,22 +17,25 @@
             <el-col :sm="6" class="user-info">
                 <div class="attribution_region">
                     <router-link :to="{path: '/home/zone', query: {userId: projectInfo.userId}}">
-                        <img :src="'http://bbs.chenxubiao.cn/picture/show?id=' + projectInfo.avatarId" alt="">
+                        <img v-if="!projectInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
+                        <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id=' + projectInfo.avatarId" alt="">
                     </router-link>
                     <div>
                         <router-link :to="{path: '/home/zone', query: {userId: projectInfo.userId}}">
                             <p class="name">{{projectInfo.userName}}</p>
                         </router-link>
                         <div>
-                            <el-tooltip v-if="projectInfo.isFollow" effect="dark" content="已经关注" placement="bottom">
-                                <div  class="following" @click="onFollow">Following</div>
-                            </el-tooltip>
-                            <el-tooltip v-else effect="dark" content="点击关注" placement="bottom">
-                                <div class="fellow" @click="onFollow">Follow</div>
-                            </el-tooltip>
+                            <template v-if="!projectInfo.isSelf">
+                                <el-tooltip v-if="projectInfo.isFollow" effect="dark" content="已经关注" placement="bottom">
+                                    <div  class="following" @click="onFollow">Following</div>
+                                </el-tooltip>
+                                <el-tooltip v-else effect="dark" content="点击关注" placement="bottom">
+                                    <div class="fellow" @click="onFollow">Follow</div>
+                                </el-tooltip>
+                            </template>
 
                             <div class="like-button" @click="addIntroLike">
-                                <a class="new_fav j-like" :class="{ 'new_fav-active': projectInfo.liked }">
+                                <a class="new_fav j-like" :class="{ 'hearted': projectInfo.liked }">
                                     <span class="value">{{projectInfo.likeNum}}</span>
                                     <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px" y="0px">
                                         <path class="shape" d="M20.7-7.2c-5.8,0-7.6,4.3-7.6,4.3l0,0c0,0-1.8-4.3-7.6-4.3s-8.4,3.7-8.4,8.1c0,2.2,1.8,5.2,3.6,7.3
@@ -71,9 +74,10 @@
                 <i class="el-icon-arrow-right"></i>
             </div>
             <div class="user-info">
-                <img :src="'http://bbs.chenxubiao.cn/picture/show?id=' + picId" alt="">
+                <img v-if="!projectInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
+                <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id=' + projectInfo.avatarId" alt="">
                 <p>{{projectInfo.userName}}</p>
-                <div class="like-button" @click="addLike">
+                <!--<div class="like-button" @click="addLike">
                     <div>
                         <a class="button j-like">
                             <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px" y="0px">
@@ -83,7 +87,7 @@
                             </svg>
                         </a>
                     </div>
-                </div>
+                </div>-->
 
 
             </div>
@@ -123,6 +127,7 @@
                 $('.j-show-photo').removeClass('show-photo-active')
             },
             addLike: function (event) {
+                event.stopPropagation()
                 let self = this
                 let curLike = $(event.target).closest('.j-like')
                 this.updateLike({picId: self.picId}).then(()=>{

@@ -25,8 +25,12 @@
             <template v-else>
                 <el-submenu index="4" class="userInfoBox">
                     <template slot="title" style="">
-                        <img src="http://bbs.chenxubiao.cn/img/userImg.jpeg" alt=""
+
+                        <img v-if="!userInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt=""
                              style="width: 40px;height: 40px;border-radius: 100%;">
+                        <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfo.avatarId" alt=""
+                             style="width: 40px;height: 40px;border-radius: 100%;">
+
                         <span>{{localUserName}}</span>
                     </template>
                     <el-menu-item index="4-1">

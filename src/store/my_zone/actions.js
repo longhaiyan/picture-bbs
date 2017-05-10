@@ -18,7 +18,8 @@ const actions = {
     },
     [Type.A_GET_FOLLOW]: ({commit, state, dispatch}, payload) => {
         return apiTools.req(api.fellow, payload, rsp => {
-            commit(Type.M_FOLLOW_RECEIVE,rsp)
+            Object.assign(rsp,{type:payload.type})
+            commit(Type.M_FOLLOW_RECEIVE,rsp,)
         }, msg => {
             console.log("获取follow数据失败",msg)
         })

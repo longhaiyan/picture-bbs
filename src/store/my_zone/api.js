@@ -4,7 +4,7 @@ const api = {
     dev: {
         'upload': '/data?name=uploadFile',
         'userInfo': '/data?name=home_data',
-        'fellow':'/data?name=mirror',
+        'fellow':'/data?name=follow_info',
         'updateFollow':'/data?name=mirror',
 
     },

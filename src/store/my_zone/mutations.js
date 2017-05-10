@@ -36,6 +36,7 @@ export default {
         })
     },
     [Type.M_FOLLOW_RECEIVE]: (state, payload) => {
+        console.log("M_FOLLOW_RECEIVE payload",payload)
         if(payload.type == 1){
             Object.assign(state, {
                 following:payload.data

@@ -3,7 +3,7 @@ export default {
     bgUploadStep:'', //   sending、success、error
     errorMessage: '',
     homeInfo:{},
-    follows:{},
-    following:{},
+    follows:[],
+    following:[],
     updateFollowingStep: ''
 }

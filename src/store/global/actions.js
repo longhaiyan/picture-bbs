@@ -88,7 +88,7 @@ const actions = {
         commit(Type.M_USER_INFO_UPDATE, payload)
     },
     [Type.A_USER_LOGIN_OUT]: ({commit, state, dispatch}, payload) => {
-        return apiTools.req(api.loginOut, payload, rsp => {
+        return apiTools.post(api.loginOut, payload, rsp => {
             console.log("注销成功")
         }, msg => {
             console.log('注销失败',msg)
