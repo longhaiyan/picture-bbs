@@ -71,7 +71,7 @@
         },
         watch: {
             userInfo: function () {
-                console.log('suerInfo 被修改',this.userInfo)
+                console.log('userInfo 被修改',this.userInfo)
                 this.isLogin()
             }
         },

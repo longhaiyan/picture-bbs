@@ -34,9 +34,9 @@
             <div v-else class="cover_photo"></div>
             <div class="user_avatar">
                 <div class="wrapper">
-                    <img class="avatar_img"
-                         src="http://bbs.chenxubiao.cn/img/userpic.png"
-                         title="">
+                    <img class="avatar_img" v-if="!userInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt=""
+                         >
+                    <img class="avatar_img" v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfo.avatarId" alt="">
                 </div>
             </div>
             <div class="profile_buttons">

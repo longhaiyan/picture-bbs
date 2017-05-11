@@ -8,7 +8,7 @@ const api = {
 
     },
     pro: {
-        'userInfoPlus':'/user/profile/add'
+        'userInfoPlus':'/user/profile/update'
 
     }
 }

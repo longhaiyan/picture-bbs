@@ -21,7 +21,8 @@ export default {
         cellphone: '',
         sex: '0',
         birthday: null,
-        description: ''
+        description: '',
+        categoryIds:[],
     },
     // 验证码
     code: ''

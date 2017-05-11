@@ -5,23 +5,31 @@
 
             <el-col :sm="15">
                 <h3>个人信息</h3>
-                <el-form :model="localData" ref="localData" label-width="100px">
+                <el-form :model="localData" ref="localData" label-width="120px">
                     <div class="form-body">
                         <el-form-item label="用户名：" prop="userName">
                             <el-input v-model="localData.userName" placeholder="请输入用户名"></el-input>
                         </el-form-item>
                         <el-form-item label="性别：" prop="sex">
-                            <el-select v-model="localData.sex" >
-                                <el-option v-for="(value, key) in sexMap" :label="value" key :value="key"></el-option>
+                            <el-select v-model="localData.sex">
+                                <el-option v-for="(value, key, index) in sexMap" :label="value" key
+                                           :value=index></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="出生日期：" prop="birthday">
-                            <el-date-picker type="date" placeholder="请选择出生日期" v-model="localData.birthday" style="width: 100%;"></el-date-picker>
+                            <el-date-picker type="date" default-value="localData.birthday"
+                                            v-model="localData.birthday" style="width: 100%;"></el-date-picker>
                         </el-form-item>
-                        <el-form-item label="个人介绍：" prop="description">
+                        <el-form-item label="个人介绍：">
                             <el-input v-model="localData.description" placeholder="请输入个人介绍"></el-input>
                         </el-form-item>
+                        <el-form-item label="我喜欢的分类：" prop="hobby">
+                            <el-select v-model="localData.hobby" multiple placeholder="请选择">
+                                <el-option v-for="item in categories" :label="item.name" key
+                                           :value="item.id"></el-option>
+                            </el-select>
 
+                        </el-form-item>
                         <el-form-item label="相机：" prop="cameraNames">
                             <el-input v-model="localData.cameraNames" placeholder="请输入相机名称，并用「，」隔开"></el-input>
                         </el-form-item>
@@ -37,22 +45,26 @@
 
                 </el-form>
             </el-col>
-            <el-col :sm="5" >
+            <el-col :sm="5">
                 <h3>头像</h3>
                 <el-upload
                         class="avatar-uploader"
                         action="http://bbs.chenxubiao.cn/picture/upload/profile"
                         name="uploadFile"
                         :show-file-list="false"
+                        :on-progress="handleAvatarProgress"
                         :on-success="handleAvatarSuccess"
                 >
-                    <img v-if="localData.imageUrl" :src="localData.imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <img style="width:200px;height: 200px;display: block;" v-if="!localData.avatarId" class="avatar"
+                         src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
+                    <img v-else style="width:200px;height: 200px;display: block;"
+                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+localData.avatarId" alt="">
                 </el-upload>
+                <span>点击图片，更换头像</span>
             </el-col>
         </el-row>
         <div class="form-footer" style="text-align: center">
-            <StateButton btnText="保存内容" :formStep="formStep"   @click="onSubmit('localData')"></StateButton>
+            <StateButton btnText="保存内容" @click="onSubmit('localData')"></StateButton>
             <el-button size="small" @click="">取消</el-button>
         </div>
 
@@ -65,10 +77,10 @@
     import * as UserSettingType from '@/store/setting/types'
     import StateButton from '@/components/stateButton.vue'
     export default{
-        name:'userSettings',
+        name: 'userSettings',
         data(){
             return {
-                userInfoData:{
+                userInfoData: {
                     userId: '',
                     avatarId: '',
                     backgroundId: '',
@@ -77,10 +89,13 @@
                     cellphone: '',
                     sex: '',
                     birthday: '',
-                    description: '',
-                    cameraNames:'',
-                    errorMessage:'无',
-                    imageUrl:''
+                    description:'',
+                    desc: '',
+                    cameraNames: '',
+                    errorMessage: '无',
+                    imageUrl: '',
+                    categoryIds: [],
+                    hobby: []
                 },
                 sexMap: {
                     '0': '未知',
@@ -88,19 +103,17 @@
                     '2': '女'
                 },
                 /*cameraMap:{
-                    '0': '尼康',
-                    '1': '佳能'
-                },
-                lensMpa:{
-                    '0': '这个真不知道',
-                    '1': '别怪我'
-                },
-                toolMsp:{
-                    '0': '三角架',
-                    '1': '剩下的不知道了'
-                }*/
-
-
+                 '0': '尼康',
+                 '1': '佳能'
+                 },
+                 lensMpa:{
+                 '0': '这个真不知道',
+                 '1': '别怪我'
+                 },
+                 toolMsp:{
+                 '0': '三角架',
+                 '1': '剩下的不知道了'
+                 }*/
 
             }
         },
@@ -108,66 +121,95 @@
             ...mapState({
                 userInfo: state => state.myGlobal.userInfo,
                 formStep: state => state.setting.formStep,
+                categories: state => state.optionMap.categories,
             }),
             localData() {
-                Object.assign(this.userInfoData, this.userInfo)
+                Object.assign(this.userInfoData, this.userInfo.userProfile)
+                console.log('fdsfafdsaf', this.userInfoData)
                 return this.userInfoData
             }
 
         },
-        methods:{
+        methods: {
             ...mapActions({
                 formSubmit: UserSettingType.A_FORM_SUBMIT,
-//                userInfoUpload:GlobalType.A_USER_INFO_UPDATE
+                autoLogin: GlobalType.A_USER_AUTO_LOGIN,
+                //                userInfoUpload:GlobalType.A_USER_INFO_UPDATE
             }),
             onSubmit: function () {
-                let self=this
+                let self = this
+                let rlt = {}
+                console.log('self.localData', self.localData)
+                for (let key in self.localData) {
+                    let tval
+                    if (/hobby/.test(key)) {
+                        tval = self.localData[key].join(',')
+                    }
+                    rlt[key] = tval
+                }
+                console.log('rlt', rlt)
 
                 this.formSubmit({
-                    userName:self.localData.userName,
-                    sex:self.localData.sex,
-                    birthday:self.localData.birthday,
-                    description:self.localData.description,
-                    cameraNames:self.localData.cameraNames,
-                    lensNames:self.localData.lensNames,
-                    toolNames:self.localData.toolNames,
-                    avatarId:"244",
-                }).then((rsp)=>{
-                    if(self.formStep === 'submitted'){
-//                        这个数据覆盖做的有点问题，后面再查查
+                    userName: self.localData.userName,
+                    sex: parseInt(self.localData.sex),
+                    birthday: (typeof self.localData.birthday) !== 'string' ? self.localData.birthday : self.convertDateFromString(self.userInfo.userProfile.birthday),
+                    description: self.localData.description,
+                    cameraNames: self.localData.cameraNames,
+                    lensNames: self.localData.lensNames,
+                    toolNames: self.localData.toolNames,
+                    avatarId: self.localData.avatarId,
+                    categoryIds: rlt.hobby
+                }).then((rsp) => {
+                    if (self.formStep === 'submitted') {
+                        //                        这个数据覆盖做的有点问题，后面再查查
                         /*self.userInfoUpload({
-                            userName:self.localData.userName,
-                            sex:self.localData.sex,
-                            birthday:self.localData.birthday,
-                            description:self.localData.description,
-                            cameraNames:self.localData.cameraNames,
-                            lensNames:self.localData.lensNames,
-                            toolNames:self.localData.toolNames,
-                            avatarId:"244",
-                        })*/
+                         userName:self.localData.userName,
+                         sex:self.localData.sex,
+                         birthday:self.localData.birthday,
+                         description:self.localData.description,
+                         cameraNames:self.localData.cameraNames,
+                         lensNames:self.localData.lensNames,
+                         toolNames:self.localData.toolNames,
+                         avatarId:"244",
+                         })*/
+                        self.autoLogin()
                         self.$message({
                             type: 'success',
                             message: '提交成功'
                         })
-                    }else{
+                    } else {
                         self.$message.error('提交失败')
                     }
                 })
             },
-            handleAvatarSuccess:function (res, file, fileList) {
-                console.log('res',res)
-                console.log('file',file)
-                console.log('fileList',fileList)
-                this.localData.imageUrl = 'http://bbs.chenxubiao.cn/picture/show?id='+res.vars.data.id
-                console.log('this.localData.imageUrl',this.localData.imageUrl)
-                if(res.success){
+            handleAvatarSuccess: function (res, file, fileList) {
+                console.log('res', res)
+                console.log('file', file)
+                console.log('fileList', fileList)
+                this.localData.imageUrl = 'http://bbs.chenxubiao.cn/picture/show?id=' + res.vars.data.id
+                console.log('this.localData.imageUrl', this.localData.imageUrl)
+                if (res.success) {
                     this.localData.avatarId = res.vars.data.id
-                }else{
+                } else {
                     this.$message.error("上传失败")
                 }
+            },
+            handleAvatarProgress: function (event, file, fileList) {
+                console.log('event', event)
+                console.log('file', file)
+                console.log('fileList', fileList)
+            },
+            convertDateFromString: function (dateString) {
+                if (dateString) {
+                    let arr1 = dateString.split(" ");
+                    let sdate = arr1[0].split('-');
+                    let date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+                    return date;
+                }
             }
+
         },
-        components:{
+        components: {
             StateButton
         }
     }

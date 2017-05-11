@@ -1,10 +1,15 @@
 import * as Type from './types'
 import api from './api'
 import * as apiTools from '../../utils/api'
+import * as optionMapType from '@/store/option_map/types'
+
 
 const actions = {
     [Type.A_START_MAIN]: ({commit, state, dispatch}, payload) => {
         // dispatch(Type.A_LIST_REQUEST,payload)
+        dispatch(optionMapType.A_CATEGORY_MAP).then(()=>{
+            console.log("A_CATEGORY_MAP")
+        })
     },
 
     [Type.A_LIST_REQUEST]: ({commit, state, dispatch}, payload) => {
@@ -21,8 +26,9 @@ const actions = {
     },
     [Type.A_FORM_SUBMIT]: ({commit, state, dispatch}, payload) => {
         commit(Type.M_FORM_SUBMITTING)
+        console.log('用户信息完善成功 payload', payload)
         return apiTools.post(api.userInfoPlus, payload, rsp => {
-            console.log('成功', rsp)
+            console.log('用户信息完善成功', rsp)
             commit(Type.M_FORM_DONE, rsp)
         }, msg => {
             console.log('失败', msg)

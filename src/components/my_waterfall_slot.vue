@@ -4,8 +4,11 @@
          :index="index">
         <div class="info ">
             <div class="credits " @click="goZone">
-                <span class="avatar"
-                   :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id=' + item.userId"
+                <span v-if="!item.avatarId" class="avatar"
+                   :style="'background-image:url(http://bbs.chenxubiao.cn/img/userpic.png)'"
+                ></span>
+                <span v-else class="avatar"
+                   :style="'background-image:url(http://bbs.chenxubiao.cn/picture/show?id='+item.avatarId"
                 ></span>
                 <div class="photo_info_wrap">
                     <a class="photographer">{{item.userName}}</a>
