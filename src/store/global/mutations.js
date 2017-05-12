@@ -138,6 +138,31 @@ export default {
         console.log('M_USER_INFO_UPDATE收到的信息', payload)
         Object.assign(state, {userInfo:payload})
         console.log('M_USER_INFO_UPDATE', state)
-    }
+    },
+    [Type.M_MESSAGE_RECEIVE]: (state, payload) => {
+        console.log('M_MESSAGE_RECEIVE收到的信息', payload)
+        Object.assign(state, {
+            messages:payload.data.messages,
+            msgCount:payload.data.msgCount,
+        })
+        console.log('M_MESSAGE_RECEIVE', state)
+    },
+    [Type.M_MESSAGE_UPDATE]: (state, payload) => {
+        console.log('M_MESSAGE_UPDATE 消息已读', payload)
+        Object.assign(state, {
+            msgCount:'',
+        })
+        console.log('M_MESSAGE_UPDATE 消息已读', state)
+
+    },
+    [Type.M_LIVE_OPEN]: (state, payload) => {
+        console.log('M_LIVE_OPEN 已经开启心跳检测')
+        Object.assign(state, {
+            isLive:true
+        })
+        console.log('M_LIVE_OPEN', state)
+    },
+
+
 
 }

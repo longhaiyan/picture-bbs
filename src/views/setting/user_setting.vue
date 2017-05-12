@@ -55,10 +55,14 @@
                         :on-progress="handleAvatarProgress"
                         :on-success="handleAvatarSuccess"
                 >
-                    <img style="width:200px;height: 200px;display: block;" v-if="!localData.avatarId" class="avatar"
+                    <img style="width:200px;height: 200px;display: block;" v-if="!avatarId" class="avatar"
                          src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                     <img v-else style="width:200px;height: 200px;display: block;"
-                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+localData.avatarId" alt="">
+                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+avatarId" alt="">
+                    <!--<img style="width:200px;height: 200px;display: block;" v-if="!localData.avatarId" class="avatar"
+                         src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
+                    <img v-else style="width:200px;height: 200px;display: block;"
+                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+localData.avatarId" alt="">-->
                 </el-upload>
                 <span>点击图片，更换头像</span>
             </el-col>
@@ -93,10 +97,10 @@
                     desc: '',
                     cameraNames: '',
                     errorMessage: '无',
-                    imageUrl: '',
                     categoryIds: [],
                     hobby: []
                 },
+                avatarId:'',
                 sexMap: {
                     '0': '未知',
                     '1': '男',
@@ -129,6 +133,12 @@
                 return this.userInfoData
             }
 
+        },
+        watch:{
+            userInfo:function () {
+                console.log("userInfo改变了")
+                this.avatarId = this.userInfo.avatarId
+            }
         },
         methods: {
             ...mapActions({
@@ -183,13 +193,9 @@
                 })
             },
             handleAvatarSuccess: function (res, file, fileList) {
-                console.log('res', res)
-                console.log('file', file)
-                console.log('fileList', fileList)
-                this.localData.imageUrl = 'http://bbs.chenxubiao.cn/picture/show?id=' + res.vars.data.id
-                console.log('this.localData.imageUrl', this.localData.imageUrl)
                 if (res.success) {
                     this.localData.avatarId = res.vars.data.id
+                    this.avatarId = res.vars.data.id
                 } else {
                     this.$message.error("上传失败")
                 }

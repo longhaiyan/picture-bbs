@@ -12,9 +12,8 @@ const api = {
         'imgUpload':'/data?name=null',
         'loginOut':'/data?name=mirror',
         'autoLogin':'/data?name=userInfo',
-
-
-
+        'msgReceive':'/data?name=msg_receive',
+        'msgUpdate':'/data?name=mirror',
     },
     pro: {
         'login': '/user/login/data',
@@ -22,6 +21,8 @@ const api = {
         'imgUpload':'/project/publish/data',
         'loginOut': '/user/logout/data',
         'autoLogin': '/user/home/data',
+        'msgReceive':'/message/receive/data',
+        'msgUpdate':'/message/receive/update',
 
     }
 }

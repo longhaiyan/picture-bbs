@@ -102,7 +102,31 @@ const actions = {
             console.log('自动登录失败',msg)
         })
     },
+    [Type.A_MESSAGE_RECEIVE]: ({commit, state, dispatch}, payload) => {
+        return apiTools.req(api.msgReceive, payload, rsp => {
+            console.log("A获取系统通知数据")
+            commit(Type.M_MESSAGE_RECEIVE, rsp)
+        }, msg => {
+            console.log('A获取系统通知数据失败',msg)
+        })
+    },
+    [Type.A_MESSAGE_UPDATE]: ({commit, state, dispatch}, payload) => {
+        return apiTools.post(api.msgUpdate, payload, rsp => {
+            console.log("A消息已读")
+            commit(Type.M_MESSAGE_UPDATE, rsp)
+        }, msg => {
+            console.log('A消息已读失败',msg)
+        })
+    },
+    [Type.A_LIVE_OPEN]: ({commit, state, dispatch}, payload) => {
+        console.log('开启心跳')
+        commit(Type.M_LIVE_OPEN)
+        setInterval(function () {
+            console.log("dong")
+            dispatch(Type.A_MESSAGE_RECEIVE)
+        },3000)
 
+    },
 }
 
 export default actions

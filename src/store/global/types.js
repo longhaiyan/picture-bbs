@@ -22,6 +22,12 @@ export const A_USER_ZONEBG_UPDATE = 'global/as/user_zone_bg_update'
 export const A_USER_LOGIN_OUT = 'global/as/user_login_out'
 export const A_USER_AUTO_LOGIN = 'global/as/user_auto_login'
 
+export const A_MESSAGE_RECEIVE= 'global/as/message_receive'
+export const A_MESSAGE_UPDATE = 'global/as/message_update'
+
+export const A_LIVE_OPEN = 'global/as/live_open'
+
+
 export const M_LOGIN_LOADING = 'global/mu/login_loading'
 export const M_LOGIN_ONLOAD = 'global/mu/login_onload'
 export const M_LOGIN_SUBMITTING = 'global/mu/login_submitting'
@@ -50,3 +56,9 @@ export const M_GET_CHECK_CODE_ERROR = 'global/mu/get_check_code_error'
 
 export const M_USER_INFO_UPDATE = 'global/mu/user_info_update'
 export const M_USER_ZONEBG_UPDATE = 'global/mu/user_zone_bg_update'
+
+export const M_MESSAGE_RECEIVE= 'global/mu/message_receive'
+export const M_MESSAGE_UPDATE = 'global/mu/message_update'
+
+export const M_LIVE_OPEN = 'global/mu/live_open'
+

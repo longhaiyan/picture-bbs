@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu :default-active="activeIndex" class="el-menu-demo my-nav" mode="horizontal" @select="handleSelect">
             <el-menu-item index="1">
                 <el-button type="primary" @click="onUpload">Upload</el-button>
             </el-menu-item>
@@ -8,15 +8,12 @@
                 <template slot="title">
                     <router-link to="/discover/popular">Discover</router-link>
                 </template>
-                <el-menu-item index="2-1"><router-link to="/discover/popular">分类一</router-link></el-menu-item>
+                <el-menu-item index="2-1">
+                    <router-link to="/discover/popular">分类一</router-link>
+                </el-menu-item>
                 <el-menu-item index="2-2">分类二</el-menu-item>
                 <el-menu-item index="2-3">分类三</el-menu-item>
             </el-submenu>
-            <el-menu-item index="6">
-                <el-button type="text" @click="onLogin">登录</el-button>
-                <span>/</span>
-                <el-button type="text" @click="onRegister">注册</el-button>
-            </el-menu-item>
             <el-menu-item v-if="!localUserName" index="3">
                 <el-button type="text" @click="onLogin">登录</el-button>
                 <span>/</span>
@@ -43,12 +40,42 @@
                         <router-link to="/">退出登录</router-link>
                     </el-menu-item>
                 </el-submenu>
-                <el-menu-item index="5">
+                <el-menu-item index="5" class="nav-warn" @click="showMsgList">
+                    <el-badge :value="msgCount" :max="99" >
+                        <img src="http://bbs.chenxubiao.cn/img/warn.png" alt="">
+                    </el-badge>
+                </el-menu-item>
+                <el-menu-item index="6">
                     <el-button type="primary" @click="onUpload">Upload</el-button>
                 </el-menu-item>
             </template>
 
         </el-menu>
+        <el-dialog
+                title="新通知"
+                v-model="dialogVisible"
+                size="tiny"
+                :modal="false"
+                custom-class="msgList"
+                top="90px"
+                @close="dialogClose"
+                >
+            <template v-if="messages.length">
+                <div class="msg-item" v-for="item in messages" key>
+                    <img v-if="!item.senderInfo.avatarId" class="avatar"
+                         src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
+                    <img v-else class="avatar"
+                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+item.senderInfo.avatarId" alt="">
+                    <div>
+                        <p class="info"><span class="name">{{item.senderInfo.userName}}</span>{{item.message}}</p>
+                        <p class="time">{{item.createTime}}</p>
+                    </div>
+
+                </div>
+            </template>
+            <p v-else style="text-align: center">无新消息</p>
+
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -60,18 +87,22 @@
         data() {
             return {
                 activeIndex: '1',
-                localUserName: ''
+                localUserName: '',
+                dialogVisible:false
             };
         },
         computed: {
             ...mapState({
                 loginErrorMsg: state => state.myGlobal.loginErrorMsg,
                 userInfo: state => state.myGlobal.userInfo,
+                isLive: state => state.myGlobal.isLive,
+                msgCount: state => state.myGlobal.msgCount,
+                messages: state => state.myGlobal.messages,
             })
         },
         watch: {
             userInfo: function () {
-                console.log('userInfo 被修改',this.userInfo)
+                console.log('userInfo 被修改', this.userInfo)
                 this.isLogin()
             }
         },
@@ -82,6 +113,8 @@
                 uploadShow: GlobalType.A_UPLOAD_SHOW,
                 loginOut: GlobalType.A_USER_LOGIN_OUT,
                 autoLogin: GlobalType.A_USER_AUTO_LOGIN,
+                liveOpen: GlobalType.A_LIVE_OPEN,
+                liveUpdate: GlobalType.A_MESSAGE_UPDATE,
             }),
             handleSelect(key, keyPath) {
                 console.log(key, keyPath);
@@ -128,36 +161,46 @@
             },
             onLoginOut(){
                 let self = this
-                this.loginOut().then(()=>{
+                this.loginOut().then(() => {
                     this.localUserName = ''
                     self.$message({
                         type: 'success',
                         message: '注销成功'
                     })
-                },()=>{
+                }, () => {
                     self.$message({
                         type: 'error',
                         message: '注销失败'
                     })
                 })
             },
+            showMsgList:function () {
+                console.log('click')
+                this.dialogVisible = true
+                console.log('this.dialogVisible',this.dialogVisible)
+
+            },
+            dialogClose:function () {
+                this.liveUpdate()
+            }
             /*toZone(){
-                console.log("toZone")
-                let self = this
-                this.GM_routerPush({
-                    path: '/home/zone',
-                    query: {
-                        isHome:true,
-                        userId: self.userInfo.userId
-                    }
-                })
-            }*/
+             console.log("toZone")
+             let self = this
+             this.GM_routerPush({
+             path: '/home/zone',
+             query: {
+             isHome:true,
+             userId: self.userInfo.userId
+             }
+             })
+             }*/
         },
         mounted(){
-            console.log('userInfo',this.userInfo)
-            if(window.initState.isLogin){
+            console.log('userInfo', this.userInfo)
+            if (window.initState.isLogin) {
                 this.autoLogin()
             }
+            this.liveOpen()
         },
         components: {
             MyModal

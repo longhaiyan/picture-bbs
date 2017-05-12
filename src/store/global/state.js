@@ -25,5 +25,8 @@ export default {
         categoryIds:[],
     },
     // 验证码
-    code: ''
+    code: '',
+    isLive:false,
+    msgCount: null,
+    messages:[]
 }
