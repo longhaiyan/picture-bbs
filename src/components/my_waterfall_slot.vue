@@ -44,6 +44,8 @@
     import {mapActions, mapState} from 'vuex'
     import * as myWaterfallSlotType from '@/store/my_waterfall_solt/types'
     import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
+    import * as GlobalType from '@/store/global/types'
+
     export default{
         name: 'myWaterFallSlot',
         props: {
@@ -64,40 +66,54 @@
         methods: {
             ...mapActions({
                 updateLike: myWaterfallSlotType.A_UPDATE_LIKE,
+                loginShow: GlobalType.A_LOGIN_SHOW,
             }),
             addLike: function (event) {
                 event.stopPropagation()
-                let self = this
-                let curLike = $(event.target).closest('.j-like')
-                this.updateLike({picId: self.item.picId}).then(()=>{
-                    if (curLike.hasClass('hearted')) {
-                        $(event.target).closest('.j-like').removeClass('hearted')
-                    } else {
-                        $(event.target).closest('.j-like').addClass('hearted')
-                    }
-                })
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else{
+                    let self = this
+                    let curLike = $(event.target).closest('.j-like')
+                    this.updateLike({picId: self.item.picId}).then(()=>{
+                        if (curLike.hasClass('hearted')) {
+                            $(event.target).closest('.j-like').removeClass('hearted')
+                        } else {
+                            $(event.target).closest('.j-like').addClass('hearted')
+                        }
+                    })
+                }
+
 
             },
             goZone:function () {
                 console.log("goZone")
                 event.stopPropagation()
-                let self = this
-                this.GM_routerPush({
-                    path: '/home/zone',
-                    query: {
-                        userId: self.item.userId
-                    }
-                })
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else {
+                    let self = this
+                    this.GM_routerPush({
+                        path: '/home/zone',
+                        query: {
+                            userId: self.item.userId
+                        }
+                    })
+                }
             },
             onIntro: function () {
-                console.log("click")
-                let self = this
-                this.GM_routerPush({
-                    path: '/intro',
-                    query: {
-                        picId: self.item.picId
-                    }
-                })
+                console.log("click",window.initState.isLogin)
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else {
+                    let self = this
+                    this.GM_routerPush({
+                        path: '/intro',
+                        query: {
+                            picId: self.item.picId
+                        }
+                    })
+                }
             },
         },
         mounted(){

@@ -4,15 +4,14 @@ import * as apiTools from '../../utils/api'
 import * as optionMapType from '@/store/option_map/types'
 import * as GlobalType from '@/store/global/types'
 
-
 const actions = {
     [Type.A_START_MAIN]: ({commit, state, dispatch}, payload) => {
         // dispatch(Type.A_LIST_REQUEST,payload)
         dispatch(optionMapType.A_CATEGORY_MAP).then(()=>{
-            /*dispatch(GlobalType.A_USER_AUTO_LOGIN).then(()=>{
+            dispatch(GlobalType.A_USER_AUTO_LOGIN).then(()=>{
                 console.log("获取分类及用户数据成功")
-            })*/
-            console.log("获取分类数据成功")
+            })
+            // console.log("获取分类数据成功")
         })
     },
 

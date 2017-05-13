@@ -1,15 +1,15 @@
 <template>
     <div>
         <el-menu :default-active="activeIndex" class="el-menu-demo my-nav" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="1">
-                <el-button type="primary" @click="onUpload">Upload</el-button>
-            </el-menu-item>
+            <!--<el-menu-item index="1">
+                <el-button type="primary" @click="onUpload"><i class="el-icon-upload"></i>Upload</el-button>
+            </el-menu-item>-->
             <el-submenu index="2">
-                <template slot="title">
-                    <router-link to="/discover/popular">Discover</router-link>
+                <template slot="title" >
+                    <div @click="goPopular">Discover</div>
                 </template>
-                <el-menu-item index="2-1">
-                    <router-link to="/discover/popular">分类一</router-link>
+                <el-menu-item index="2-1" @click="goPopular">
+                    Popular
                 </el-menu-item>
                 <el-menu-item index="2-2">分类二</el-menu-item>
                 <el-menu-item index="2-3">分类三</el-menu-item>
@@ -48,10 +48,10 @@
                         <img src="http://bbs.chenxubiao.cn/img/warn.png" alt="">
                     </el-badge>
                 </el-menu-item>
-                <el-menu-item index="6">
-                    <el-button type="primary" @click="onUpload">Upload</el-button>
-                </el-menu-item>
             </template>
+            <el-menu-item index="6">
+                <el-button type="primary" @click="onUpload"><i class="el-icon-upload"></i>Upload</el-button>
+            </el-menu-item>
 
         </el-menu>
         <el-dialog
@@ -133,7 +133,11 @@
             },
             onUpload(){
                 console.log('header onRegister')
-                this.uploadShow()
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else {
+                    this.uploadShow()
+                }
             },
             // 打开modal，传入一些回调函数
             openModal(obj, ops) {
@@ -168,6 +172,7 @@
                 let self = this
                 this.loginOut().then(() => {
                     this.localUserName = ''
+                    window.initState.isLogin = false
                     self.$message({
                         type: 'success',
                         message: '注销成功'
@@ -211,6 +216,17 @@
                         userId: id
                     }
                 })
+            },
+            goPopular:function (id) {
+                event.stopPropagation()
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else{
+                    this.GM_routerPush({
+                        path: '/discover/popular',
+                    })
+                }
+
             },
             onPwd:function () {
                 this.pwdShow()

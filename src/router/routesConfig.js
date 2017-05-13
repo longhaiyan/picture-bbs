@@ -20,15 +20,16 @@ let routes = [
     {
         label: '首页',
         path: '/',
-        name: 'Index',
+        name: 'index',
         component: Index,
     },
     {
         path: '/Hello',
-        name: 'Hello',
+        name: 'hello',
         component: Hello,
         children: [
             {
+                name:'demo',
                 path: 'demo',
                 component: demo,
             }
@@ -40,6 +41,7 @@ let routes = [
         component: MyHome,
         children: [
             {
+                name:'myZoom',
                 path: 'zone',
                 component: MyZoom,
             }
@@ -51,6 +53,7 @@ let routes = [
         component: MySettings,
         children: [
             {
+                name:'user_setting',
                 path: 'user_setting',
                 component: UserSetting,
             }
@@ -62,6 +65,7 @@ let routes = [
         component: MyDiscover,
         children: [
             {
+                name:'popular',
                 path: 'popular',
                 component: Popular,
             }

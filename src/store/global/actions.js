@@ -126,10 +126,10 @@ const actions = {
         console.log('开启心跳')
         commit(Type.M_LIVE_OPEN)
         dispatch(Type.A_MESSAGE_RECEIVE)
-        setInterval(function () {
+        /*setInterval(function () {
             console.log("dong")
             dispatch(Type.A_MESSAGE_RECEIVE)
-        },3000)
+        },3000)*/
 
     },
 

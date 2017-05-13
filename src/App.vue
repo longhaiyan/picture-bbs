@@ -117,7 +117,7 @@
             </el-form>
         </MyModal>
         <MyModal class="my-login-box" :data="pwdData" :step="pwdDialogStep" style="text-align: left">
-            <el-form :model="pwdFormData" ref="pwdForm" :rules="pwdRules" label-width="100px">
+            <el-form :model="pwdFormData" ref="pwdForm" :rules="pwdRules" label-width="130px">
                 <el-form-item label="旧密码：" prop="oldPasswd">
                     <el-input type="password"
                               placeholder="请输入当前密码"
@@ -387,6 +387,7 @@
                                         self.showMessage(self.loginErrorMsg)
                                         return
                                     } else {
+                                        window.initState.isLogin = true
                                         self.$message({
                                             type: 'success',
                                             message: '登录成功'
@@ -423,6 +424,7 @@
                                         self.showMessage(self.registerErrorMsg)
                                         return
                                     } else {
+                                        window.initState.isLogin = true
                                         self.$message({
                                             type: 'success',
                                             message: '注册并登录成功'
@@ -574,10 +576,10 @@
                     let hasActive = document.querySelector('.header').className.match(/(?:^|\s)header-active(?!\S)/)
                     let top = document.querySelector('body').scrollTop
                     if (top > 0 && !hasActive) {
-                        document.querySelector('.header').className += ' header-active '
+                        $('.header').addClass('header-active')
                     }
                     if (top == 0) {
-                        document.querySelector('.header').className = document.querySelector('.header').className.replace(( /(?:^|\s)header-active(?!\S)/), '')
+                        $('.header').removeClass('header-active')
                     }
                 }
             },

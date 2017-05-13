@@ -4,7 +4,7 @@
 
 // 不需要登录就可以访问的页面
 export const NO_NEED_LOGIN_ROUTER = new Set([
-    'error404'
+    'error404','index','hello'
 ])
 
 

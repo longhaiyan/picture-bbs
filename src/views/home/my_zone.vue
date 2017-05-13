@@ -34,9 +34,11 @@
             <div v-else class="cover_photo"></div>
             <div class="user_avatar">
                 <div class="wrapper">
-                    <img class="avatar_img" v-if="!userInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt=""
-                         >
-                    <img class="avatar_img" v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfo.avatarId" alt="">
+                    <img class="avatar_img" v-if="!userInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png"
+                         alt=""
+                    >
+                    <img class="avatar_img" v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfo.avatarId"
+                         alt="">
                 </div>
             </div>
             <div class="profile_buttons">
@@ -136,6 +138,7 @@
                         <img v-if="!item.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                         <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id=' + item.avatarId" alt="">
                         {{item.userName}}
+
 
 
 
@@ -286,7 +289,7 @@
             showMessage() {
                 this.$message.error(this.uploadErrorMsg)
             },
-            addLike: function (picId,event) {
+            addLike: function (picId, event) {
                 event.stopPropagation()
                 let self = this
                 let curLike = $(event.target).closest('.j-like')
@@ -360,30 +363,30 @@
                 this.dataRequest()
             }
         },
-        /*beforeUpdate(){
-         console.log("beforeUpdate")
-         console.log('router id',this.$route.query.userId)
-         },
-         updated(){
-         console.log("updated")
-         console.log('router id',this.$route.query.userId)
-         },
-         activated(){
-         console.log("activated")
-         console.log('router id',this.$route.query.userId)
-         },
-         deactivated(){
-         console.log("deactivated")
-         console.log('router id',this.$route.query.userId)
-         },
-         beforeDestroy(){
-         console.log("beforeDestroy")
-         console.log('router id',this.$route.query.userId)
-         },
-         destroyed(){
-         console.log("destroyed")
-         console.log('router id',this.$route.query.userId)
-         },*/
+        beforeUpdate(){
+            if(!$('.header').hasClass('header-white')){
+                $('.header').addClass('header-white')
+            }
+        },
+        /*updated(){
+            console.log("updated")
+            console.log('router id', this.$route.query.userId)
+        },
+        activated(){
+            console.log("activated")
+            console.log('router id', this.$route.query.userId)
+        },
+        deactivated(){
+            console.log("deactivated")
+            console.log('router id', this.$route.query.userId)
+        },
+        beforeDestroy(){
+            console.log("beforeDestroy")
+            console.log('router id', this.$route.query.userId)
+        },*/
+        destroyed(){
+            $('.header').removeClass('header-white')
+        },
         components: {
             MyModal,
             Waterfall,

@@ -132,9 +132,9 @@
         },
         watch:{
             userInfo:function () {
-                console.log("userInfo改变了")
 //                this.avatarId = this.userInfo.avatarId
                 Object.assign(this.userInfoData, this.userInfo.userProfile)
+                console.log("user_setting 的 userInfo改变了",this.userInfoData)
             },
             categories:function () {
                 this.categories.map((item, index) => {
@@ -208,6 +208,17 @@
                 }
             }
 
+        },
+        beforeUpdate(){
+            if(!$('.header').hasClass('header-white')){
+                $('.header').addClass('header-white')
+            }
+        },
+        destroyed(){
+            $('.header').removeClass('header-white')
+        },
+        mounted(){
+            console.log("user_setting mounted")
         },
         components: {
             StateButton
