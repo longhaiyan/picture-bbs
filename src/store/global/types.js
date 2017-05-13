@@ -9,12 +9,16 @@ export const A_GET_CHECK_CODE = 'global/as/get_check_code'
 
 export const A_USER_REGISTER = 'global/as/user_register'
 export const A_UPLOAD_IMG = 'global/as/upload_img'
+export const A_CHANGE_PWD = 'global/as/change_pwd'
 
 export const A_REGISTER_SHOW = 'global/as/register_show'
 export const A_REGISTER_HIDE = 'global/as/register_hide'
 
 export const A_UPLOAD_SHOW = 'global/as/upload_show'
 export const A_UPLOAD_HIDE = 'global/as/upload_hide'
+
+export const A_PWD_SHOW = 'global/as/pwd_show'
+export const A_PWD_HIDE = 'global/as/pwd_hide'
 
 export const A_USER_INFO_UPDATE = 'global/as/user_info_update'
 export const A_USER_ZONEBG_UPDATE = 'global/as/user_zone_bg_update'
@@ -50,6 +54,13 @@ export const M_REGISTER_HIDE = 'global/mu/register_hide'
 
 export const M_UPLOAD_SHOW = 'global/mu/upload_show'
 export const M_UPLOAD_HIDE = 'global/mu/upload_hide'
+
+export const M_CHANGE_PWD_ONLOAD = 'global/mu/change_pwd_onload'
+export const M_CHANGE_PWD_SUBMITTING = 'global/mu/change_pwd_submitting'
+export const M_CHANGE_PWD_ERROR = 'global/mu/change_pwd_error'
+export const M_PWD_SHOW = 'global/mu/pwd_show'
+export const M_PWD_HIDE = 'global/mu/pwd_hide'
+
 
 export const M_GET_CHECK_CODE = 'global/mu/get_check_code'
 export const M_GET_CHECK_CODE_ERROR = 'global/mu/get_check_code_error'

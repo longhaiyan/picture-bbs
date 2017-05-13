@@ -68,7 +68,7 @@ export default {
         console.log('M_REGISTER_ERROR', payload)
         Object.assign(state, {
             registerDialogStep: 'error',
-            loginErrorMsg: payload.message
+            registerErrorMsg: payload.message
         })
     },
     // 图片上传弹窗状态
@@ -141,10 +141,12 @@ export default {
     },
     [Type.M_MESSAGE_RECEIVE]: (state, payload) => {
         console.log('M_MESSAGE_RECEIVE收到的信息', payload)
-        Object.assign(state, {
-            messages:payload.data.messages,
-            msgCount:payload.data.msgCount,
-        })
+        if(payload.data){
+            Object.assign(state, {
+                messages:payload.data.messages,
+                msgCount:payload.data.msgCount,
+            })
+        }
         console.log('M_MESSAGE_RECEIVE', state)
     },
     [Type.M_MESSAGE_UPDATE]: (state, payload) => {
@@ -161,6 +163,44 @@ export default {
             isLive:true
         })
         console.log('M_LIVE_OPEN', state)
+    },
+
+    // 修改密码弹窗状态
+    [Type.M_CHANGE_PWD_SUBMITTING]: (state, payload) => {
+        console.log('M_CHANGE_PWD_SUBMITTING state', state)
+        Object.assign(state, {
+            pwdDialogStep: 'submitting'
+        })
+        console.log('state.pwdDialogStep', state.pwdDialogStep)
+    },
+    [Type.M_CHANGE_PWD_ONLOAD]: (state, payload) => {
+        console.log('payload', payload)
+        Object.assign(state, {
+            pwdDialogStep: 'onload'
+        })
+    },
+    [Type.M_CHANGE_PWD_ERROR]: (state, payload) => {
+        console.log('M_CHANGE_PWD_ERROR', payload)
+        Object.assign(state, {
+            pwdDialogStep: 'error',
+            pwdErrorMsg: payload.message
+        })
+    },
+    [Type.M_PWD_SHOW]: (state, payload) => {
+        console.log('M_PWD_SHOW', payload)
+        Object.assign(state, {
+            pwdDialogVisible: true
+        })
+        console.log('M_PWD_SHOW loginDialogVisible', state.pwdDialogVisible)
+    },
+    [Type.M_PWD_HIDE]: (state, payload) => {
+        console.log('M_PWD_HIDE', payload)
+        Object.assign(state, {
+            pwdDialogVisible: false,
+            pwdDialogStep: '',
+
+        })
+        console.log('M_PWD_HIDE loginDialogVisible', state.pwdDialogVisible)
     },
 
 

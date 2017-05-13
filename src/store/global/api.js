@@ -14,6 +14,7 @@ const api = {
         'autoLogin':'/data?name=userInfo',
         'msgReceive':'/data?name=msg_receive',
         'msgUpdate':'/data?name=mirror',
+        'pwd':'/data?name=mirror',
     },
     pro: {
         'login': '/user/login/data',
@@ -23,6 +24,8 @@ const api = {
         'autoLogin': '/user/home/data',
         'msgReceive':'/message/receive/data',
         'msgUpdate':'/message/receive/update',
+        'pwd':'/user/profile/passsword/update',
+
 
     }
 }

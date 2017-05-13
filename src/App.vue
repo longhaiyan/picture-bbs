@@ -116,6 +116,28 @@
                 </el-form-item>
             </el-form>
         </MyModal>
+        <MyModal class="my-login-box" :data="pwdData" :step="pwdDialogStep" style="text-align: left">
+            <el-form :model="pwdFormData" ref="pwdForm" :rules="pwdRules" label-width="100px">
+                <el-form-item label="旧密码：" prop="oldPasswd">
+                    <el-input type="password"
+                              placeholder="请输入当前密码"
+                              v-model="pwdFormData.oldPasswd">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="新密码：" prop="newPasswd">
+                    <el-input type="password"
+                              placeholder="请输入新密码"
+                              v-model="pwdFormData.newPasswd">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="确认新密码：" prop="checkPassword">
+                    <el-input type="password"
+                              placeholder="请确认新密码"
+                              v-model="pwdFormData.checkPassword">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+        </MyModal>
 
 
         <el-row type="flex" justify="space-around" align="center" class="header">
@@ -175,12 +197,18 @@
                     confirmButtonText: '确认注册',
                     title: '注册'
                 },
+                pwdData: {
+                    size: 'tiny',
+                    confirmButtonText: '确认修改',
+                    title: '修改密码'
+                },
+
                 uploadData:{
                     confirmButtonText: '发布图片',
                     title: '上传图片',
                     picId:1,
                     picName:'',
-                    categoryId:1,
+                    categoryId:0,
                     tagIds:[],
                     description:'',
                     imageUrl:''
@@ -230,6 +258,23 @@
                         trigger: 'blur'
                     }
                 },
+                pwdRules: {
+                    oldPasswd: {
+                        required: true,
+                        message: '请输入当前密码',
+                        trigger: 'blur'
+                    },
+                    newPasswd: {
+                        required: true,
+                        message: '请输入新密码',
+                        trigger: 'blur'
+                    },
+                    checkPassword: {
+                        required: true,
+                        validator: this.confirmNewPassword,
+                        trigger: 'blur'
+                    }
+                },
                 uploadRules: {
                 },
                 categoryMap: {
@@ -256,10 +301,15 @@
                 loginDialogStep: state => state.myGlobal.loginDialogStep,
                 registerDialogStep: state => state.myGlobal.registerDialogStep,
                 uploadDialogStep: state => state.myGlobal.uploadDialogStep,
+                pwdDialogStep: state => state.myGlobal.pwdDialogStep,
                 loginErrorMsg: state => state.myGlobal.loginErrorMsg,
+                registerErrorMsg: state => state.myGlobal.registerErrorMsg,
+                uploadErrorMsg: state => state.myGlobal.uploadErrorMsg,
+                pwdErrorMsg: state => state.myGlobal.pwdErrorMsg,
                 loginDialogVisible: state => state.myGlobal.loginDialogVisible,
                 registerDialogVisible: state => state.myGlobal.registerDialogVisible,
                 uploadDialogVisible: state => state.myGlobal.uploadDialogVisible,
+                pwdDialogVisible: state => state.myGlobal.pwdDialogVisible,
                 code: state => state.myGlobal.code,
                 categories: state => state.optionMap.categories,
                 tags: state => state.optionMap.tags,
@@ -272,7 +322,11 @@
             },
             uploadFormData(){
                 return Object.assign(this.uploadData, {visible: this.uploadDialogVisible})
-            }
+            },
+            pwdFormData(){
+                return Object.assign(this.pwdData, {visible: this.pwdDialogVisible})
+            },
+
         },
         watch: {
             loginDialogVisible: function() {
@@ -290,6 +344,12 @@
                     this.onUpload()
                 }
             },
+            pwdDialogVisible: function() {
+                if (this.pwdDialogVisible) {
+                    this.onPwd()
+                }
+            },
+
             categories: function () {
                 console.log('categories',this.categories)
             },
@@ -303,9 +363,11 @@
                 userLogin: GlobalType.A_USER_LOGIN,
                 userRegister: GlobalType.A_USER_REGISTER,
                 upload: GlobalType.A_UPLOAD_IMG,
+                changePwd: GlobalType.A_CHANGE_PWD,
                 loginHide: GlobalType.A_LOGIN_HIDE,
                 uploadHide: GlobalType.A_UPLOAD_HIDE,
                 registerHide: GlobalType.A_REGISTER_HIDE,
+                pwdHide: GlobalType.A_PWD_HIDE,
                 getCheckCode: GlobalType.A_GET_CHECK_CODE,
                 registerShow: GlobalType.A_REGISTER_SHOW
             }),
@@ -322,7 +384,7 @@
                                     code: self.loginFormData.code
                                 }).then(() => {
                                     if (self.loginDialogStep === 'error') {
-                                        self.showMessage()
+                                        self.showMessage(self.loginErrorMsg)
                                         return
                                     } else {
                                         self.$message({
@@ -358,7 +420,7 @@
                                     code: self.registerFormData.code
                                 }).then(() => {
                                     if (self.registerDialogStep === 'error') {
-                                        self.showMessage()
+                                        self.showMessage(self.registerErrorMsg)
                                         return
                                     } else {
                                         self.$message({
@@ -408,12 +470,12 @@
                                     description:self.uploadFormData.description
                                 }).then(() => {
                                     if (self.uploadDialogStep === 'error') {
-                                        self.showMessage()
+                                        self.showMessage(self.uploadErrorMsg)
                                         return
                                     } else {
                                         self.$message({
                                             type: 'success',
-                                            message: '发布分成'
+                                            message: '发布成功'
                                         })
                                         return next()
                                     }
@@ -426,6 +488,41 @@
                     },
                     beforeCancel(next) {
                         self.uploadHide().then(() => {
+                            return next()
+                        })
+                    }
+                })
+
+            },
+            onPwd(){
+                let self = this
+                this.openModal(this.pwdFormData, {
+                    beforeConfirm(next){
+                        console.log("beforeConfirm")
+                        self.$refs.pwdForm.validate(value => {
+                            if (value) {
+                                self.changePwd({
+                                    oldPasswd:self.pwdFormData.oldPasswd,
+                                    newPasswd:self.pwdFormData.newPasswd,
+                                }).then(() => {
+                                    if (self.pwdDialogStep === 'error') {
+                                        self.showMessage(self.pwdErrorMsg)
+                                        return
+                                    } else {
+                                        self.$message({
+                                            type: 'success',
+                                            message: '修改成功'
+                                        })
+                                        return next()
+                                    }
+                                })
+
+                            }
+
+                        })
+                    },
+                    beforeCancel(next) {
+                        self.pwdHide().then(() => {
                             return next()
                         })
                     }
@@ -456,8 +553,20 @@
                     callback();
                 }
             },
-            showMessage() {
-                this.$message.error(this.loginErrorMsg)
+            confirmNewPassword(rule, value, callback){
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.pwdFormData.newPasswd) {
+                    console.log('yiyi value',value)
+                    console.log('this.pwdFormData.password',this.pwdFormData.newPasswd)
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            },
+            showMessage(msg) {
+//                this.$message.error(this.loginErrorMsg)
+                this.$message.error(msg)
             },
             //            检测屏幕滚动事件
             getScroll(){
@@ -518,7 +627,9 @@
         /*height: 100%;*/
         position: relative;
     }
-
+    .my-login-box{
+        text-align: left;
+    }
     .my-login-box .el-dialog {
         min-width: 300px;
     }

@@ -7,6 +7,7 @@ import * as Type from './types'
 import api from './api'
 import * as apiTools from '../../utils/api'
 import * as optionMapType from '@/store/option_map/types'
+import * as myIndexType from '@/store/my_index/types'
 
 const actions = {
     // 登录弹窗
@@ -15,7 +16,10 @@ const actions = {
 
         return apiTools.post(api.login, payload, rsp => {
             console.log('用户登录成功', payload)
-            commit(Type.M_LOGIN_ONLOAD, rsp)
+            dispatch(myIndexType.A_LIST_REQUEST).then(()=>{
+                console.log("用户登录后重新获取数据")
+                commit(Type.M_LOGIN_ONLOAD, rsp)
+            })
         }, msg => {
             commit(Type.M_LOGIN_ERROR, msg)
             console.log('用户登录失败')
@@ -121,11 +125,31 @@ const actions = {
     [Type.A_LIVE_OPEN]: ({commit, state, dispatch}, payload) => {
         console.log('开启心跳')
         commit(Type.M_LIVE_OPEN)
+        dispatch(Type.A_MESSAGE_RECEIVE)
         setInterval(function () {
             console.log("dong")
             dispatch(Type.A_MESSAGE_RECEIVE)
         },3000)
 
+    },
+
+    // 修改密码弹窗
+    [Type.A_CHANGE_PWD]: ({commit, state, dispatch}, payload) => {
+        commit(Type.M_CHANGE_PWD_SUBMITTING)
+        console.log('用户修改密码 payload',payload)
+        return apiTools.post(api.pwd, payload, rsp => {
+            console.log('用户修改密码成功')
+            commit(Type.M_CHANGE_PWD_ONLOAD, rsp)
+        }, msg => {
+            commit(Type.M_CHANGE_PWD_ERROR, msg)
+            console.log('用户登录失败')
+        })
+    },
+    [Type.A_PWD_SHOW]: ({commit, state, dispatch}, payload) => {
+        commit(Type.M_PWD_SHOW)
+    },
+    [Type.A_PWD_HIDE]: ({commit, state, dispatch}, payload) => {
+        commit(Type.M_PWD_HIDE)
     },
 }
 

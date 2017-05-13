@@ -12,14 +12,14 @@ const actions = {
     [Type.A_LIST_REQUEST]: ({commit, state, dispatch}, payload) => {
         console.log('index',state.indexWaterFall)
         console.log('index',state.indexWaterFall.length)
-        if(state.indexWaterFall.length){
+        return apiTools.req(api.waterfall,payload,rsp =>{
+            commit(Type.M_LIST_RECEIVED,rsp)
+        })
+        /*if(state.indexWaterFall.length){
             console.log('本地有数据')
         }else{
             console.log('本地无数据')
-            return apiTools.req(api.waterfall,payload,rsp =>{
-                commit(Type.M_LIST_RECEIVED,rsp)
-            })
-        }
+        }*/
         /*dispatch(Type.A_WATERFSLL_GET,payload).then((rsp)=>{
             // commit(Type.M_LIST_RECEIVED,rsp)
             console.log("装载数据完成")

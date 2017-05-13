@@ -6,12 +6,16 @@ export default {
     loginDialogStep: '', // onload, submitting, error
     registerDialogStep: '', // onload, submitting, error
     uploadDialogStep: '', // onload, submitting, error
+    pwdDialogStep: '', // onload, submitting, error
     // 登录错误信息
     loginErrorMsg: '',
+    registerErrorMsg: '',
     uploadErrorMsg: '',
+    pwdErrorMsg: '',
     loginDialogVisible: false,
     registerDialogVisible: false,
     uploadDialogVisible: false,
+    pwdDialogVisible: false,
     userInfo:{
         userId: '',
         avatarId: '',

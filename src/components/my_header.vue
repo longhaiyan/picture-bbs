@@ -36,7 +36,10 @@
                     <el-menu-item index="4-2">
                         <router-link to="/setting/user_setting">个人设置</router-link>
                     </el-menu-item>
-                    <el-menu-item index="4-3" @click="onLoginOut">
+                    <el-menu-item index="4-3" @click="onPwd">
+                        修改密码
+                    </el-menu-item>
+                    <el-menu-item index="4-4" @click="onLoginOut">
                         <router-link to="/">退出登录</router-link>
                     </el-menu-item>
                 </el-submenu>
@@ -53,22 +56,22 @@
         </el-menu>
         <el-dialog
                 title="新通知"
-                v-model="dialogVisible"
+                v-model="msgDialogVisible"
                 size="tiny"
                 :modal="false"
                 custom-class="msgList"
                 top="90px"
-                @close="dialogClose"
+                @close="msgDialogClose"
                 >
             <template v-if="messages.length">
-                <div class="msg-item" v-for="item in messages" key>
+                <div class="msg-item" v-for="item in messages" key @click="goZone(item.senderInfo.userId)">
                     <img v-if="!item.senderInfo.avatarId" class="avatar"
                          src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                     <img v-else class="avatar"
                          :src="'http://bbs.chenxubiao.cn/picture/show?id='+item.senderInfo.avatarId" alt="">
                     <div>
                         <p class="info"><span class="name">{{item.senderInfo.userName}}</span>{{item.message}}</p>
-                        <p class="time">{{item.createTime}}</p>
+                        <p class="time">{{item.time}}</p>
                     </div>
 
                 </div>
@@ -76,6 +79,7 @@
             <p v-else style="text-align: center">无新消息</p>
 
         </el-dialog>
+        <!--修改密码-->
     </div>
 </template>
 <script>
@@ -88,7 +92,7 @@
             return {
                 activeIndex: '1',
                 localUserName: '',
-                dialogVisible:false
+                msgDialogVisible:false,
             };
         },
         computed: {
@@ -111,6 +115,7 @@
                 loginShow: GlobalType.A_LOGIN_SHOW,
                 registerShow: GlobalType.A_REGISTER_SHOW,
                 uploadShow: GlobalType.A_UPLOAD_SHOW,
+                pwdShow: GlobalType.A_PWD_SHOW,
                 loginOut: GlobalType.A_USER_LOGIN_OUT,
                 autoLogin: GlobalType.A_USER_AUTO_LOGIN,
                 liveOpen: GlobalType.A_LIVE_OPEN,
@@ -176,13 +181,17 @@
             },
             showMsgList:function () {
                 console.log('click')
-                this.dialogVisible = true
-                console.log('this.dialogVisible',this.dialogVisible)
+                this.msgDialogVisible = true
+                console.log('this.msgDialogVisible',this.msgDialogVisible)
 
             },
-            dialogClose:function () {
+            msgDialogClose:function () {
                 this.liveUpdate()
-            }
+            },
+            pwdDialogClose:function () {
+
+            },
+
             /*toZone(){
              console.log("toZone")
              let self = this
@@ -194,6 +203,18 @@
              }
              })
              }*/
+            goZone:function (id) {
+                event.stopPropagation()
+                this.GM_routerPush({
+                    path: '/home/zone',
+                    query: {
+                        userId: id
+                    }
+                })
+            },
+            onPwd:function () {
+                this.pwdShow()
+            }
         },
         mounted(){
             console.log('userInfo', this.userInfo)

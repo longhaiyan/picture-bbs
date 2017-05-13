@@ -5,44 +5,41 @@
 
             <el-col :sm="15">
                 <h3>个人信息</h3>
-                <el-form :model="localData" ref="localData" label-width="120px">
+                <el-form :model="userInfoData" ref="localData" label-width="120px">
                     <div class="form-body">
                         <el-form-item label="用户名：" prop="userName">
-                            <el-input v-model="localData.userName" placeholder="请输入用户名"></el-input>
+                            <el-input v-model="userInfoData.userName" placeholder="请输入用户名"></el-input>
                         </el-form-item>
                         <el-form-item label="性别：" prop="sex">
-                            <el-select v-model="localData.sex">
+                            <el-select v-model="userInfoData.sex">
                                 <el-option v-for="(value, key, index) in sexMap" :label="value" key
                                            :value=index></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="出生日期：" prop="birthday">
-                            <el-date-picker type="date" default-value="localData.birthday"
-                                            v-model="localData.birthday" style="width: 100%;"></el-date-picker>
+                            <el-date-picker type="date" default-value="userInfoData.birthday"
+                                            v-model="userInfoData.birthday" style="width: 100%;"></el-date-picker>
                         </el-form-item>
                         <el-form-item label="个人介绍：">
-                            <el-input v-model="localData.description" placeholder="请输入个人介绍"></el-input>
+                            <el-input v-model="userInfoData.description" placeholder="请输入个人介绍"></el-input>
                         </el-form-item>
                         <el-form-item label="我喜欢的分类：" prop="hobby">
-                            <el-select v-model="localData.hobby" multiple placeholder="请选择">
+                            <el-select v-model="userInfoData.hobby" multiple placeholder="请选择">
                                 <el-option v-for="item in categories" :label="item.name" key
-                                           :value="item.id"></el-option>
+                                           :value="item.id"
+                                ></el-option>
                             </el-select>
-
                         </el-form-item>
                         <el-form-item label="相机：" prop="cameraNames">
-                            <el-input v-model="localData.cameraNames" placeholder="请输入相机名称，并用「，」隔开"></el-input>
+                            <el-input v-model="userInfoData.cameraNames" placeholder="请输入相机名称，并用「，」隔开"></el-input>
                         </el-form-item>
                         <el-form-item label="镜头：" prop="lensNames">
-                            <el-input v-model="localData.lensNames" placeholder="请输入镜头名称，并用「，」隔开"></el-input>
+                            <el-input v-model="userInfoData.lensNames" placeholder="请输入镜头名称，并用「，」隔开"></el-input>
                         </el-form-item>
                         <el-form-item label="工具：" prop="toolNames">
-                            <el-input v-model="localData.toolNames" placeholder="请输入镜头名称，并用「，」隔开"></el-input>
+                            <el-input v-model="userInfoData.toolNames" placeholder="请输入镜头名称，并用「，」隔开"></el-input>
                         </el-form-item>
-
                     </div>
-
-
                 </el-form>
             </el-col>
             <el-col :sm="5">
@@ -55,14 +52,14 @@
                         :on-progress="handleAvatarProgress"
                         :on-success="handleAvatarSuccess"
                 >
-                    <img style="width:200px;height: 200px;display: block;" v-if="!avatarId" class="avatar"
+                    <!--<img style="width:200px;height: 200px;display: block;" v-if="!avatarId" class="avatar"
                          src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                     <img v-else style="width:200px;height: 200px;display: block;"
-                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+avatarId" alt="">
-                    <!--<img style="width:200px;height: 200px;display: block;" v-if="!localData.avatarId" class="avatar"
+                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+avatarId" alt="">-->
+                    <img style="width:200px;height: 200px;display: block;" v-if="!userInfoData.avatarId" class="avatar"
                          src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                     <img v-else style="width:200px;height: 200px;display: block;"
-                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+localData.avatarId" alt="">-->
+                         :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfoData.avatarId" alt="">
                 </el-upload>
                 <span>点击图片，更换头像</span>
             </el-col>
@@ -129,7 +126,6 @@
             }),
             localData() {
                 Object.assign(this.userInfoData, this.userInfo.userProfile)
-                console.log('fdsfafdsaf', this.userInfoData)
                 return this.userInfoData
             }
 
@@ -137,7 +133,16 @@
         watch:{
             userInfo:function () {
                 console.log("userInfo改变了")
-                this.avatarId = this.userInfo.avatarId
+//                this.avatarId = this.userInfo.avatarId
+                Object.assign(this.userInfoData, this.userInfo.userProfile)
+            },
+            categories:function () {
+                this.categories.map((item, index) => {
+                    if (item.id === 0) {
+                        this.categories.splice(index, 1)
+                        return false
+                    }
+                })
             }
         },
         methods: {
@@ -149,39 +154,28 @@
             onSubmit: function () {
                 let self = this
                 let rlt = {}
-                console.log('self.localData', self.localData)
-                for (let key in self.localData) {
+                console.log('self.userInfoData', self.userInfoData)
+                for (let key in self.userInfoData) {
                     let tval
                     if (/hobby/.test(key)) {
-                        tval = self.localData[key].join(',')
+                        tval = self.userInfoData[key].join(',')
                     }
                     rlt[key] = tval
                 }
                 console.log('rlt', rlt)
 
                 this.formSubmit({
-                    userName: self.localData.userName,
-                    sex: parseInt(self.localData.sex),
-                    birthday: (typeof self.localData.birthday) !== 'string' ? self.localData.birthday : self.convertDateFromString(self.userInfo.userProfile.birthday),
-                    description: self.localData.description,
-                    cameraNames: self.localData.cameraNames,
-                    lensNames: self.localData.lensNames,
-                    toolNames: self.localData.toolNames,
-                    avatarId: self.localData.avatarId,
+                    userName: self.userInfoData.userName,
+                    sex: parseInt(self.userInfoData.sex),
+                    birthday: (typeof self.userInfoData.birthday) !== 'string' ? self.userInfoData.birthday : self.convertDateFromString(self.userInfo.userProfile.birthday),
+                    description: self.userInfoData.description,
+                    cameraNames: self.userInfoData.cameraNames,
+                    lensNames: self.userInfoData.lensNames,
+                    toolNames: self.userInfoData.toolNames,
+                    avatarId: self.userInfoData.avatarId,
                     categoryIds: rlt.hobby
                 }).then((rsp) => {
                     if (self.formStep === 'submitted') {
-                        //                        这个数据覆盖做的有点问题，后面再查查
-                        /*self.userInfoUpload({
-                         userName:self.localData.userName,
-                         sex:self.localData.sex,
-                         birthday:self.localData.birthday,
-                         description:self.localData.description,
-                         cameraNames:self.localData.cameraNames,
-                         lensNames:self.localData.lensNames,
-                         toolNames:self.localData.toolNames,
-                         avatarId:"244",
-                         })*/
                         self.autoLogin()
                         self.$message({
                             type: 'success',
@@ -194,7 +188,7 @@
             },
             handleAvatarSuccess: function (res, file, fileList) {
                 if (res.success) {
-                    this.localData.avatarId = res.vars.data.id
+                    this.userInfoData.avatarId = res.vars.data.id
                     this.avatarId = res.vars.data.id
                 } else {
                     this.$message.error("上传失败")
