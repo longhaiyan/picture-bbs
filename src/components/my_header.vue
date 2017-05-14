@@ -8,11 +8,11 @@
                 <template slot="title" >
                     Discover
                 </template>
-                <el-menu-item index="2-1" @click="goPopular">
-                    Popular
+                <el-menu-item index="2-1" @click="goUrl('/discover/watch')" >
+                    我的关注
                 </el-menu-item>
-                <el-menu-item index="2-2">分类二</el-menu-item>
-                <el-menu-item index="2-3">分类三</el-menu-item>
+                <el-menu-item index="2-2" @click="goUrl('/discover/popular')">最新动态</el-menu-item>
+                <el-menu-item index="2-3" @click="goUrl('/discover/recommend')">推荐用户</el-menu-item>
             </el-submenu>
             <el-menu-item v-if="!localUserName" index="3">
                 <el-button type="text" @click="onLogin">登录</el-button>
@@ -247,6 +247,16 @@
             },
             onPwd:function () {
                 this.pwdShow()
+            },
+            goUrl:function (url) {
+                event.stopPropagation()
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else{
+                    this.GM_routerPush({
+                        path: url,
+                    })
+                }
             }
         },
         mounted(){

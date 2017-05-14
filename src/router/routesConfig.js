@@ -9,6 +9,8 @@ import MySettings from '@/views/setting/my_settings'
 import UserSetting from '@/views/setting/user_setting'
 import MyDiscover from '@/views/discover/my_discover'
 import Popular from '@/views/discover/popular'
+import Watch from '@/views/discover/watch'
+import Recommend from '@/views/discover/recommend'
 import Intro from '@/views/intro/intro'
 import demo from '@/components/demoView/demo'
 import index from '@/views/index/index'
@@ -68,7 +70,19 @@ let routes = [
                 name:'popular',
                 path: 'popular',
                 component: Popular,
-            }
+            },
+            {
+                name:'Watch',
+                path: 'watch',
+                component: Watch,
+            },
+            {
+                name:'Recommend',
+                path: 'recommend',
+                component: Recommend,
+            },
+
+
         ],
     },
     {

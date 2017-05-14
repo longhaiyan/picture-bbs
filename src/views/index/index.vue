@@ -262,7 +262,7 @@
 
 </style>
 <template>
-    <div class="index">
+    <div class="index j-index">
         <div class="my-swiper">
             <swiper class="my-swiper-container" :options="swiperOption">
                 <swiperSlide v-for="slide in swiperSlides" key>

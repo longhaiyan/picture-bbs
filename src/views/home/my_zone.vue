@@ -21,13 +21,12 @@
     }
 
     .avatar {
-        width: 178px;
-        height: 178px;
+        width: 400px;
         display: block;
     }
 </style>
 <template>
-    <div class="my-zone">
+    <div class="my-zone j-my-zone">
         <div class="zone-header">
             <div class="cover_photo" v-if="homeInfo.backgroundId"
                  v-bind:style="{backgroundImage: 'url(http://bbs.chenxubiao.cn/picture/show?id=' + homeInfo.backgroundId + ')'}"></div>
@@ -180,7 +179,7 @@
                 },
                 followVisible: false,
                 bgUploadFormData: {
-                    picId: '233',
+                    picId: 0,
                     imageUrl: '',
 
                 },

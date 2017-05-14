@@ -1,4 +1,3 @@
-
 <template>
     <div id="app">
         <MyModal class="my-login-box" :data="loginData" :step="uploadDialogStep" style="text-align: left">
@@ -19,7 +18,8 @@
                     <el-input style="width: 120px;"
                               v-model="loginFormData.code">
                     </el-input>
-                    <img @click="getkaptchaImg" src="http://bbs.chenxubiao.cn/kaptcha-image" style="width: 120px;height: 40px;vertical-align: middle;" alt="">
+                    <img @click="getkaptchaImg" src="http://bbs.chenxubiao.cn/kaptcha-image"
+                         style="width: 120px;height: 40px;vertical-align: middle;" alt="">
                 </el-form-item>
                 <el-form-item>
                     <el-button type="text" @click="toRegister">还没有账号，赶紧戳我去注册吧</el-button>
@@ -28,7 +28,7 @@
         </MyModal>
         <MyModal class="my-upload-box" :data="uploadData" :step="loginDialogStep" style="text-align: left">
             <el-row type="flex" justify="space-between">
-                <el-col :sm="6" >
+                <el-col :sm="6">
                     <el-upload
                             class="avatar-uploader"
                             action="http://bbs.chenxubiao.cn/picture/upload/project"
@@ -40,19 +40,34 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-col>
-                <el-col :sm="10" >
+                <el-col :sm="10">
                     <el-form :model="uploadFormData" ref="uploadForm" :rules="uploadRules" label-position="top">
                         <el-form-item label="标题：" prop="picName">
                             <el-input
-                                      placeholder="请输入图片名称"
-                                      v-model="uploadFormData.picName">
+                                    placeholder="请输入图片名称"
+                                    v-model="uploadFormData.picName">
                             </el-input>
                         </el-form-item>
                         <el-form-item label="分类：" prop="categoryId">
-                            <el-select v-model="uploadFormData.categoryId" >
-                                <el-option v-for="item in categories" :label="item.name" key :value="item.id"></el-option>
+                            <el-select v-model="uploadFormData.categoryId">
+                                <el-option v-for="item in categories" :label="item.name" key
+                                           :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
+                        <el-form-item label="授权下载：">
+                            <el-radio-group @change="radioChange" v-model="uploadFormData.auth">
+                                <el-radio label=0>不授权下载</el-radio>
+                                <el-radio label=1>授权下载</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+
+                        <el-form-item v-if="parseInt(uploadFormData.auth) > 0" label="下载金额：" prop="money">
+                            <el-input
+                                    placeholder="请输入下载金额"
+                                    v-model.number="uploadFormData.money">
+                            </el-input>
+                        </el-form-item>
+
                         <el-form-item label="标签：" prop="tagIds">
                             <el-select
                                     v-model="uploadFormData.tagIds"
@@ -112,7 +127,8 @@
                     <el-input style="width: 120px;"
                               v-model="registerFormData.code">
                     </el-input>
-                    <img @click="getkaptchaImg" src="http://bbs.chenxubiao.cn/kaptcha-image" style="width: 120px;height: 40px;vertical-align: middle;" alt="">
+                    <img @click="getkaptchaImg" src="http://bbs.chenxubiao.cn/kaptcha-image"
+                         style="width: 120px;height: 40px;vertical-align: middle;" alt="">
                 </el-form-item>
             </el-form>
         </MyModal>
@@ -141,9 +157,10 @@
 
 
         <el-row type="flex" justify="space-around" align="center" class="header">
-            <el-col >
+            <el-col>
                 <router-link to="/" class="logo">
                     <img src="http://bbs.chenxubiao.cn/img/logo.ico" alt=""> 图片社区
+
                 </router-link>
 
             </el-col>
@@ -158,17 +175,17 @@
         <el-row>
             <MyFooter/>
         </el-row>
-
-
     </div>
 </template>
 
 <script>
-    import {mapActions, mapState} from 'vuex'
+    import { mapActions, mapState } from 'vuex'
     import * as GlobalType from '@/store/global/types'
+    import * as MyIndexType from '@/store/my_index/types'
     import MyHeader from './components/my_header.vue'
     import MyFooter from './components/my_footer.vue'
     import MyModal from  '@/components/my_modal.vue'
+    import * as ZoneTypes from '@/store/my_zone/types'
 
     export default {
         name: 'app',
@@ -180,10 +197,10 @@
                     code: ""
                 },
                 registerForm: {
-                    email:"",
+                    email: "",
                     userName: "",
                     password: "",
-                    checkPassword:"",
+                    checkPassword: "",
                     code: ""
 
                 },
@@ -203,17 +220,18 @@
                     title: '修改密码'
                 },
 
-                uploadData:{
+                uploadData: {
+                    size: 'large',
                     confirmButtonText: '发布图片',
                     title: '上传图片',
-                    picId:1,
-                    picName:'',
-                    categoryId:0,
-                    tagIds:[],
-                    description:'',
-                    imageUrl:''
-
-
+                    picId: 0,
+                    picName: '',
+                    categoryId: 0,
+                    tagIds: [],
+                    description: '',
+                    imageUrl: '',
+                    auth: "0",
+                    money: null
 
                 },
                 loginRules: {
@@ -239,8 +257,8 @@
                         trigger: 'blur'
                     },
                     email: [
-                        { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                        { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+                        {required: true, message: '请输入邮箱地址', trigger: 'blur'},
+                        {type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
                     ],
                     password: {
                         required: true,
@@ -276,12 +294,16 @@
                     }
                 },
                 uploadRules: {
+                    money: {
+                        validator: this.confirmMoney,
+                        trigger: 'blur'
+                    }
                 },
                 categoryMap: {
                     '0': '动物',
                     '1': '风景',
                     '2': '人像',
-                    '3':'无'
+                    '3': '无'
                 },
                 options: [{
                     value: '1',
@@ -329,32 +351,32 @@
 
         },
         watch: {
-            loginDialogVisible: function() {
+            loginDialogVisible: function () {
                 if (this.loginDialogVisible) {
                     this.onLogin()
                 }
             },
-            registerDialogVisible: function() {
+            registerDialogVisible: function () {
                 if (this.registerDialogVisible) {
                     this.onRegister()
                 }
             },
-            uploadDialogVisible: function() {
+            uploadDialogVisible: function () {
                 if (this.uploadDialogVisible) {
                     this.onUpload()
                 }
             },
-            pwdDialogVisible: function() {
+            pwdDialogVisible: function () {
                 if (this.pwdDialogVisible) {
                     this.onPwd()
                 }
             },
 
             categories: function () {
-                console.log('categories',this.categories)
+                console.log('categories', this.categories)
             },
-            tags:function () {
-                console.log('tags',this.tags)
+            tags: function () {
+                console.log('tags', this.tags)
             }
 
         },
@@ -369,11 +391,13 @@
                 registerHide: GlobalType.A_REGISTER_HIDE,
                 pwdHide: GlobalType.A_PWD_HIDE,
                 getCheckCode: GlobalType.A_GET_CHECK_CODE,
-                registerShow: GlobalType.A_REGISTER_SHOW
+                registerShow: GlobalType.A_REGISTER_SHOW,
+                getIndexWaterFall: MyIndexType.A_LIST_REQUEST,
+                getHomeRequest: ZoneTypes.A_DATA_REQUEST,
             }),
             onLogin(){
                 let self = this
-//                this.getCheckCode()
+                //                this.getCheckCode()
                 this.openModal(this.loginFormData, {
                     beforeConfirm(next){
                         self.$refs.loginForm.validate(value => {
@@ -410,7 +434,7 @@
             },
             onRegister(){
                 let self = this
-//                this.getCheckCode()
+                //                this.getCheckCode()
                 this.openModal(this.registerFormData, {
                     beforeConfirm(next){
                         console.log("beforeConfirm")
@@ -457,9 +481,9 @@
                         self.$refs.uploadForm.validate(value => {
                             /*if (value) {
 
-                            }*/
-                            if(self.uploadFormData.picId){
-                                console.log('self.uploadFormData',self.uploadFormData);
+                             }*/
+                            if (self.uploadFormData.picId && value) {
+                                console.log('self.uploadFormData', self.uploadFormData);
                                 let rlt = {}
                                 for (let key in self.uploadFormData) {
                                     let tval
@@ -468,12 +492,18 @@
                                     }
                                     rlt[key] = tval
                                 }
+                                let auto = 0
+                                if (parseInt(self.uploadFormData.auth) > 0) {
+                                    auto = parseInt(self.uploadFormData.money)
+                                }
                                 self.upload({
-                                    picId:self.uploadFormData.picId,
-                                    title:self.uploadFormData.picName,
-                                    categoryId:parseInt(self.uploadFormData.categoryId),
-                                    tagIds:rlt.tagIds,
-                                    description:self.uploadFormData.description
+                                    picId: self.uploadFormData.picId,
+                                    title: self.uploadFormData.picName,
+                                    categoryId: parseInt(self.uploadFormData.categoryId),
+                                    tagIds: rlt.tagIds,
+                                    description: self.uploadFormData.description,
+                                    auth: parseInt(self.uploadFormData.auth),
+                                    money: auto
                                 }).then(() => {
                                     if (self.uploadDialogStep === 'error') {
                                         self.showMessage(self.uploadErrorMsg)
@@ -483,17 +513,47 @@
                                             type: 'success',
                                             message: '发布成功'
                                         })
+                                        if($('.j-index').length){
+                                            self.getIndexWaterFall()
+                                        }
+                                        if($('.j-my-zone').length){
+                                            let userId = self.$route.query.userId||''
+                                            if (userId) {
+                                                self.getHomeRequest({userId: parseInt(userId)})
+                                            } else {
+                                                self.getHomeRequest()
+                                            }
+                                        }
                                         return next()
                                     }
                                 })
-                            }else{
+                            } else {
                                 console.log("没有找到图片id")
+                                self.$message({
+                                    message: '请先上传图片',
+                                    type: 'warning'
+                                });
+                                return
                             }
 
                         })
                     },
                     beforeCancel(next) {
                         self.uploadHide().then(() => {
+                            Object.assign(self.uploadFormData, {
+                                size: 'large',
+                                confirmButtonText: '发布图片',
+                                title: '上传图片',
+                                picId: 0,
+                                picName: '',
+                                categoryId: 0,
+                                tagIds: [],
+                                description: '',
+                                imageUrl: '',
+                                auth: "0",
+                                money: null
+                            })
+                            console.log("隐藏前重置数据", self.uploadFormData)
                             return next()
                         })
                     }
@@ -508,8 +568,8 @@
                         self.$refs.pwdForm.validate(value => {
                             if (value) {
                                 self.changePwd({
-                                    oldPasswd:self.pwdFormData.oldPasswd,
-                                    newPasswd:self.pwdFormData.newPasswd,
+                                    oldPasswd: self.pwdFormData.oldPasswd,
+                                    newPasswd: self.pwdFormData.newPasswd,
                                 }).then(() => {
                                     if (self.pwdDialogStep === 'error') {
                                         self.showMessage(self.pwdErrorMsg)
@@ -563,20 +623,30 @@
                 if (value === '') {
                     callback(new Error('请再次输入密码'));
                 } else if (value !== this.pwdFormData.newPasswd) {
-                    console.log('yiyi value',value)
-                    console.log('this.pwdFormData.password',this.pwdFormData.newPasswd)
+                    console.log('yiyi value', value)
+                    console.log('this.pwdFormData.password', this.pwdFormData.newPasswd)
                     callback(new Error('两次输入密码不一致!'));
                 } else {
                     callback();
                 }
             },
+            confirmMoney: function (rule, value, callback) {
+                console.log('value', value, typeof value)
+                if (parseInt(this.uploadFormData.auth) > 0 && value === '') {
+                    callback(new Error('请输入金额'));
+                } else if (!Number.isInteger(value)) {
+                    callback(new Error('请输入整数金额'));
+                } else {
+                    callback();
+                }
+            },
             showMessage(msg) {
-//                this.$message.error(this.loginErrorMsg)
+                //                this.$message.error(this.loginErrorMsg)
                 this.$message.error(msg)
             },
             //            检测屏幕滚动事件
             getScroll(){
-                window.onscroll = function() {
+                window.onscroll = function () {
                     let hasActive = document.querySelector('.header').className.match(/(?:^|\s)header-active(?!\S)/)
                     let top = document.querySelector('body').scrollTop
                     if (top > 0 && !hasActive) {
@@ -592,27 +662,30 @@
                 this.registerShow()
             },
             getkaptchaImg(event){
-                event.target.src = "http://bbs.chenxubiao.cn/kaptcha-image?v="+ new Date()
+                event.target.src = "http://bbs.chenxubiao.cn/kaptcha-image?v=" + new Date()
             },
             handleAvatarSuccess(res, file, fileList) {
-                console.log('res',res)
-                console.log('file',file)
-                console.log('fileList',fileList)
-                this.uploadFormData.imageUrl = 'http://bbs.chenxubiao.cn/picture/show?id='+res.vars.data.id
-                if(res.success){
+                console.log('res', res)
+                console.log('file', file)
+                console.log('fileList', fileList)
+                this.uploadFormData.imageUrl = 'http://bbs.chenxubiao.cn/picture/show?id=' + res.vars.data.id
+                if (res.success) {
                     this.uploadFormData.picId = res.vars.data.id
-                }else{
+                } else {
                     this.$message.error("上传失败")
                 }
             },
-            onSelectChange:function () {
+            onSelectChange: function () {
                 console.log('测试')
+            },
+            radioChange: function () {
+                console.log("radio 改变了", this.uploadFormData.auth)
             }
         },
         mounted() {
             this.getScroll()
-            console.log('categories',this.categories)
-            console.log('tags',this.tags)
+            console.log('categories', this.categories)
+            console.log('tags', this.tags)
         },
         components: {
             MyHeader,
@@ -633,9 +706,11 @@
         /*height: 100%;*/
         position: relative;
     }
-    .my-login-box{
+
+    .my-login-box {
         text-align: left;
     }
+
     .my-login-box .el-dialog {
         min-width: 300px;
     }

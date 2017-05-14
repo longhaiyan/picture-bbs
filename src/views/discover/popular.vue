@@ -1,29 +1,6 @@
 <template>
     <div class="my-popular">
-        <waterfall
-                :align="align"
-                :line-gap="400"
-                :min-line-gap="100"
-                :max-line-gap="220"
-                :single-max-width="600"
-                :watch="popularWaterFall"
-                @reflowed="reflowed"
-                ref="waterfall"
-        >
-            <!-- each component is wrapped by a waterfall slot -->
-            <waterfall-slot
-                    v-for="(item, index) in popularWaterFall"
-                    :width="item.width"
-                    :height="item.height"
-                    :order="index"
-                    :key="index"
-
-                    move-class="item-move"
-
-            >
-                <myWaterFallSlot :index="index" :item="item"></myWaterFallSlot>
-            </waterfall-slot>
-        </waterfall>
+        最新动态
     </div>
 </template>
 <script>
@@ -34,7 +11,7 @@
     import myWaterFallSlot from '@/components/my_waterfall_slot'
 
     export default{
-        name: 'Popular',
+        name: 'discoverPopular',
         data(){
             return {
                 align: 'center',
@@ -80,6 +57,14 @@
         mounted() {
             this.bodyScroll()
             console.log("mounted")
+        },
+        beforeUpdate(){
+            if(!$('.header').hasClass('header-white')){
+                $('.header').addClass('header-white')
+            }
+        },
+        destroyed(){
+            $('.header').removeClass('header-white')
         },
         components: {
             Waterfall,

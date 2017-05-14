@@ -1,0 +1,98 @@
+.my-discover-box{
+  border-radius: 3px;
+  border: 1px solid #eeeff2;
+  margin-bottom: 20px;
+  background-color: #fff;
+  .discover-box-hd{
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    img{
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+      margin-right: 13px;
+    }
+    .user-info{
+      p{
+        margin: 0;
+        font-size: 15px;
+        font-weight: bold;
+        color: #525558;
+      }
+      i{
+        font-style: normal;
+        font-size: 14px;
+        color: #b9c1c7;
+        display: block;
+      }
+    }
+  }
+  .discover-box-bd{
+    .discover-box-img{
+      /*height: 400px;
+      width: auto;*/
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .discover-box-info{
+      padding:10px;
+      .info-name{
+        font-size: 18px;
+        color: #525558;
+      }
+      .like-button {
+        vertical-align: top;
+        display: inline-block;
+        line-height: 0px;
+        .new_fav {
+          width: 100%;
+          text-align: left;
+          position: relative;
+          min-width: 40px;
+          background-color: #ff4c4c;
+          border-color: #ff3333;
+          text-shadow: none;
+          cursor: pointer;
+          display: inline-block;
+          padding: 0 10px;
+          height: 27px;
+          line-height: 27px;
+          border-radius: 4px;
+          color: #fff;
+          text-decoration: none;
+          right: 20px;
+          .icon {
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 10px;
+            margin: auto;
+            overflow: hidden;
+            .shape {
+              fill: transparent;
+              stroke: #fff;
+              stroke-width: 3px;
+              stroke-dasharray: 150;
+              stroke-linejoin: round;
+              -webkit-transition: all 0.2s ease-out;
+              -moz-transition: all 0.2s ease-out;
+              transition: all 0.2s ease-out;
+            }
+          }
+        }
+        .hearted{
+          background-color: pink;
+          .icon .shape{
+            fill: #fff;
+          }
+        }
+      }
+
+    }
+
+  }
+}
