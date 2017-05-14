@@ -6,10 +6,10 @@
                      alt="">
                 <!--<img src="http://bbs.chenxubiao.cn/img/test.png"
                      alt="">-->
-                <div class="prv-box" :style="{height:clientHeight-60+'px'}">
+                <div class="prv-box" @click="goPrv(projectInfo.startPicId)" :style="{height:clientHeight-60+'px'}">
                     <i class="el-icon-arrow-left"></i>
                 </div>
-                <div class="next-box" :style="{height:clientHeight-60+'px'}">
+                <div class="next-box" @click="goNext(projectInfo.endPicId)" :style="{height:clientHeight-60+'px'}">
                     <i class="el-icon-arrow-right"></i>
                 </div>
 
@@ -56,7 +56,48 @@
                     <el-menu default-active="2" class="el-menu-vertical-demo">
                         <el-submenu index="1">
                             <template slot="title"><i class="el-icon-menu"></i>Details</template>
-                            <div>lslsls</div>
+                            <div class="project-info">
+                                <span>Views</span>
+                                <p>{{projectInfo.viewNum}}</p>
+                            </div>
+                            <template v-if="projectInfo.exif">
+                                <div class="exif-info" v-if="projectInfo.exif.camera||projectInfo.exif.focalLength||projectInfo.exif.lens||projectInfo.exif.shutterSpeed||projectInfo.exif.iso">
+                                    <p class="camera" v-if="projectInfo.exif.camera">{{projectInfo.exif.camera}}</p>
+                                    <p class="img-info" >
+                                        <template v-if="projectInfo.exif.focalLength">
+                                            {{projectInfo.exif.focalLength}}<span>/</span>
+                                        </template>
+                                        <template v-if="projectInfo.exif.lens">
+                                            {{projectInfo.exif.lens}}<span>/</span>
+                                        </template>
+                                        <template v-if="projectInfo.exif.shutterSpeed">
+                                            {{projectInfo.exif.shutterSpeed}}
+                                    </template>
+                                        <template v-if="projectInfo.exif.shutterSpeed&&projectInfo.exif.iso">
+                                            <span>/</span>
+                                        </template>
+                                        <template v-if="projectInfo.exif.iso">
+                                            ISO {{projectInfo.exif.iso}}
+                                    </template>
+                                    </p>
+                                </div>
+
+                            </template>
+                            <div class="project-msg">
+                                <div class="msg-item my-space-Between" v-if="projectInfo.category&&projectInfo.category.name">
+                                    <span>Category</span>
+                                    <p>{{projectInfo.category.name}}</p>
+                                </div>
+                                <div class="msg-item my-space-Between" v-if="projectInfo.exif&&projectInfo.exif.taken">
+                                    <span>Taken</span>
+                                    <p>{{projectInfo.exif.taken}}</p>
+                                </div>
+                                <div class="msg-item my-space-Between" v-if="projectInfo.exif&&projectInfo.exif.createTime">
+                                    <span>Uploaded</span>
+                                    <p>{{projectInfo.exif.createTime}}</p>
+                                </div>
+
+                            </div>
                         </el-submenu>
                         <el-menu-item index="2"><i></i>导航二</el-menu-item>
                         <el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>
@@ -67,10 +108,10 @@
         <div class="show-photo j-show-photo " :style="{height:clientHeight+'px'}">
             <i class="el-icon-close j-icon-close" @click="closeShow"></i>
             <img :src="'http://bbs.chenxubiao.cn/picture/show?id=' + picId" alt="">
-            <div class="prv-box" :style="{height:clientHeight+'px'}">
+            <div class="prv-box" @click="goPrv(projectInfo.startPicId)" :style="{height:clientHeight+'px'}">
                 <i class="el-icon-arrow-left"></i>
             </div>
-            <div class="next-box" :style="{height:clientHeight+'px'}">
+            <div class="next-box" @click="goNext(projectInfo.endPicId)" :style="{height:clientHeight+'px'}">
                 <i class="el-icon-arrow-right"></i>
             </div>
             <div class="user-info">
@@ -105,7 +146,8 @@
         data(){
             return {
                 picId: this.$route.query.picId || '',
-                clientHeight: ''
+                clientHeight: '',
+                myProjectInfo:{}
             }
         },
         computed:{
@@ -113,6 +155,15 @@
                 projectInfo: state => state.intro.projectInfo,
                 updateFollowingStep: state => state.myZone.updateFollowingStep,
             }),
+            getProjectInfo:function () {
+                return Object.assign(this.myProjectInfo,this.projectInfo)
+            }
+        },
+        watch:{
+            projectInfo:function () {
+                this.picId=this.$route.query.picId || '',
+                console.log("projectInfo改变了",this.projectInfo)
+            }
         },
         methods:{
             ...mapActions({
@@ -175,12 +226,46 @@
                     }
                 })
 
+            },
+            goPrv:function (picId) {
+                console.log("picId")
+                if(picId){
+                    this.GM_routerPush({
+                        path: '/intro',
+                        query: {
+                            picId: picId
+                        }
+                    })
+                }else{
+                    this.$message('没有上一张图片了');
+                }
+            },
+            goNext:function (picId) {
+                console.log("picId")
+                if(picId){
+                    this.GM_routerPush({
+                        path: '/intro',
+                        query: {
+                            picId: picId
+                        }
+                    })
+                }else{
+                    this.$message('没有下一张图片了');
+                }
+            }
+        },
+        beforeUpdate(){
+            if(!$('.header').hasClass('header-white')){
+                $('.header').addClass('header-white')
             }
         },
         mounted(){
             this.clientHeight = window.innerHeight
             console.log('document.body.clientHeight', window.innerHeight)
-        }
+        },
+        destroyed(){
+            $('.header').removeClass('header-white')
+        },
 
     }
 </script>

@@ -29,15 +29,15 @@
 <template>
     <div class="my-zone">
         <div class="zone-header">
-            <div class="cover_photo" v-if="userInfo.backgroundId"
-                 v-bind:style="{backgroundImage: 'url(http://bbs.chenxubiao.cn/picture/show?id=' + userInfo.backgroundId + ')'}"></div>
+            <div class="cover_photo" v-if="homeInfo.backgroundId"
+                 v-bind:style="{backgroundImage: 'url(http://bbs.chenxubiao.cn/picture/show?id=' + homeInfo.backgroundId + ')'}"></div>
             <div v-else class="cover_photo"></div>
             <div class="user_avatar">
                 <div class="wrapper">
-                    <img class="avatar_img" v-if="!userInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png"
+                    <img class="avatar_img" v-if="!homeInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png"
                          alt=""
                     >
-                    <img class="avatar_img" v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfo.avatarId"
+                    <img class="avatar_img" v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+homeInfo.avatarId"
                          alt="">
                 </div>
             </div>
@@ -51,8 +51,8 @@
                 <p class="info">
                     <span v-if="homeInfo.views > -1">{{homeInfo.views}} 热度</span>
                     <span v-if="homeInfo.likes > -1">{{homeInfo.likes}} 喜欢</span>
-                    <el-button type="text" v-if="homeInfo.followers > -1" @click="showFollow(0)">{{homeInfo.followers}} 粉丝</el-button>
-                    <el-button type="text" v-if="homeInfo.following > -1" @click="showFollow(1)">{{homeInfo.following}} 关注</el-button>
+                    <el-button type="text" v-if="homeInfo.followers > -1" @click="showFollow(0,homeInfo.userId)">{{homeInfo.followers}} 粉丝</el-button>
+                    <el-button type="text" v-if="homeInfo.following > -1" @click="showFollow(1,homeInfo.userId)">{{homeInfo.following}} 关注</el-button>
                 </p>
             </div>
         </div>
@@ -94,7 +94,7 @@
                                 <div class="like-button" @click="addLike(item.picId,$event)">
                                     <div>
                                         <!--<a class="button new_fav only_icon hearted">--><!--激活状态-->
-                                        <a class="button new_fav only_icon j-like">
+                                        <a class="button new_fav only_icon j-like" v-bind:class="{ hearted:item.liked}">
                                             <span class="value"></span>
                                             <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px"
                                                  y="0px">
@@ -138,10 +138,6 @@
                         <img v-if="!item.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                         <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id=' + item.avatarId" alt="">
                         {{item.userName}}
-
-
-
-
                     </li>
                 </ul>
             </template>
@@ -311,11 +307,12 @@
                     }
                 })
             },
-            showFollow: function (type) {
+            showFollow: function (type,userId) {
                 let self = this
                 self.followVisible = true
                 if ((type == 0 && this.homeInfo.followers) || (type == 1 && this.homeInfo.following)) {
-                    this.getFollow({type: type}).then(() => {
+                    console.log("type",type)
+                    this.getFollow({type: type,userId:userId}).then(() => {
                         if (type == 0) {
                             self.followData.title = "我的粉丝"
                             self.myFollowList = self.follows

@@ -388,6 +388,8 @@
                                         return
                                     } else {
                                         window.initState.isLogin = true
+                                        console.log("隐藏")
+                                        $('.my-footer').hide()
                                         self.$message({
                                             type: 'success',
                                             message: '登录成功'
@@ -425,6 +427,8 @@
                                         return
                                     } else {
                                         window.initState.isLogin = true
+                                        console.log("隐藏")
+                                        $('.my-footer').hide()
                                         self.$message({
                                             type: 'success',
                                             message: '注册并登录成功'

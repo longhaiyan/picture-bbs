@@ -39,6 +39,7 @@ const routerInit = function (store) {
         }
         // 剩下的放行
         else {
+            console.log("放行")
             routerBefore({to, from, next}, store)
         }
         // routerBefore({to, from, next}, store)

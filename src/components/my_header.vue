@@ -6,7 +6,7 @@
             </el-menu-item>-->
             <el-submenu index="2">
                 <template slot="title" >
-                    <div @click="goPopular">Discover</div>
+                    Discover
                 </template>
                 <el-menu-item index="2-1" @click="goPopular">
                     Popular
@@ -22,7 +22,6 @@
             <template v-else>
                 <el-submenu index="4" class="userInfoBox">
                     <template slot="title" style="">
-
                         <img v-if="!userInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png" alt=""
                              style="width: 40px;height: 40px;border-radius: 100%;">
                         <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+userInfo.avatarId" alt=""
@@ -30,17 +29,17 @@
 
                         <span>{{localUserName}}</span>
                     </template>
-                    <el-menu-item index="4-1">
-                        <router-link to="/home/zone">个人主页</router-link>
+                    <el-menu-item index="4-1" @click="goZone(userInfo.userId)">
+                        个人主页
                     </el-menu-item>
-                    <el-menu-item index="4-2">
-                        <router-link to="/setting/user_setting">个人设置</router-link>
+                    <el-menu-item index="4-2" @click="goSetting">
+                        个人设置
                     </el-menu-item>
                     <el-menu-item index="4-3" @click="onPwd">
                         修改密码
                     </el-menu-item>
                     <el-menu-item index="4-4" @click="onLoginOut">
-                        <router-link to="/">退出登录</router-link>
+                        退出登录
                     </el-menu-item>
                 </el-submenu>
                 <el-menu-item index="5" class="nav-warn" @click="showMsgList">
@@ -63,8 +62,8 @@
                 top="90px"
                 @close="msgDialogClose"
                 >
-            <template v-if="messages.length">
-                <div class="msg-item" v-for="item in messages" key @click="goZone(item.senderInfo.userId)">
+            <template v-if="messages&&messages.length">
+                <div  v-for="item in messages" class="msg-item" key v-if="item.senderInfo" @click="goZone(item.senderInfo.userId)">
                     <img v-if="!item.senderInfo.avatarId" class="avatar"
                          src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
                     <img v-else class="avatar"
@@ -93,6 +92,7 @@
                 activeIndex: '1',
                 localUserName: '',
                 msgDialogVisible:false,
+
             };
         },
         computed: {
@@ -108,6 +108,9 @@
             userInfo: function () {
                 console.log('userInfo 被修改', this.userInfo)
                 this.isLogin()
+            },
+            messages:function () {
+                console.log("messages",this.messages)
             }
         },
         methods: {
@@ -173,10 +176,15 @@
                 this.loginOut().then(() => {
                     this.localUserName = ''
                     window.initState.isLogin = false
+                    $('.my-footer').show()
                     self.$message({
                         type: 'success',
                         message: '注销成功'
                     })
+                    this.GM_routerPush({
+                        path: '/',
+                    })
+
                 }, () => {
                     self.$message({
                         type: 'error',
@@ -210,11 +218,20 @@
              }*/
             goZone:function (id) {
                 event.stopPropagation()
+                console.log("id",id)
+                if(id){
+                    this.GM_routerPush({
+                        path: '/home/zone',
+                        query: {
+                            userId: id
+                        }
+                    })
+                }
+            },
+            goSetting:function () {
+                event.stopPropagation()
                 this.GM_routerPush({
-                    path: '/home/zone',
-                    query: {
-                        userId: id
-                    }
+                    path: '/setting/user_setting',
                 })
             },
             goPopular:function (id) {
@@ -235,6 +252,8 @@
         mounted(){
             console.log('userInfo', this.userInfo)
             if (window.initState.isLogin) {
+                console.log("隐藏")
+                $('.my-footer').hide()
                 this.autoLogin()
             }
             this.liveOpen()

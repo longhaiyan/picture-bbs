@@ -6,7 +6,7 @@ import * as globalType from '@/store/global/types'
 
 const actions = {
     [Type.A_START_MAIN]: ({commit, state, dispatch}, payload) => {
-        // dispatch(globalType.A_USER_AUTO_LOGIN,payload)
+        dispatch(Type.A_DATA_REQUEST,payload)
     },
     [Type.A_DATA_REQUEST]: ({commit, state, dispatch}, payload) => {
         return apiTools.req(api.userInfo, payload, rsp => {
