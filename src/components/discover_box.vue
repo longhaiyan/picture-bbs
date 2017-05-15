@@ -1,6 +1,6 @@
 <template>
     <div class="my-discover-box">
-        <div class="discover-box-hd">
+        <div class="discover-box-hd" @click="goZone(data.userId)">
             <img v-if="!data.avatarId"
                  src="http://bbs.chenxubiao.cn/img/userpic.png" alt="">
             <img v-else
@@ -14,7 +14,7 @@
             <img class="discover-box-img" :src="'http://bbs.chenxubiao.cn/picture/show?id='+data.picId" alt="">
             <div class="discover-box-info my-space-Between">
                 <span class="info-name">{{data.title}}</span>
-                <div class="like-button">
+                <div class="like-button" @click="addLike">
                     <a class="new_fav j-like" :class="{ 'hearted': data.isLiked }">
                         <span class="value">{{data.likeNum}}</span>
                         <svg class="icon" version="1.1" viewBox="-6.9 -13.1 40 40" x="0px" y="0px">
@@ -29,6 +29,9 @@
     </div>
 </template>
 <script>
+    import {mapActions, mapState} from 'vuex'
+    import * as myWaterfallSlotType from '@/store/my_waterfall_solt/types'
+
     export default{
         name: 'discoverBox',
         props: {
@@ -52,5 +55,35 @@
                 }
             }
         },
+        methods:{
+            ...mapActions({
+                updateLike: myWaterfallSlotType.A_UPDATE_LIKE,
+            }),
+            goZone:function (id) {
+                event.stopPropagation()
+                if(id){
+                    this.GM_routerPush({
+                        path: '/home/zone',
+                        query: {
+                            userId: id
+                        }
+                    })
+                }
+            },
+            addLike: function (event) {
+                event.stopPropagation()
+                let self = this
+                let curLike = $(event.target).closest('.j-like')
+                this.updateLike({picId: self.data.picId}).then(()=>{
+                    if (curLike.hasClass('hearted')) {
+                        $(event.target).closest('.j-like').removeClass('hearted')
+                        self.data.likeNum -= 1
+                    } else {
+                        self.data.likeNum += 1
+                        $(event.target).closest('.j-like').addClass('hearted')
+                    }
+                })
+            },
+        }
     }
 </script>
