@@ -1,11 +1,11 @@
 <template>
-    <div class="user-setting">
+    <div class="user-setting j-user-setting">
 
         <el-row :gutter="50">
 
             <el-col :sm="15">
                 <h3>个人信息</h3>
-                <el-form :model="userInfoData" ref="localData" label-width="120px">
+                <el-form :model="userInfoData" ref="localData" :rules="localDataRules" label-width="120px">
                     <div class="form-body">
                         <el-form-item label="用户名：" prop="userName">
                             <el-input v-model="userInfoData.userName" placeholder="请输入用户名"></el-input>
@@ -103,18 +103,13 @@
                     '1': '男',
                     '2': '女'
                 },
-                /*cameraMap:{
-                 '0': '尼康',
-                 '1': '佳能'
-                 },
-                 lensMpa:{
-                 '0': '这个真不知道',
-                 '1': '别怪我'
-                 },
-                 toolMsp:{
-                 '0': '三角架',
-                 '1': '剩下的不知道了'
-                 }*/
+                localDataRules:{
+                    userName:{
+                        required: true,
+                        message: "请填写用户名",
+                        trigger: 'blur'
+                    }
+                }
 
             }
         },

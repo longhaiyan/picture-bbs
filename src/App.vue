@@ -703,7 +703,7 @@
         /*text-align: center;*/
         color: #2c3e50;
         /*background: #abcabc;*/
-        /*height: 100%;*/
+        height: 100%;
         position: relative;
     }
 

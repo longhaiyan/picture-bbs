@@ -22,4 +22,15 @@ export default {
         })
         console.log(state)
     },
+    [Type.M_SET_NAV]:(state, payload)=>{
+        Object.assign(state, {
+            navIndex: payload.name
+        })
+    },
+    [Type.M_MONEY_LIST]:(state, payload)=>{
+        Object.assign(state, {
+            moneyList: payload
+        })
+    },
+
 }

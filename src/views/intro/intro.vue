@@ -12,7 +12,6 @@
                 <div class="next-box" @click="goNext(projectInfo.endPicId)" :style="{height:clientHeight-60+'px'}">
                     <i class="el-icon-arrow-right"></i>
                 </div>
-
             </el-col>
             <el-col :sm="6" class="user-info">
                 <div class="attribution_region">
@@ -48,9 +47,7 @@
                     </div>
                 </div>
                 <div class="description_region">
-                    图片介绍？个人介绍？
-
-
+                   {{projectInfo.description}}
                 </div>
                 <div>
                     <el-menu default-active="2" class="el-menu-vertical-demo">
@@ -96,11 +93,18 @@
                                     <span>Uploaded</span>
                                     <p>{{projectInfo.exif.createTime}}</p>
                                 </div>
-
                             </div>
                         </el-submenu>
-                        <el-menu-item index="2"><i></i>导航二</el-menu-item>
-                        <el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>
+                        <el-menu-item v-if="projectInfo.tag" index="2"><i></i>
+                            <template v-for="item in projectInfo.tag">
+                                <el-tag style="margin-right: 10px;"  type="primary">{{item.name}}</el-tag>
+                            </template>
+
+                        </el-menu-item>
+                        <el-menu-item v-if="projectInfo.auth" index="3">
+                            <el-button @click="onDownload" type="primary" ><img class="download-icon" src="http://bbs.chenxubiao.cn/img/download.png" alt="">下载</el-button>
+                            金币{{projectInfo.money}}枚
+                        </el-menu-item>
                     </el-menu>
                 </div>
             </el-col>
@@ -252,6 +256,9 @@
                 }else{
                     this.$message('没有下一张图片了');
                 }
+            },
+            onDownload:function () {
+                window.open("http://bbs.chenxubiao.cn/picture/download?id="+this.picId)
             }
         },
         beforeUpdate(){

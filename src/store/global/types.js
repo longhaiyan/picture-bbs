@@ -71,5 +71,5 @@ export const M_USER_ZONEBG_UPDATE = 'global/mu/user_zone_bg_update'
 export const M_MESSAGE_RECEIVE= 'global/mu/message_receive'
 export const M_MESSAGE_UPDATE = 'global/mu/message_update'
 
-export const M_LIVE_OPEN = 'global/mu/live_open'
+// export const M_LIVE_OPEN = 'global/mu/live_open'
 

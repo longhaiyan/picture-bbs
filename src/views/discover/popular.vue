@@ -1,62 +1,78 @@
 <template>
-    <div class="my-popular">
-        最新动态
+    <div class="my-discover-watch my-popular">
+        <el-row :gutter="50">
+            <el-col :sm="16" >
+                <DiscoverBox v-for="item in popularMsg" :data="item" key></DiscoverBox>
+            </el-col>
+            <el-col :sm="8">
+                <div class="discover-watch-right">
+                    <div class="watch-right_hd" @click="goZone(watchUserInfo.userId)">
+                        <img  v-if="!watchUserInfo.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png"
+                              alt=""
+                        >
+                        <img v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+watchUserInfo.avatarId"
+                             alt="">
+                        <p>{{watchUserInfo.userName}}</p>
+                    </div>
+                    <div class="watch-right_bd">
+                        <div class="follow-info">
+                            <div>
+                                <p>{{watchUserInfo.picNum}}</p>
+                                <span>PHOTOS</span>
+                            </div>
+                            <div>
+                                <p>{{watchUserInfo.follows}}</p>
+                                <span>Followers</span>
+                            </div>
+                            <div>
+                                <p>{{watchUserInfo.otherViews}}</p>
+                                <span>Views</span>
+                            </div>
+                        </div>
+                        <div class="money-info">
+                            我的账户余额 {{watchUserInfo.money}} 币
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
     </div>
 </template>
 <script>
-    import { mapState, mapActions } from 'vuex'
-    import Waterfall from 'vue-waterfall/lib/waterfall'
-    import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
-    import * as discover from '@/store/discover/types'
+    import DiscoverBox from '@/components/discover_box'
     import myWaterFallSlot from '@/components/my_waterfall_slot'
+    import { mapActions, mapState } from 'vuex'
+
 
     export default{
         name: 'discoverPopular',
         data(){
             return {
-                align: 'center',
-                isBusy: false,
+
             }
         },
         computed: {
             ...mapState({
-                popularWaterFall: state => state.discover.popularWaterFall,
+                popularMsg: state => state.discover.popularMsg,
+                watchUserInfo: state => state.discover.watchUserInfo,
             }),
         },
         methods: {
-            ...mapActions({
-                waterFallAdd: discover.A_WATERFALL_ADD,
-            }),
-            bodyScroll: function () {
-                let self = this
-                window.addEventListener('scroll', function () {
-                    if($('.vue-waterfall').length){
-                        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-                        if (scrollTop + window.innerHeight >= document.body.clientHeight) {
-                            self.waterFallAdd()
-                        } else {
-                            console.log("不符合拉取新图片规则")
+            goZone:function (id) {
+                event.stopPropagation()
+                if(id){
+                    this.GM_routerPush({
+                        path: '/home/zone',
+                        query: {
+                            userId: id
                         }
-                    }
-                })
+                    })
+                }
             },
-            onIntro: function () {
-                console.log("click")
-                this.GM_routerPush({
-                    path: '/intro',
-                    query: {
-                        orderNo: row.orderNo
-                    }
-                })
-            },
-            reflowed: function () {
-                this.isBusy = false
-                console.log("reflowed")
-            },
+
         },
         mounted() {
-            this.bodyScroll()
-            console.log("mounted")
+
         },
         beforeUpdate(){
             if(!$('.header').hasClass('header-white')){
@@ -67,9 +83,7 @@
             $('.header').removeClass('header-white')
         },
         components: {
-            Waterfall,
-            WaterfallSlot,
-            myWaterFallSlot
+            DiscoverBox
         }
     }
 </script>

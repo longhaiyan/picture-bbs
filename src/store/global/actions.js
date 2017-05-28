@@ -124,7 +124,7 @@ const actions = {
     },
     [Type.A_LIVE_OPEN]: ({commit, state, dispatch}, payload) => {
         console.log('开启心跳')
-        commit(Type.M_LIVE_OPEN)
+        // commit(Type.M_LIVE_OPEN)
         dispatch(Type.A_MESSAGE_RECEIVE)
         /*setInterval(function () {
             console.log("dong")

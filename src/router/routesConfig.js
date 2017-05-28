@@ -13,6 +13,7 @@ import Watch from '@/views/discover/watch'
 import Recommend from '@/views/discover/recommend'
 import Intro from '@/views/intro/intro'
 import demo from '@/components/demoView/demo'
+import Money from '@/views/setting/money'
 import index from '@/views/index/index'
 import store from '@/store'
 import routerQuery from './routerQuery'
@@ -25,6 +26,7 @@ let routes = [
         name: 'index',
         component: Index,
     },
+
     {
         path: '/Hello',
         name: 'hello',
@@ -58,7 +60,13 @@ let routes = [
                 name:'user_setting',
                 path: 'user_setting',
                 component: UserSetting,
-            }
+            },
+            {
+                name:'money',
+                path: 'money',
+                component: Money,
+            },
+
         ],
     },
     {

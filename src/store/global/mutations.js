@@ -157,13 +157,13 @@ export default {
         console.log('M_MESSAGE_UPDATE 消息已读', state)
 
     },
-    [Type.M_LIVE_OPEN]: (state, payload) => {
+    /*[Type.M_LIVE_OPEN]: (state, payload) => {
         console.log('M_LIVE_OPEN 已经开启心跳检测')
         Object.assign(state, {
             isLive:true
         })
         console.log('M_LIVE_OPEN', state)
-    },
+    },*/
 
     // 修改密码弹窗状态
     [Type.M_CHANGE_PWD_SUBMITTING]: (state, payload) => {

@@ -5,8 +5,9 @@ import * as optionMapType from '@/store/option_map/types'
 import * as GlobalType from '@/store/global/types'
 
 const actions = {
-    [Type.A_START_MAIN]: ({commit, state, dispatch}, payload) => {
+    [Type.A_USER_START_MAIN]: ({commit, state, dispatch}, payload) => {
         // dispatch(Type.A_LIST_REQUEST,payload)
+        commit(Type.M_SET_NAV,{name:'/setting/user_setting'})
         dispatch(optionMapType.A_CATEGORY_MAP).then(()=>{
             dispatch(GlobalType.A_USER_AUTO_LOGIN).then(()=>{
                 console.log("获取分类及用户数据成功")
@@ -14,6 +15,14 @@ const actions = {
             // console.log("获取分类数据成功")
         })
     },
+    [Type.A_MONEY_START_MAIN]: ({commit, state, dispatch}, payload) => {
+        // dispatch(Type.A_LIST_REQUEST,payload)
+        commit(Type.M_SET_NAV,{name:'/setting/money'})
+        dispatch(Type.A_MONEY_LIST).then(()=>{
+            console.log("获取账户数据成功")
+        })
+    },
+
 
     [Type.A_LIST_REQUEST]: ({commit, state, dispatch}, payload) => {
         /*commit(Type.M_LIST_LOADING)
@@ -36,6 +45,13 @@ const actions = {
         }, msg => {
             console.log('失败', msg)
             commit(Type.M_FORM_ERROR, msg)
+        })
+    },
+    [Type.A_MONEY_LIST]: ({commit, state, dispatch}, payload) => {
+        return apiTools.req(api.list, payload, rsp => {
+            commit(Type.M_MONEY_LIST, rsp)
+        }, msg => {
+            console.log('获取账户记录失败', msg)
         })
     },
 

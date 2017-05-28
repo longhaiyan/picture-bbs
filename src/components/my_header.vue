@@ -35,10 +35,13 @@
                     <el-menu-item index="4-2" @click="goSetting">
                         个人设置
                     </el-menu-item>
-                    <el-menu-item index="4-3" @click="onPwd">
+                    <el-menu-item index="4-3" @click="goMoney">
+                        账户信息
+                    </el-menu-item>
+                    <el-menu-item index="4-4" @click="onPwd">
                         修改密码
                     </el-menu-item>
-                    <el-menu-item index="4-4" @click="onLoginOut">
+                    <el-menu-item index="4-5" @click="onLoginOut">
                         退出登录
                     </el-menu-item>
                 </el-submenu>
@@ -99,7 +102,6 @@
             ...mapState({
                 loginErrorMsg: state => state.myGlobal.loginErrorMsg,
                 userInfo: state => state.myGlobal.userInfo,
-                isLive: state => state.myGlobal.isLive,
                 msgCount: state => state.myGlobal.msgCount,
                 messages: state => state.myGlobal.messages,
             })
@@ -245,6 +247,18 @@
                 }
 
             },
+            goMoney:function (id) {
+                event.stopPropagation()
+                if(!window.initState.isLogin){
+                    this.loginShow()
+                }else{
+                    this.GM_routerPush({
+                        path: '/setting/money',
+                    })
+                }
+
+            },
+
             onPwd:function () {
                 this.pwdShow()
             },

@@ -40,7 +40,6 @@
 </template>
 <script>
     import DiscoverBox from '@/components/discover_box'
-    import myWaterFallSlot from '@/components/my_waterfall_slot'
     import { mapActions, mapState } from 'vuex'
 
 
