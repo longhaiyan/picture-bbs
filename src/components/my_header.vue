@@ -1,5 +1,8 @@
 <template>
-    <div>
+    <div style="display: flex;justify-content: flex-end;">
+        <el-input style="width: 250px;margin-top: 11px;" v-model="searchVal" placeholder="请输入搜索内容" >
+            <el-button slot="append" icon="search" @click="onSearch"></el-button>
+        </el-input>
         <el-menu :default-active="activeIndex" class="el-menu-demo my-nav" mode="horizontal" @select="handleSelect">
             <!--<el-menu-item index="1">
                 <el-button type="primary" @click="onUpload"><i class="el-icon-upload"></i>Upload</el-button>
@@ -90,11 +93,13 @@
     import MyModal from  './my_modal.vue'
     export default {
         name: "header",
+
         data() {
             return {
                 activeIndex: '1',
                 localUserName: '',
                 msgDialogVisible:false,
+                searchVal:'',
 
             };
         },
@@ -176,7 +181,7 @@
             onLoginOut(){
                 let self = this
                 this.loginOut().then(() => {
-                    this.localUserName = ''
+                    self.localUserName = ''
                     window.initState.isLogin = false
                     $('.my-footer').show()
                     self.$message({
@@ -271,6 +276,18 @@
                         path: url,
                     })
                 }
+            },
+            onSearch(){
+                let self = this
+                if(this.searchVal){
+                    this.GM_routerPush({
+                        path: '/search',
+                        query:{
+                            value:self.searchVal
+                        }
+                    })
+                }
+
             }
         },
         mounted(){

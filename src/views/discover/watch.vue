@@ -1,8 +1,11 @@
 <template>
-    <div class="my-discover-watch">
+    <div class="my-discover-watch j_my-discover-watch">
         <el-row :gutter="50">
             <el-col :sm="16" >
                 <DiscoverBox v-for="item in watchMsg" :data="item" key></DiscoverBox>
+                <p v-if="!watchMsg.length">
+                    <i class="el-icon-information">暂无关注动态</i>
+                </p>
             </el-col>
             <el-col :sm="8">
                 <div class="discover-watch-right">
@@ -64,13 +67,25 @@
                 }
             },
         },
+        mounted(){
+
+
+        },
         beforeUpdate(){
             if(!$('.header').hasClass('header-white')){
                 $('.header').addClass('header-white')
             }
+            if($('.j_my-discover-watch').length){
+                $('.j_header_watch').addClass('header_active')
+            }else if($('.j_my-discover-popular').length){
+                $('.j_header_popular').addClass('header_active')
+            }else if($('.j_my-discover-recommend').length){
+                $('.j_header_recommend').addClass('header_active')
+            }
         },
         destroyed(){
             $('.header').removeClass('header-white')
+            $('.j_my-discover_header a').removeClass('header_active')
         },
         components: {
             DiscoverBox

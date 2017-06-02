@@ -1,5 +1,5 @@
 <template>
-    <div class="my-discover-watch my-discover-recommend">
+    <div class="my-discover-watch my-discover-recommend j_my-discover-recommend">
         <el-row :gutter="50">
             <el-col :sm="16">
                 <div class="recommend-boxes" >
@@ -11,6 +11,9 @@
                              alt="">
                         <p>{{item.userName}}</p>
                     </div>
+                    <p v-if="!recommendMsg.length">
+                        <i class="el-icon-information">暂无推荐用户</i>
+                    </p>
                 </div>
             </el-col>
             <el-col :sm="8">
@@ -72,13 +75,25 @@
                 }
             },
         },
+        mounted(){
+
+        },
         beforeUpdate(){
             if (!$('.header').hasClass('header-white')) {
                 $('.header').addClass('header-white')
             }
+            if($('.j_my-discover-watch').length){
+                $('.j_header_watch').addClass('header_active')
+            }else if($('.j_my-discover-popular').length){
+                $('.j_header_popular').addClass('header_active')
+            }else if($('.j_my-discover-recommend').length){
+                $('.j_header_recommend').addClass('header_active')
+            }
         },
         destroyed(){
             $('.header').removeClass('header-white')
+            $('.j_my-discover_header a').removeClass('header_active')
+
         },
     }
 </script>

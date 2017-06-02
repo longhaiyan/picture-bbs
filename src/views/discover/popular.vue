@@ -1,8 +1,11 @@
 <template>
-    <div class="my-discover-watch my-popular">
+    <div class="my-discover-watch my-popular j_my-discover-popular">
         <el-row :gutter="50">
             <el-col :sm="16" >
                 <DiscoverBox v-for="item in popularMsg" :data="item" key></DiscoverBox>
+                <p v-if="!popularMsg.length">
+                    <i class="el-icon-information">暂无最新动态</i>
+                </p>
             </el-col>
             <el-col :sm="8">
                 <div class="discover-watch-right">
@@ -71,19 +74,31 @@
             },
 
         },
-        mounted() {
+        mounted(){
+
 
         },
         beforeUpdate(){
             if(!$('.header').hasClass('header-white')){
                 $('.header').addClass('header-white')
             }
+            if($('.j_my-discover-watch').length){
+                console.log("1")
+                $('.j_header_watch').addClass('header_active')
+            }else if($('.j_my-discover-popular').length){
+                console.log("2")
+                $('.j_header_popular').addClass('header_active')
+            }else if($('.j_my-discover-recommend').length){
+                console.log("3")
+                $('.j_header_recommend').addClass('header_active')
+            }
         },
         destroyed(){
             $('.header').removeClass('header-white')
+            $('.j_my-discover_header a').removeClass('header_active')
         },
         components: {
-            DiscoverBox
+            DiscoverBox,
         }
     }
 </script>

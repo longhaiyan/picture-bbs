@@ -12,6 +12,7 @@ import discover from './discover'
 import myWaterfallSlot from './my_waterfall_solt'
 import optionMap from './option_map'
 import intro from './intro'
+import search from './search'
 
 Vue.use(Vuex)
 
@@ -25,7 +26,8 @@ const store = new Vuex.Store({
         discover,
         myWaterfallSlot,
         optionMap,
-        intro
+        intro,
+        search
     }
 })
 

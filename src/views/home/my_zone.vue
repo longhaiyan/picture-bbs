@@ -24,6 +24,11 @@
         width: 400px;
         display: block;
     }
+    .zone-header .fellow,.zone-header .following{
+        height: 34px;
+        line-height: 34px;
+        font-size: 15px;
+    }
 </style>
 <template>
     <div class="my-zone j-my-zone">
@@ -41,8 +46,14 @@
                 </div>
             </div>
             <div class="profile_buttons">
-                <el-button type="text">个人设置</el-button>
-                <el-button type="text">个人管理</el-button>
+                <template v-if="!homeInfo.isSelf">
+                    <el-tooltip v-if="homeInfo.isFollow" effect="dark" content="已经关注" placement="bottom">
+                        <div  class="following" @click="onFollow()">Following</div>
+                    </el-tooltip>
+                    <el-tooltip v-else effect="dark" content="点击关注" placement="bottom">
+                        <div class="fellow" @click="onFollow()">Follow</div>
+                    </el-tooltip>
+                </template>
                 <el-button type="primary" @click="onUploadBg">上传背景图</el-button>
             </div>
             <div class="user_info">
@@ -203,6 +214,8 @@
                 follows: state => state.myZone.follows,
                 following: state => state.myZone.following,
                 userInfo: state => state.myGlobal.userInfo,
+                updateFollowingStep: state => state.myZone.updateFollowingStep,
+
             })
         },
         watch: {
@@ -220,6 +233,7 @@
                 getFollow: ZoneTypes.A_GET_FOLLOW,
                 userInfoUpload: GlobalType.A_USER_INFO_UPDATE,
                 updateLike: myWaterfallSlotType.A_UPDATE_LIKE,
+                updateFollowing: ZoneTypes.A_UPDATE_FOLLOWING,
 
             }),
             onUploadBg: function () {
@@ -337,7 +351,29 @@
                         userId: userId
                     }
                 })
-            }
+            },
+            onFollow: function () {
+                let self = this
+                console.log("self.homeInfo.isFollow",self.homeInfo.isFollow)
+                this.updateFollowing({userId:self.homeInfo.userId}).then(()=>{
+                    if(self.updateFollowingStep !== 'error'){
+                        if(self.homeInfo.isFollow){
+                            self.homeInfo.isFollow = 0
+                            this.$message.success('取消关注成功');
+                        }else{
+                            self.homeInfo.isFollow = 1
+                            this.$message.success('关注成功');
+                        }
+                    }else {
+                        if(self.homeInfo.isFollow){
+                            this.$message.error('取消关注失败');
+                        }else{
+                            this.$message.error('关注失败');
+                        }
+                    }
+                })
+
+            },
 
         },
         /*beforeCreate(){

@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="discover-box-bd">
-            <img class="discover-box-img" :src="'http://bbs.chenxubiao.cn/picture/show?id='+data.picId" alt="">
+            <img  class="discover-box-img" @click="onIntro(data.picId)" :src="'http://bbs.chenxubiao.cn/picture/show?id='+data.picId" alt="">
             <div class="discover-box-info my-space-Between">
                 <span class="info-name">{{data.title}}</span>
                 <div class="like-button" @click="addLike">
@@ -81,6 +81,15 @@
                     } else {
                         self.data.likeNum += 1
                         $(event.target).closest('.j-like').addClass('hearted')
+                    }
+                })
+            },
+            onIntro: function (picId) {
+                console.log("click")
+                this.GM_routerPush({
+                    path: '/intro',
+                    query: {
+                        picId: picId
                     }
                 })
             },

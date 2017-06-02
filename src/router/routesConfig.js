@@ -14,6 +14,7 @@ import Recommend from '@/views/discover/recommend'
 import Intro from '@/views/intro/intro'
 import demo from '@/components/demoView/demo'
 import Money from '@/views/setting/money'
+import Search from '@/views/search'
 import index from '@/views/index/index'
 import store from '@/store'
 import routerQuery from './routerQuery'
@@ -26,6 +27,12 @@ let routes = [
         name: 'index',
         component: Index,
     },
+    {
+        label: '搜索结果',
+        path: '/search',
+        name: 'search',
+        component: Search,
+    },
 
     {
         path: '/Hello',
@@ -33,7 +40,7 @@ let routes = [
         component: Hello,
         children: [
             {
-                name:'demo',
+                name: 'demo',
                 path: 'demo',
                 component: demo,
             }
@@ -45,7 +52,7 @@ let routes = [
         component: MyHome,
         children: [
             {
-                name:'myZoom',
+                name: 'myZoom',
                 path: 'zone',
                 component: MyZoom,
             }
@@ -57,12 +64,12 @@ let routes = [
         component: MySettings,
         children: [
             {
-                name:'user_setting',
+                name: 'user_setting',
                 path: 'user_setting',
                 component: UserSetting,
             },
             {
-                name:'money',
+                name: 'money',
                 path: 'money',
                 component: Money,
             },
@@ -75,21 +82,20 @@ let routes = [
         component: MyDiscover,
         children: [
             {
-                name:'popular',
+                name: 'popular',
                 path: 'popular',
                 component: Popular,
             },
             {
-                name:'Watch',
+                name: 'Watch',
                 path: 'watch',
                 component: Watch,
             },
             {
-                name:'Recommend',
+                name: 'Recommend',
                 path: 'recommend',
                 component: Recommend,
             },
-
 
         ],
     },

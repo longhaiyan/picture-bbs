@@ -1,5 +1,25 @@
 <template>
     <div id="app">
+        <el-row   class="header">
+            <el-col :sm="8" class="my-space-Between">
+                <router-link to="/" class="logo">
+                    <img src="http://bbs.chenxubiao.cn/img/logo.ico" alt=""> 图片社区
+
+                </router-link>
+
+            </el-col>
+            <el-col :sm="16"  class="my_header">
+                <MyHeader/>
+            </el-col>
+        </el-row>
+        <!--<img src="./assets/logo.png" alt="">-->
+        <el-row class="container">
+            <router-view></router-view>
+        </el-row>
+        <el-row>
+            <MyFooter/>
+        </el-row>
+
         <MyModal class="my-login-box" :data="loginData" :step="uploadDialogStep" style="text-align: left">
             <el-form :model="loginFormData" ref="loginForm" :rules="loginRules" label-width="100px">
                 <el-form-item label="用户名：" prop="userName">
@@ -155,26 +175,6 @@
             </el-form>
         </MyModal>
 
-
-        <el-row type="flex" justify="space-around" align="center" class="header">
-            <el-col>
-                <router-link to="/" class="logo">
-                    <img src="http://bbs.chenxubiao.cn/img/logo.ico" alt=""> 图片社区
-
-                </router-link>
-
-            </el-col>
-            <el-col class="my_header">
-                <MyHeader/>
-            </el-col>
-        </el-row>
-        <!--<img src="./assets/logo.png" alt="">-->
-        <el-row class="container">
-            <router-view></router-view>
-        </el-row>
-        <el-row>
-            <MyFooter/>
-        </el-row>
     </div>
 </template>
 
