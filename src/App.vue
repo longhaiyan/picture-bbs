@@ -236,6 +236,7 @@
                 },
                 loginRules: {
                     userName: {
+                        required: true,
                         validator: this.checkUserName,
                         trigger: 'blur'
                     },

@@ -125,8 +125,8 @@
             },
         },
         mounted(){
-            if (this.searchStep) {
-                this.$message.error(this.searchStep)
+            if (this.searchStep === 'error') {
+                this.$message.error(this.searchError)
             }
         },
         beforeUpdate(){
