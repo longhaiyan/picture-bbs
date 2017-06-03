@@ -3,13 +3,21 @@
         <el-row :gutter="50">
             <el-col :sm="16">
                 <div class="recommend-boxes" >
-                    <div v-for="item in recommendMsg" class="recommend-boxes-item">
+                    <div v-for="(item,index) in recommendMsg" @click="goZone(item.userId)" class="recommend-boxes-item">
                         <img class="avatar_img" v-if="!item.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png"
                              alt=""
                         >
                         <img class="avatar_img" v-else :src="'http://bbs.chenxubiao.cn/picture/show?id='+item.avatarId"
                              alt="">
                         <p>{{item.userName}}</p>
+                        <template v-if="!item.isSelf">
+                            <el-tooltip v-if="item.isFollow" effect="dark" content="已经关注" placement="bottom">
+                                <div class="following" @click.stop="onFollow(item.userId,index)">Following</div>
+                            </el-tooltip>
+                            <el-tooltip v-else effect="dark" content="点击关注" placement="bottom">
+                                <div class="fellow" @click.stop="onFollow(item.userId,index)">Follow</div>
+                            </el-tooltip>
+                        </template>
                     </div>
                     <p v-if="!recommendMsg.length">
                         <i class="el-icon-information">暂无推荐用户</i>
@@ -53,6 +61,7 @@
 </template>
 <script>
     import { mapActions, mapState } from 'vuex'
+    import * as myZoneType from '@/store/my_zone/types'
 
     export default{
         name: 'discoverRecommend',
@@ -60,9 +69,14 @@
             ...mapState({
                 recommendMsg: state => state.discover.recommendMsg,
                 watchUserInfo: state => state.discover.watchUserInfo,
+                updateFollowingStep: state => state.myZone.updateFollowingStep,
             }),
         },
         methods:{
+            ...mapActions({
+                updateFollowing: myZoneType.A_UPDATE_FOLLOWING,
+                //                projectRequest: introType.A_DATA_REQUEST,
+            }),
             goZone:function (id) {
                 event.stopPropagation()
                 if(id){
@@ -73,6 +87,28 @@
                         }
                     })
                 }
+            },
+            onFollow: function (id, index) {
+                let self = this
+                console.log("onFollow", self.recommendMsg[index].isFollow)
+                this.updateFollowing({userId: id}).then(() => {
+                    if (self.updateFollowingStep !== 'error') {
+                        if (self.recommendMsg[index].isFollow) {
+                            self.recommendMsg[index].isFollow = 0
+                            this.$message.success('取消关注成功');
+                        } else {
+                            self.recommendMsg[index].isFollow = 1
+                            this.$message.success('关注成功');
+                        }
+                    } else {
+                        if (self.recommendMsg[index].isFollow) {
+                            this.$message.error('取消关注失败');
+                        } else {
+                            this.$message.error('关注失败');
+                        }
+                    }
+                })
+
             },
         },
         mounted(){

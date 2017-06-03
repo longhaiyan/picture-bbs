@@ -26,7 +26,7 @@
 
                 <div v-if="!toggleVisible">
                     <div v-if="searchData.user" class="recommend-boxes">
-                        <div v-for="(item,index) in searchData.user" class="recommend-boxes-item">
+                        <div v-for="(item,index) in searchData.user" @click="goZone(item.userId)" class="recommend-boxes-item">
                             <img class="avatar_img" v-if="!item.avatarId" src="http://bbs.chenxubiao.cn/img/userpic.png"
                                  alt=""
                             >
@@ -36,10 +36,10 @@
                             <p>{{item.userName}}</p>
                             <template v-if="!item.isSelf">
                                 <el-tooltip v-if="item.isFollow" effect="dark" content="已经关注" placement="bottom">
-                                    <div class="following" @click="onFollow(item.userId,index)">Following</div>
+                                    <div class="following" @click.stop="onFollow(item.userId,index)">Following</div>
                                 </el-tooltip>
                                 <el-tooltip v-else effect="dark" content="点击关注" placement="bottom">
-                                    <div class="fellow" @click="onFollow(item.userId,index)">Follow</div>
+                                    <div class="fellow" @click.stop="onFollow(item.userId,index)">Follow</div>
                                 </el-tooltip>
                             </template>
                         </div>
@@ -111,6 +111,17 @@
                     }
                 })
 
+            },
+            goZone:function (id) {
+                event.stopPropagation()
+                if(id){
+                    this.GM_routerPush({
+                        path: '/home/zone',
+                        query: {
+                            userId: id
+                        }
+                    })
+                }
             },
         },
         mounted(){

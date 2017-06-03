@@ -6,7 +6,7 @@ import * as apiTools from '../../utils/api'
 const actions = {
   [Type.A_START_MAIN]: ({commit, state, dispatch}, payload) => {
       console.log("search payload",payload)
-      return apiTools.req(api.search, {name:payload.value}, rsp => {
+      return apiTools.post(api.search, {name:payload.value}, rsp => {
           commit(Type.M_LIST_RECEIVED,rsp)
           console.log('成功',rsp);
       }, msg => {
