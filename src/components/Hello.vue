@@ -1,46 +1,6 @@
 <template>
-  <div class="hello">
-    <transition name="slide-fade">
-      <router-view></router-view>
-    </transition>
-    <h1 class="chenxubaio-style">{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <template v-for="item in items">
-      <div>{{item.test}}</div>
-    </template>
-    <el-button type="primary" @click="onBack">进入demo</el-button>
-    <el-button type="primary">主要按钮</el-button>
-    <div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-    </div>
+  <div class="hello" style="font-size: 25px;text-align: center;color: #666;margin-top:300px;">
+    对不起，该页面不存在
   </div>
 </template>
 
